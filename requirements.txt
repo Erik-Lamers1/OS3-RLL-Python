@@ -1,3 +1,4 @@
+colorama
 six
 unipath
 discord

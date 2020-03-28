@@ -22,13 +22,13 @@ async def on_ready():
         if guild.name == settings.DISCORD_GUILD:
             break
 
-    logger.debug(f'{client.user is connected to the following guild:\n')
-    logger.debug(f'{guild.name}(id: {guild.id})')
+    logger.debug('{} is connected to the following guild:\n'.format(client.user))
+    logger.debug('{}(id: {})'.format(guild.name, guild.id))
 
 
 @client.event
 async def on_message(message):
-    logger.debug(f'saw a message: {message}')
+    logger.debug('saw a message: {}'.format(message))
     channel = message.channel
     res = "Ok..."
     if channel.name == settings.DISCORD_CHANNEL:
@@ -40,10 +40,10 @@ async def on_message(message):
                try:
                    res = commands[cmd](params)
                except ValueError:
-                   logger.error(f'Found a PEBKAC, user provides stupid params: {params}')
+                   logger.error('Found a PEBKAC, user provides stupid params: {}'.format(params))
                    res = stub.help()
            except KeyError:
-               logger.error(f'Unknown command: {cmd}')
+               logger.error('Unknown command: {}'.format(cmd))
 
            await channel.send(res)
 

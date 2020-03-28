@@ -1,13 +1,13 @@
 import random
 from logging import getLogger
-from os3_rll.conf import settings
+from os3_rrl.conf import settings
 
 logger = getLogger(__name__)
 
 
 def test_call_int():
     logger.debug('called: test_call_int()')
-    return "42"
+    return 42
 
 
 def test_call_str():
@@ -23,19 +23,19 @@ def test_call_list():
 def create_challenge(*argv):
     args = list(*argv)
     logger.debug('called: stub.create_challenge')
-    logger.debug(f'called with: {args}')
+    logger.debug('called with: {}'.format(args))
 
 
 def reset_challenge(*argv):
     args = list(*argv)
     logger.debug('called: stub.reset_challenge')
-    logger.debug(f'called with: {args}')
+    logger.debug('called with: {}'.format(args))
 
 
 def complete_challenge(*argv):
     args = list(*argv)
     logger.debug('called: stub.complete_challenge')
-    logger.debug(f'called with: {args}')
+    logger.debug('called with: {}'.format(args))
 
 
 def help():

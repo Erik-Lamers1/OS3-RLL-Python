@@ -4,9 +4,9 @@ import logging.config
 from os3_rrl.conf import settings
 
 
-def setup_console_logging(verbosity=3):
+def setup_console_logging(verbosity=logging.INFO):
     """
-    :param int verbosity: Verbosity level, 0 being critical, 4 being debug
+    :param int verbosity: Verbosity level logging.<verbosity>
     """
-    settings.LOGGING['handlers']['console']['level'] = logging.getLevelName(verbosity)
+    settings.LOGGING['handlers']['console']['level'] = verbosity
     logging.config.dictConfig(settings.LOGGING)

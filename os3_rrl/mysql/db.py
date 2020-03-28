@@ -40,5 +40,8 @@ class Database:
     def fetchall(self):
         return self.cursor.fetchall()
 
+    def fetchone(self):
+        return self.cursor.fetchone()
+
     def close(self):
         self.db.close()

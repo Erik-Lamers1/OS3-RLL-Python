@@ -13,11 +13,10 @@ setup(
     url="https://github.com/Erik-Lamers1/OS3-RRL-Python",
     packages=find_packages(exclude=['tests', 'tests.*']),
     author="Erik Lamers",
-    install_requires=['discord', 'unipath', 'colorama', 'six'],
+    install_requires=['discord', 'unipath', 'colorama', 'six', 'PyMySQL '],
     entry_points={
         'console_scripts': [
             'os3-rocket-league-ladder = os3_rrl.rocket_league_ladder:main',
         ],
     },
 )
-

@@ -5,6 +5,8 @@ from unipath import Path
 
 PYTHON_PACKAGE_NAME = 'os3-rocket-league-ladder'
 PROJECT_DIR = Path(__file__).absolute().ancestor(3)
+
+# Log settings
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -43,6 +45,13 @@ LOGGING = {
     }
 }
 
+# Discord settings
 DISCORD_TOKEN = getenv('DISCORD_TOKEN')
 DISCORD_GUILD = getenv('DISCORD_GUILD', 'Cloud konijn')
 DISCORD_CHANNEL = getenv('DISCORD_CHANNEL', 'rocket-league')
+
+# Database settings
+DB_HOST = '127.0.0.1'
+DB_USER = getenv('DB_USER')
+DB_PASS = getenv('DB_PASS')
+DB_DATABASE = getenv('DB_DATABASE', 'os3rl')

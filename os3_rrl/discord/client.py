@@ -13,14 +13,29 @@ commands = {'get_ranking': stub.test_call_list,
             'reset_challenge': stub.reset_challenge
         }
 
+client = discord.Client()
 
+
+@client.event
+async def on_ready():
+    for guild in client.guilds:
+        if guild.name == settings.DISCORD_GUILD:
+            break
+
+    logger.debug(f'{client.user is connected to the following guild:\n')
+    logger.debug(f'{guild.name}(id: {guild.id})')
+
+
+@client.event
 async def on_message(message):
     logger.debug(f'saw a message: {message}')
-    if message.channel.name == settings.DISCORD_CHANNEL:
+    channel = message.channel
+    res = "Ok..."
+    if channel.name == settings.DISCORD_CHANNEL:
         if message.content.startswith("$"):
-           full_command = message.content[1:]
+           full_command = message.content.lower()[1:]
            cmd = full_command.split(' ')[0]
-           params = full_command.split(' ')
+           params = full_command.split(' ')[1:]
            try:
                try:
                    res = commands[cmd](params)
@@ -30,14 +45,11 @@ async def on_message(message):
            except KeyError:
                logger.error(f'Unknown command: {cmd}')
 
+           await channel.send(res)
+
 
 def discord_client():
     logger.debug('Initializing Discord client')
-
-    client = discord.Client()
-
-    logger.debug(f'{client.user is connected to the following guild:\n')
-    logger.debug(f'{guild.name}(id: {guild.id})')
 
     while True:
         client.run(settings.DISCORD_TOKEN)

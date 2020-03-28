@@ -1,5 +1,5 @@
+import random
 from logging import getLogger
-
 from os3_rll.conf import settings
 
 logger = getLogger(__name__)
@@ -36,3 +36,13 @@ def complete_challenge(*argv):
     args = list(*argv)
     logger.debug('called: stub.complete_challenge')
     logger.debug(f'called with: {args}')
+
+
+def help():
+    logger.debug('called: stub.help')
+    responses =['I cannot believe what a stupid FUCK you really are...\n Please do kill -9 $(pgrep yourself)\n',
+                'Is it that difficult to type, do you have butter fingers?\n',
+                'OH MY GOD you are stupid, please rm -rf ./your_life\n',
+                "WHAHAHAHAHAhahahaHAHAHAA, seriously you can't even operate a normal discord bot.\n"]
+
+    return random.choice(responses)

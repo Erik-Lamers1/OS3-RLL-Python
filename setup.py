@@ -2,12 +2,14 @@
 import os
 from setuptools import setup, find_packages
 
+VERSION = '0.1.2'
+
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name="os3-rocket-league-ladder",
-    version="0.1.1",
+    version=VERSION,
     url="https://github.com/Erik-Lamers1/OS3-RRL-Python",
     packages=find_packages(exclude=['tests', 'tests.*']),
     author="Erik Lamers",
@@ -18,3 +20,4 @@ setup(
         ],
     },
 )
+

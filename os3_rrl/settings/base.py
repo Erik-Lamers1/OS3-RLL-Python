@@ -3,6 +3,7 @@ from os import getenv
 
 from unipath import Path
 
+PYTHON_PACKAGE_NAME = 'os3-rocket-league-ladder'
 PROJECT_DIR = Path(__file__).absolute().ancestor(3)
 LOGGING = {
     'version': 1,

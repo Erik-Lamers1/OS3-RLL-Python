@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 from logging import INFO, DEBUG
 
 from os3_rrl.discord.client import discord_client
-from os3_rrl.logging.log import setup_console_logging
+from os3_rrl.log.log import setup_console_logging
 from os3_rrl.utils.version import show_version
 
 

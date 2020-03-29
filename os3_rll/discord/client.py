@@ -1,4 +1,5 @@
 import discord
+import asyncio
 import queue
 from discord.ext import commands, tasks
 from logging import getLogger
@@ -63,23 +64,24 @@ async def on_message(message):
             await channel.send(res)
 
 
-#@tasks.loop(seconds=5.0)
-@bot.event
 async def post_embed():
     logger.debug('client.post_embed: running_loop')
-    if not message_queue.empty:
-        msg = message_queue.get()
-        logger.debug('client.post_embed: got an embed to post {}'.format(msg))
-        channel = settings.DISCORD_CHANNEL
-        embed = discord.Embed(title=msg['title'],
-                              description=msg['description'],
-                              url=settings.WEBSITE,
-                              color=msg['colour'])
+    await bot.wait_until_ready()
+    while not client.is_closed:
+        if not message_queue.empty:
+            msg = message_queue.get()
+            logger.debug('client.post_embed: got an embed to post {}'.format(msg))
+            channel = settings.DISCORD_CHANNEL
+            embed = discord.Embed(title=msg['title'],
+                                  description=msg['description'],
+                                  url=settings.WEBSITE,
+                                  color=msg['colour'])
 
-        embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
-        embed.set_footer(text=msg['footer'])
+            embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
+            embed.set_footer(text=msg['footer'])
 
-        await channel.send(msg['content'], embed=embed)
+            await channel.send(msg['content'], embed=embed)
+            await asyncio.sleep(5)
 
 
 def get_player_mentions(p1, p2):

@@ -115,7 +115,7 @@ class Challenge:
         :type args: Player ID
         """
         # Get the player ID
-        pid = Player.get_id_by_gamertag(args[0])
+        pid = Player.get_id_by_gamertag(args[0].name)
 
         db.execute('SELECT date, p1, p2 FROM challenges WHERE p1 = "{}" AND winner IS NULL'.format(pid))
         res = db.fetchone()

@@ -13,14 +13,13 @@ def hello(*argv):
     user = args.popleft()
     res = 'Hi {}\n'.format(user.mention)
     responses = ["How are you doing today? Wait that's retorical, I am a bot I do not care.\n",
-                 "Did you know that you suck at rocket league? I heard some guy SquishyMuffinz was best.\n",
+                 "I was just looking at your rank. Did you know that you suck at rocket league? I heard some guy SquishyMuffinz is best.\n",
                  "Please leave me alone. I am randomizing the rankings database to mess with Mr.Vin.\n",
                  "Due to COVID-19 I've had to reimplement the transport protocol from QUIC to plain UDP to avoid handshakes.\n",
                  "Please do not bother me. I am looking into this Markov Chain theory. It should be able to give me more human like responses.",
                  "What are you doing here? LOL, your rank is so low you should practice uninstall.\n"]
     res += random.choice(responses)
     return res
-
 
 
 def test_call_int(*argv):
@@ -30,7 +29,7 @@ def test_call_int(*argv):
 
 def test_call_str(*argv):
     logger.info('called: test_call_str()')
-    return "The answer to life the universe and everything is fourtytwo (42)\n"
+    return "Don't know, but the answer to life the universe and everything is fourtytwo (42)\n"
 
 
 def test_call_list(*argv):

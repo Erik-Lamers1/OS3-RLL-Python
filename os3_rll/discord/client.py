@@ -3,13 +3,15 @@ from logging import getLogger
 
 from os3_rll.conf import settings
 from os3_rll.actions import stub
+from os3_rll.actions import challenge
 
 logger = getLogger(__name__)
 
 commands = {'hi': stub.hello,
             'get_ranking': stub.test_call_list,
             'get_active_challenges': stub.test_call_int,
-            #'get_challenge': challenge.Challenge.get_challenge,
+            'what': stub.test_call_str,
+            'get_challenge': challenge.Challenge.get_challenge,
             'create_challenge': stub.create_challenge,
             'complete_challenge': stub.complete_challenge,
             'reset_challenge': stub.reset_challenge,

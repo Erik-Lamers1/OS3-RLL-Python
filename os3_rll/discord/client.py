@@ -34,19 +34,19 @@ async def on_ready():
         if guild.name == settings.DISCORD_GUILD:
             break
 
-    logger.info('{} is connected to the following guild:\n'.format(bot.user))
-    logger.info('{}(id: {})'.format(guild.name, guild.id))
+    logger.info('bot.on_ready: {} is connected to the following guild:\n'.format(bot.user))
+    logger.info('bot.on_ready: {}(id: {})'.format(guild.name, guild.id))
 
 
 @bot.event
 async def on_message(message):
-    logger.info('saw a message: {}'.format(message))  #
+    logger.info('bot.on_message: saw message {} {}'.format(message, message.content))
     channel = message.channel
 
     if channel.name == settings.DISCORD_CHANNEL:
         if message.content.startswith("$"):
-            logger.info('message.content: {}'.format(message.content))
-            logger.info('message.author: {}#{}'.format(message.author.name, message.author.discriminator))
+            logger.info('bot.on_message: message.content = {}'.format(message.content))
+            logger.info('bot.on_message: message.author  = {}#{}'.format(message.author.name, message.author.discriminator))
             full_command = message.content[1:]
             cmd = full_command.split(' ')[0]
             params = [message.author, full_command.split(' ')[1:]]
@@ -55,12 +55,12 @@ async def on_message(message):
                 try:
                     res = commands[cmd](params)
                 except (TypeError, ValueError) as e:
-                    logger.error('Found a PEBKAC, user provides stupid params: {}\n'.format(params) +
+                    logger.error('bot.on_message: Found a PEBKAC, user provides stupid params: {}\n'.format(params) +
                                  'This resulted in the following error:\n{}\n'.format(str(e))
                                 )
                     res = commands['help'](params)
             except KeyError:
-                logger.error('Unknown command: {}'.format(cmd))
+                logger.error('bot.on_message: unknown command {}'.format(cmd))
 
             if res is None:
                 res = "Ok..."
@@ -69,12 +69,12 @@ async def on_message(message):
 
 
 async def post():
-    logger.debug('client.post: started background task')
+    logger.debug('bot.post: started background task')
     await bot.wait_until_ready()
     while not bot.is_closed():
         if not message_queue.empty():
             msg = message_queue.get()
-            logger.debug('client.post: got a message to post {}'.format(msg))
+            logger.debug('bot.post: got a message to post {}'.format(msg))
             channel = discord.utils.get(bot.get_all_channels(), name=settings.DISCORD_CHANNEL)
             await channel.send(msg['content'], embed=msg['embed'])
         await asyncio.sleep(5)
@@ -96,9 +96,10 @@ def get_player(player):
     challengee = None
 
     for member in members:
-        logger.debug("discord.client.get_player_mentions: looking at member {}".format(member.name))
+        logger.debug("bot.get_player_mentions: check if {} == {}".format(member.name, player))
         if member.name == player:
             challengee = member
+            break
 
     if challengee is None:
         raise TypeError

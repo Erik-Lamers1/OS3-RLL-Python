@@ -1,11 +1,14 @@
 import time
+from os3_rrl.mysql.db import Database
+
+db = Database()
 
 
 class Player:
     def __init__(self, gamertag):
-        playerinfo = self.get_player_info(gamertag)
+        playerinfo = Player.get_player_info(gamertag)
         self.id = playerinfo['pid']
-        self.gamertag = playerinfo['gamertag']
+        self.gamertag = gamertag
         self.rank = playerinfo['rank']
         self.challenged = playerinfo['challenged']
         self.timeout = playerinfo['challenged']
@@ -32,9 +35,24 @@ class Player:
     def clear_timeout(self):
         self.timeout = int(time.time())
 
-    def get_player_info(self, gamertag):
-        # 'SELECT id, gamertag, rank, challenged, UNIX_TIMESTAMP(timeout) FROM users WHERE gamertag={}'
-        return {"pid": 1, "gamertag": '', "rank": '', "challenged": '', "timeout": ''}
+    @staticmethod
+    def get_player_info(gamertag):
+        db.execute('SELECT id, gamertag, rank, challenged, UNIX_TIMESTAMP(timeout) FROM users WHERE gamertag="{}"'
+                   .format(gamertag))
+        res = db.fetchone()
+        return {"pid": res[0], "gamertag": res[1], "rank": res[2], "challenged": res[3], "timeout": res[4]}
+
+    @staticmethod
+    def get_gamertag_by_id(id):
+        db.execute('SELECT gamertag FROM users WHERE id={}'.format(id))
+        res = db.fetchone()
+        return res[0]
+
+    @staticmethod
+    def get_id_by_gamertag(gamertag):
+        db.execute('SELECT gamertag FROM users WHERE gamertag="{}"'.format(gamertag))
+        res = db.fetchone()
+        return res[0]
 
     def __repr__(self):
         return self.gamertag.__str__

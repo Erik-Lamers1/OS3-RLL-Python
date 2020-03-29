@@ -10,6 +10,7 @@ logger = getLogger(__name__)
 
 commands = {'get_ranking': stub.test_call_list,
             'get_active_challenges': stub.test_call_int,
+            #'get_challenge': challenge.Challenge.get_challenge,
             'create_challenge': stub.create_challenge,
             'complete_challenge': stub.complete_challenge,
             'reset_challenge': stub.reset_challenge,

@@ -18,11 +18,10 @@ def announce_challenge(players):
     """
     # Get the mentions of the players. Raises a TypeError if it cannot find the players
     try:
-        author = players[0]
-        p1 = players[0].name
+        p1 = players[0]
         p2 = client.get_player(players[1][0])
         message = {'content': "New Challenge!",
-                   'title': "**{} challenges {}.**".format(p1, p2.name),
+                   'title': "**{} challenges {}.**".format(p1.name, p2.name),
                    'description': "This match should be played within one week or {} loses automatically.".format(
                        p2.mention),
                    'footer': "Good Luck!",
@@ -31,5 +30,3 @@ def announce_challenge(players):
         client.message_queue.put(message)
     except TypeError:
         logger.error("actions.challenge.announce_challenge: Found NoneType Object for {} or {}".format(p1, p2))
-
-    return "Ok..."

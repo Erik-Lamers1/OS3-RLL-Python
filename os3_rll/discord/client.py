@@ -42,6 +42,7 @@ async def on_ready():
 async def on_message(message):
     logger.info('saw a message: {}'.format(message))  #
     channel = message.channel
+
     if channel.name == settings.DISCORD_CHANNEL:
         if message.content.startswith("$"):
             logger.info('message.content: {}'.format(message.content))
@@ -49,6 +50,7 @@ async def on_message(message):
             full_command = message.content[1:]
             cmd = full_command.split(' ')[0]
             params = [message.author, full_command.split(' ')[1:]]
+
             try:
                 try:
                     res = commands[cmd](params)
@@ -69,10 +71,6 @@ async def on_message(message):
 async def post_embed():
     logger.debug('client.post_embed: started post_embed background task')
     await bot.wait_until_ready()
-    logger.debug('client.post_embed: bot is ready')
-
-    channel = discord.utils.get(bot.get_all_channels(), name=settings.DISCORD_CHANNEL)
-
     while not bot.is_closed():
         if not message_queue.empty():
             msg = message_queue.get()
@@ -84,9 +82,8 @@ async def post_embed():
 
             embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
             embed.set_footer(text=msg['footer'])
-
+            channel = discord.utils.get(bot.get_all_channels(), name=settings.DISCORD_CHANNEL)
             await channel.send(msg['content'], embed=embed)
-        logger.debug('client.post_embed: running_loop')
         await asyncio.sleep(5)
 
 
@@ -94,6 +91,7 @@ def get_player(player):
     # Iterates over all the members the bot can see. (have to be members of guilds that it is connected too)
     members = bot.get_all_members()
     challengee = None
+
     for member in members:
         logger.debug("discord.client.get_player_mentions: looking at member {}".format(member.name))
         if member.name == player:
@@ -107,7 +105,6 @@ def get_player(player):
 
 def discord_client():
     logger.info('Initializing Discord client')
-
     bot.loop.create_task(post_embed())
 
     while True:

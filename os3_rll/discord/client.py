@@ -69,13 +69,9 @@ async def post_embed():
     await bot.wait_until_ready()
     logger.debug('client.post_embed: bot is ready')
 
-    for guild in bot.guilds:
-        if guild.name == settings.DISCORD_GUILD:
-            break
+    channel = discord.utils.get(bot.get_all_channels(), name=settings.DISCORD_CHANNEL)
 
-    channel = discord.utils.get(guild.channels, name=settings.DISCORD_CHANNEL)
-
-    while not bot.is_closed:
+    while not bot.is_closed():
         logger.debug('client.post_embed: bot is open')
         if not message_queue.empty:
             msg = message_queue.get()

@@ -7,6 +7,10 @@ logger = getLogger(__name__)
 
 
 class Database:
+    """
+    This class will make a connection to the Database defined in the settings
+    You can use this class in a with statement to let it automatically connect and close the connection
+    """
     def __init__(self):
         self.db_host = settings.DB_HOST
         self.db_user = settings.DB_USER
@@ -14,6 +18,9 @@ class Database:
         self.db_database = settings.DB_DATABASE
         self.db = self.connect()
         self.cursor = self.db.cursor()
+
+    def __enter__(self):
+        return self
 
     def connect(self):
         logger.debug('Initializing connection to DB')
@@ -44,4 +51,11 @@ class Database:
         return self.cursor.fetchone()
 
     def close(self):
+        """
+        Call this function when you are done with this instance
+        """
+        logger.debug('Closing connection to DB')
         self.db.close()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()

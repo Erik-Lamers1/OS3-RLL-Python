@@ -67,7 +67,7 @@ async def on_message(message):
 async def post_embed():
     logger.debug('client.post_embed: running_loop')
     await bot.wait_until_ready()
-    while not client.is_closed:
+    while not bot.is_closed:
         if not message_queue.empty:
             msg = message_queue.get()
             logger.debug('client.post_embed: got an embed to post {}'.format(msg))

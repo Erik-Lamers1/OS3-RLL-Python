@@ -104,7 +104,8 @@ def get_player_mentions(p1, p2):
 
 def discord_client():
     logger.info('Initializing Discord client')
-    bot.loop.create_task(post_embed)
+
+    bot.loop.create_task(post_embed())
 
     while True:
         bot.run(settings.DISCORD_TOKEN)

@@ -1,9 +1,6 @@
 import discord
 import queue
-import asyncio
 from discord.ext import commands, tasks
-import schedule
-import time
 from logging import getLogger
 
 from os3_rll.conf import settings

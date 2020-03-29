@@ -28,8 +28,9 @@ def announce_challenge(players):
                        challenger),
                    'footer': "Good Luck!",
                    'colour': "2234352"}
-
-        client.message_queue.put(message)
+        client.post_embed(message)
+        await client.post_embed(message)
+        # client.message_queue.put(message)
     except TypeError:
         logger.error("actions.challenge.announce_challenge: Found NoneType Object for {} or {}".format(p1, p2))
 

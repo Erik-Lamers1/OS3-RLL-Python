@@ -32,12 +32,12 @@ LOGGING = {
         },
     },
     'loggers': {
-        'saltyparrot': {
-            'level': 'DEBUG',
+        'discord': {
+            'level': 'INFO',
         },
-        'taskflow': {
-            'level': 'WARNING',
-        },
+        'websockets': {
+            'level': 'INFO',
+        }
     },
     'root': {
         'handlers': ['console', 'syslog'],

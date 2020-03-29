@@ -23,21 +23,21 @@ commands = {'hi': stub.hello,
             'help': stub.stub_help
             }
 
-client = discord.Client()
+bot = discord.Client()
 message_queue = queue.Queue()
 
 
-@client.event
+@bot.event
 async def on_ready():
-    for guild in client.guilds:
+    for guild in bot.guilds:
         if guild.name == settings.DISCORD_GUILD:
             break
 
-    logger.info('{} is connected to the following guild:\n'.format(client.user))
+    logger.info('{} is connected to the following guild:\n'.format(bot.user))
     logger.info('{}(id: {})'.format(guild.name, guild.id))
 
 
-@client.event
+@bot.event
 async def on_message(message):
     logger.info('saw a message: {}'.format(message))  #
     channel = message.channel
@@ -83,7 +83,7 @@ async def post_embed():
 
 def get_player_mentions(p1, p2):
     # Iterates over all the members the bot can see. (have to be members of guilds that it is connected too)
-    members = client.get_all_members()
+    members = bot.get_all_members()
     challenger = None
     challengee = None
     for member in members:
@@ -101,7 +101,7 @@ def get_player_mentions(p1, p2):
 
 def discord_client():
     logger.info('Initializing Discord client')
-    discord.client.client.loop.create_task(post_embed)
+    bot.loop.create_task(post_embed)
 
     while True:
-        client.run(settings.DISCORD_TOKEN)
+        bot.run(settings.DISCORD_TOKEN)

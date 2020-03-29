@@ -1,7 +1,7 @@
 from logging import getLogger
 from time import time
 
-from os3_rll.mysql.db import Database
+from os3_rll.models.db import Database
 from os3_rll.actions.player import Player
 
 logger = getLogger(__name__)

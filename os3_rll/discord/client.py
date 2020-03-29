@@ -41,7 +41,7 @@ async def on_message(message):
     if channel.name == settings.DISCORD_CHANNEL:
         if message.content.startswith("$"):
             logger.info('message.content: {}'.format(message.content))
-            logger.info('message.author: {}{}'.format(message.author.name, message.author.discriminator))
+            logger.info('message.author: {}#{}'.format(message.author.name, message.author.discriminator))
             full_command = message.content.lower()[1:]
             cmd = full_command.split(' ')[0]
             params = [message.author, full_command.split(' ')[1:]]

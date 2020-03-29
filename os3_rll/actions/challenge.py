@@ -40,10 +40,11 @@ class Challenge:
         db.execute('INSERT INTO challenges (date, p1, p2) VALUES (NOW(), {}, {})'.format(p1.id, p2.id))
 
     @staticmethod
-    def announce_challenge(p1, p2):
+    def announce_challenge(players):
         """Generates an announcement to be posted by the discord bot as an embed
 
            Params:
+               players: (list of players)
                p1: player1 (the challenger) its discord name.
                p2: player2 (the challengee) its discord name.
 
@@ -52,6 +53,8 @@ class Challenge:
         """
         # Get the mentions of the players. Raises a TypeError if it cannot find the players
         try:
+            p1 = players[0]
+            p2 = players[1]
             challenger, challengee = client.get_player_mentions(p1, p2)
             message = {'content':"New Challenge!",
                        'title':"**{} challenges {}.**".format(challenger, challengee),

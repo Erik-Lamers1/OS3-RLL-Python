@@ -84,6 +84,7 @@ async def post_embed():
 
             await channel.send(msg['content'], embed=embed)
             await asyncio.sleep(5)
+    logger.debug('loop exited')
 
 
 def get_player_mentions(p1, p2):

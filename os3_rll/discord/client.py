@@ -76,7 +76,7 @@ async def post():
             msg = message_queue.get()
             logger.debug('client.post: got a message to post {}'.format(msg))
             channel = discord.utils.get(bot.get_all_channels(), name=settings.DISCORD_CHANNEL)
-            await channel.send(msg['content'], embed=mesg['embed'])
+            await channel.send(msg['content'], embed=msg['embed'])
         await asyncio.sleep(5)
 
 

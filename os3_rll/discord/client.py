@@ -42,7 +42,6 @@ async def on_ready():
 async def on_message(message):
     logger.info('saw a message: {}'.format(message))  #
     channel = message.channel
-    res = "Ok..."
     if channel.name == settings.DISCORD_CHANNEL:
         if message.content.startswith("$"):
             logger.info('message.content: {}'.format(message.content))
@@ -60,6 +59,9 @@ async def on_message(message):
                     res = commands['help'](params)
             except KeyError:
                 logger.error('Unknown command: {}'.format(cmd))
+
+            if res is None:
+                res = "Ok..."
 
             await channel.send(res)
 
@@ -88,22 +90,19 @@ async def post_embed():
         await asyncio.sleep(5)
 
 
-def get_player_mentions(p1, p2):
+def get_player(player):
     # Iterates over all the members the bot can see. (have to be members of guilds that it is connected too)
     members = bot.get_all_members()
-    challenger = None
     challengee = None
     for member in members:
         logger.debug("discord.client.get_player_mentions: looking at member {}".format(member.name))
-        if member.name == p1:
-            challenger = member.mention
-        if member.name == p2:
-            challengee = member.mention
+        if member.name == player:
+            challengee = member
 
-    if challenger is None or challengee is None:
+    if challengee is None:
         raise TypeError
 
-    return challenger, challengee
+    return challengee
 
 
 def discord_client():

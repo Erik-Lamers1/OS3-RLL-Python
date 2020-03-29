@@ -20,12 +20,11 @@ def announce_challenge(players):
     try:
         author = players[0]
         p1 = players[0].name
-        p2 = players[1][0]
-        challenger, challengee = client.get_player_mentions(p1, p2)
+        p2 = client.get_player(players[1][0])
         message = {'content': "New Challenge!",
-                   'title': "**{} challenges {}.**".format(challenger, challengee),
-                   'description': "This match should be played within one week or {} wins automatically.".format(
-                       challenger),
+                   'title': "**{} challenges {}.**".format(p1, p2),
+                   'description': "This match should be played within one week or {} loses automatically.".format(
+                       challengee),
                    'footer': "Good Luck!",
                    'colour': 2234352}
 

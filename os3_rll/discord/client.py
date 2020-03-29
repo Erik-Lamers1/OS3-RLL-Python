@@ -68,9 +68,10 @@ async def on_message(message):
 
 @task.loop(seconds=5.0)
 async def post_embed():
+    logger.debug('client.post_embed: running_loop')
     if not message_queue.empty:
         msg = message_queue.get()
-        logger.info('client.post_embed: got an embed to post {}'.format(msg))
+        logger.debug('client.post_embed: got an embed to post {}'.format(msg))
         channel = settings.DISCORD_CHANNEL
         embed = discord.Embed(title=msg['title'],
                               description=msg['description'],

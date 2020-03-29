@@ -1,3 +1,4 @@
+from asyncio import get_running_loop
 from logging import getLogger
 
 from os3_rll.discord import client
@@ -18,6 +19,7 @@ def announce_challenge(players):
     """
     # Get the mentions of the players. Raises a TypeError if it cannot find the players
     try:
+        loop = get_running_loop()
         author = players[0]
         p1 = players[0].name
         p2 = players[1][0]
@@ -29,7 +31,7 @@ def announce_challenge(players):
                    'footer': "Good Luck!",
                    'colour': "2234352"}
 
-        client.post_embed(message)
+        loop.create_task(client.post_embed(message))
     except TypeError:
         logger.error("actions.challenge.announce_challenge: Found NoneType Object for {} or {}".format(p1, p2))
 

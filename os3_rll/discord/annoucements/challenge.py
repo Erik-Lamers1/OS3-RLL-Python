@@ -16,10 +16,11 @@ def announce_challenge(players):
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
+    p1 = players[0]
     # Get the mentions of the players. Raises a TypeError if it cannot find the players
+    p2 = client.get_player(players[1][0])
+
     try:
-        p1 = players[0]
-        p2 = client.get_player(players[1][0])
         message = {'content': "New Challenge!",
                    'title': "**{} challenges {}.**".format(p1.name, p2.name),
                    'description': "This match should be played within one week or {} loses automatically.".format(

@@ -32,4 +32,5 @@ def announce_challenge(players):
         client.post_embed(message)
     except TypeError:
         logger.error("actions.challenge.announce_challenge: Found NoneType Object for {} or {}".format(p1, p2))
-        return "Ok..."
+
+    return "Ok..."

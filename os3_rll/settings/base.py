@@ -50,7 +50,7 @@ DISCORD_TOKEN = getenv('DISCORD_TOKEN')
 DISCORD_GUILD = getenv('DISCORD_GUILD', 'Cloud konijn')
 DISCORD_CHANNEL = getenv('DISCORD_CHANNEL', 'rocket-league')
 WEBSITE = 'http://sheffield.studlab.os3.nl/OS3-Rocket-League-Ladder/'
-DISCORD_EMBED_THUMBNAIL = 'https://rocketleague.media.zestyio.com/Rocket-League-Logo-Full_On-Dark-Vertical.f1c      b27a519bdb5b6ed34049a5b86e317.png'
+DISCORD_EMBED_THUMBNAIL = 'https://rocketleague.media.zestyio.com/Rocket-League-Logo-Full_On-Dark-Vertical.f1cb27a519bdb5b6ed34049a5b86e317.png'
 
 # Database settings
 DB_HOST = '127.0.0.1'

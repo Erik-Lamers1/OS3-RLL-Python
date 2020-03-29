@@ -27,7 +27,7 @@ def announce_challenge(players):
                    'description': "This match should be played within one week or {} wins automatically.".format(
                        challenger),
                    'footer': "Good Luck!",
-                   'colour': "2234352"}
+                   'colour': 2234352}
 
         client.message_queue.put(message)
     except TypeError:

@@ -1,8 +1,7 @@
 .idea
 __pycache__
-.swp
+*.swp
 build/
 dist/
-os3_rocket_league_ladder.egg-info/
-
+*.egg-info/
 venv

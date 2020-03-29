@@ -72,7 +72,6 @@ async def post_embed():
     channel = discord.utils.get(bot.get_all_channels(), name=settings.DISCORD_CHANNEL)
 
     while not bot.is_closed():
-        logger.debug('client.post_embed: bot is open')
         if not message_queue.empty:
             msg = message_queue.get()
             logger.debug('client.post_embed: got an embed to post {}'.format(msg))
@@ -85,8 +84,7 @@ async def post_embed():
             embed.set_footer(text=msg['footer'])
 
             await channel.send(msg['content'], embed=embed)
-            await asyncio.sleep(5)
-    logger.debug('loop exited')
+        await asyncio.sleep(5)
 
 
 def get_player_mentions(p1, p2):

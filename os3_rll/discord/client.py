@@ -64,6 +64,7 @@ async def on_message(message):
 
 
 #@tasks.loop(seconds=5.0)
+@bot.event
 async def post_embed():
     logger.debug('client.post_embed: running_loop')
     if not message_queue.empty:

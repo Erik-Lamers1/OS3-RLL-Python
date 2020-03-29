@@ -79,9 +79,10 @@ def get_player_mentions(p1, p2):
     challenger = None
     challengee = None
     for member in members:
-        if p1 == member.name:
+        logger.debug("discord.client.get_player_mentions: looking at member {}".format(member.name))
+        if member.name == p1:
             challenger = member.mention
-        if p2 == member.name:
+        if member.name == p2:
             challengee = member.mention
 
     if challenger is None or challengee is None:

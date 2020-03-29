@@ -1,4 +1,5 @@
 import discord
+import queue
 from logging import getLogger
 
 from os3_rll.conf import settings
@@ -22,6 +23,7 @@ commands = {'hi': stub.hello,
             }
 
 client = discord.Client()
+message_queue = queue.Queue()
 
 
 @client.event
@@ -59,20 +61,24 @@ async def on_message(message):
 
             await channel.send(res)
 
-@client.event
-async def post_embed(msg):
+
+async def post_embed():
     await client.wait_until_ready()
-    logger.info('client.post_embed: got an embed to post {}'.format(msg))
-    channel = settings.DISCORD_CHANNEL
-    embed = discord.Embed(title=msg['title'],
-                          description=msg['description'],
-                          url=settings.WEBSITE,
-                          color=msg['colour'])
+    while not client.is_closed:
+        if not message_queue.empty:
+            msg = message_queue.get()
+            logger.info('client.post_embed: got an embed to post {}'.format(msg))
+            channel = settings.DISCORD_CHANNEL
+            embed = discord.Embed(title=msg['title'],
+                                  description=msg['description'],
+                                  url=settings.WEBSITE,
+                                  color=msg['colour'])
 
-    embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
-    embed.set_footer(text=msg['footer'])
+            embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
+            embed.set_footer(text=msg['footer'])
 
-    await channel.send(msg['content'], embed=embed)
+            await channel.send(msg['content'], embed=embed)
+            await asyncio.sleep(5)
 
 
 def get_player_mentions(p1, p2):
@@ -96,5 +102,6 @@ def get_player_mentions(p1, p2):
 def discord_client():
     logger.info('Initializing Discord client')
 
+    client.loop.create_task(post_embed())
     while True:
         client.run(settings.DISCORD_TOKEN)

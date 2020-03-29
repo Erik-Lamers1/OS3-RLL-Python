@@ -87,6 +87,7 @@ def create_embed(data):
                           color=data['colour'])
     embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
     embed.set_footer(text=data['footer'])
+    return embed
 
 
 def get_player(player):

@@ -3,17 +3,18 @@ from logging import getLogger
 
 from os3_rll.conf import settings
 from os3_rll.actions import stub
-from os3_rll.actions import challenge
+from os3_rll.discord.annoucements.challenge import announce_challenge
+from os3_rll.operations.challenge import get_challenge
 
 logger = getLogger(__name__)
 
 commands = {'hi': stub.hello,
-            'announce': challenge.Challenge.announce_challenge,
+            'announce': announce_challenge,
             'get_ranking': stub.test_call_list,
             'get_active_challenges': stub.test_call_int,
             'what': stub.test_call_str,
             'website': stub.get_website,
-            'get_challenge': challenge.Challenge.get_challenge,
+            'get_challenge': get_challenge,
             'create_challenge': stub.create_challenge,
             'complete_challenge': stub.complete_challenge,
             'reset_challenge': stub.reset_challenge,
@@ -70,7 +71,7 @@ async def post_embed(msg):
     embed.set_thumbnail("{}".format(settings.DISCORD_EMBED_THUMBNAIL))
     embed.set_footer(msg['footer'])
 
-    await channel.send(content=msg['content'], embed=embedded_msg)
+    await channel.send(content=msg['content'], embed=embed)
 
 
 def get_player_mentions(p1, p2):
@@ -88,7 +89,7 @@ def get_player_mentions(p1, p2):
     if challenger is None or challengee is None:
         raise TypeError
 
-    return (challenger, challengee)
+    return challenger, challengee
 
 
 def discord_client():

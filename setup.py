@@ -16,7 +16,7 @@ setup(
     install_requires=['discord', 'unipath', 'colorama', 'six', 'PyMySQL '],
     entry_points={
         'console_scripts': [
-            'os3-rocket-league-ladder = os3_rrl.rocket_league_ladder:main',
+            'os3-rocket-league-ladder = os3_rll.rocket_league_ladder:main',
         ],
     },
 )

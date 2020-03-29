@@ -1,6 +1,6 @@
 import random
 from logging import getLogger
-from os3_rrl.conf import settings
+from os3_rll.conf import settings
 
 logger = getLogger(__name__)
 
@@ -38,7 +38,7 @@ def complete_challenge(*argv):
     logger.info('called with: {}'.format(args))
 
 
-def help(*argv):
+def stub_help(*argv):
     logger.info('called: stub.help')
     responses =['I cannot believe what a stupid FUCK you really are...\n Please do kill -9 $(pgrep yourself)\n',
                 'Is it that difficult to type, do you have butter fingers?\n',

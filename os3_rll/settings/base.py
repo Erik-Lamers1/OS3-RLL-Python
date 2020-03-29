@@ -12,7 +12,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'console': {
-            '()': 'os3_rrl.utils.logging.formatters.ConsoleFormatter',
+            '()': 'os3_rll.utils.logging.formatters.ConsoleFormatter',
             'fmt': '%(asctime)s [%(levelname)s] %(message)s',
             'colored': sys.stderr.isatty,  # StreamHandler uses stderr by default
         },

@@ -1,7 +1,7 @@
 import pymysql
 from logging import getLogger
 
-from os3_rrl.conf import settings
+from os3_rll.conf import settings
 
 logger = getLogger(__name__)
 

@@ -1,6 +1,6 @@
 from pkg_resources import require
 
-from os3_rrl.conf import settings
+from os3_rll.conf import settings
 
 
 def show_version():

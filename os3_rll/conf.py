@@ -29,7 +29,7 @@ class Settings(collections.abc.Mapping):
         return len(self.__iter__())
 
 
-settings_module = os.environ.get(ENV_VAR, 'os3_rrl.settings.base')
+settings_module = os.environ.get(ENV_VAR, 'os3_rll.settings.base')
 
 settings = Settings(settings_module)
 

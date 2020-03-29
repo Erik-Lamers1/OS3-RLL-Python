@@ -1,6 +1,6 @@
 import time
-from os3_rrl.mysql.db import Database
-from os3_rrl.actions.player import Player
+from os3_rll.mysql.db import Database
+from os3_rll.actions.player import Player
 
 db = Database()
 

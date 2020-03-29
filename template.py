@@ -2,7 +2,7 @@
 
 
 # rocket league ladder bot
-from os3_rrl import discord
+from os3_rll import discord
 from os import getenv
 from subprocess import check_output
 from dotenv import load_dotenv

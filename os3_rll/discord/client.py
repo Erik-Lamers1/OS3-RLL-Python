@@ -48,8 +48,10 @@ async def on_message(message):
             try:
                 try:
                     res = commands[cmd](params)
-                except (TypeError, ValueError):
-                    logger.error('Found a PEBKAC, user provides stupid params: {}'.format(params))
+                except (TypeError, ValueError) as e:
+                    logger.error('Found a PEBKAC, user provides stupid params: {}\n'.format(params) +
+                                 'This resulted in the following error:\n{}\n'.format(str(e))
+                                )
                     res = commands['help'](params)
             except KeyError:
                 logger.error('Unknown command: {}'.format(cmd))

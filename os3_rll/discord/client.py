@@ -63,7 +63,7 @@ async def on_message(message):
             await channel.send(res)
 
 
-@tasks.loop(seconds=5.0)
+#@tasks.loop(seconds=5.0)
 async def post_embed():
     logger.debug('client.post_embed: running_loop')
     if not message_queue.empty:
@@ -101,6 +101,7 @@ def get_player_mentions(p1, p2):
 
 def discord_client():
     logger.info('Initializing Discord client')
+    discord.client.client.loop.create_task(post_embed)
 
     while True:
         client.run(settings.DISCORD_TOKEN)

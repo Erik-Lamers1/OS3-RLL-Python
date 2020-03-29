@@ -72,7 +72,7 @@ async def post_embed(msg):
     embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
     embed.set_footer(text=msg['footer'])
 
-    await channel.send(content=msg['content'], embed=embed)
+    await channel.send(msg['content'], embed=embed)
 
 
 def get_player_mentions(p1, p2):

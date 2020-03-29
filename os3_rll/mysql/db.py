@@ -57,5 +57,5 @@ class Database:
         logger.debug('Closing connection to DB')
         self.db.close()
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_value, traceback):
         self.db.close()

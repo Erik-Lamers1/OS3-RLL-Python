@@ -60,6 +60,7 @@ async def on_message(message):
             await channel.send(res)
 
 
+@client.event
 async def post_embed(msg):
     logger.info('client.post_embed: got an embed to post {}'.format(msg))
     channel = settings.DISCORD_CHANNEL
@@ -68,8 +69,8 @@ async def post_embed(msg):
                           url=settings.WEBSITE,
                           color=msg['colour'])
 
-    embed.set_thumbnail("{}".format(settings.DISCORD_EMBED_THUMBNAIL))
-    embed.set_footer(msg['footer'])
+    embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
+    embed.set_footer(text=msg['footer'])
 
     await channel.send(content=msg['content'], embed=embed)
 

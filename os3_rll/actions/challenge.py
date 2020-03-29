@@ -53,7 +53,8 @@ class Challenge:
         """
         # Get the mentions of the players. Raises a TypeError if it cannot find the players
         try:
-            p1 = players[0]
+            author = players[0]
+            p1 = players[0].name
             p2 = players[1]
             challenger, challengee = client.get_player_mentions(p1, p2)
             message = {'content':"New Challenge!",

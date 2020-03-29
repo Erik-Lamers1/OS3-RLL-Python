@@ -65,7 +65,7 @@ async def on_message(message):
 
 
 async def post_embed():
-    logger.debug('client.post_embed: running_loop')
+    logger.debug('client.post_embed: started post_embed background task')
     await bot.wait_until_ready()
     logger.debug('client.post_embed: bot is ready')
 
@@ -84,6 +84,7 @@ async def post_embed():
             embed.set_footer(text=msg['footer'])
 
             await channel.send(msg['content'], embed=embed)
+        logger.debug('client.post_embed: running_loop')
         await asyncio.sleep(5)
 
 

@@ -40,7 +40,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    logger.info('bot.on_message: saw message {} {}'.format(message, message.content))
+    logger.info('bot.on_message: saw message {} content=<<{}>>'.format(message, message.content))
     channel = message.channel
 
     if channel.name == settings.DISCORD_CHANNEL:

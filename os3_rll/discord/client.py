@@ -68,23 +68,25 @@ async def on_message(message):
             await channel.send(res)
 
 
-async def post_embed():
-    logger.debug('client.post_embed: started post_embed background task')
+async def post():
+    logger.debug('client.post: started background task')
     await bot.wait_until_ready()
     while not bot.is_closed():
         if not message_queue.empty():
             msg = message_queue.get()
-            logger.debug('client.post_embed: got an embed to post {}'.format(msg))
-            embed = discord.Embed(title=msg['title'],
-                                  description=msg['description'],
-                                  url=settings.WEBSITE,
-                                  color=msg['colour'])
-
-            embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
-            embed.set_footer(text=msg['footer'])
+            logger.debug('client.post: got a message to post {}'.format(msg))
             channel = discord.utils.get(bot.get_all_channels(), name=settings.DISCORD_CHANNEL)
-            await channel.send(msg['content'], embed=embed)
+            await channel.send(msg['content'], embed=mesg['embed'])
         await asyncio.sleep(5)
+
+
+def create_embed(data):
+    embed = discord.Embed(title=data['title'],
+                          description=data['description'],
+                          url=settings.WEBSITE,
+                          color=data['colour'])
+    embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
+    embed.set_footer(text=data['footer'])
 
 
 def get_player(player):
@@ -105,7 +107,7 @@ def get_player(player):
 
 def discord_client():
     logger.info('Initializing Discord client')
-    bot.loop.create_task(post_embed())
+    bot.loop.create_task(post())
 
     while True:
         bot.run(settings.DISCORD_TOKEN)

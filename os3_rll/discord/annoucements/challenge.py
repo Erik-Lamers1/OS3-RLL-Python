@@ -21,12 +21,13 @@ def announce_challenge(players):
     p2 = client.get_player(players[1][0])
 
     try:
+        embed = {'title': "**{} challenges {}.**".format(p1.name, p2.name),
+                 'description': "This match should be played within one week or {} loses automatically.".format(p2.mention),
+                 'footer': "Good Luck!",
+                 'colour': 2234352}
+
         message = {'content': "New Challenge!",
-                   'title': "**{} challenges {}.**".format(p1.name, p2.name),
-                   'description': "This match should be played within one week or {} loses automatically.".format(
-                       p2.mention),
-                   'footer': "Good Luck!",
-                   'colour': 2234352}
+                   'embed': client.create_embed(embed)}
 
         client.message_queue.put(message)
     except TypeError:

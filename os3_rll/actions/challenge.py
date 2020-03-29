@@ -55,7 +55,7 @@ class Challenge:
         try:
             author = players[0]
             p1 = players[0].name
-            p2 = players[1]
+            p2 = players[1][0]
             challenger, challengee = client.get_player_mentions(p1, p2)
             message = {'content':"New Challenge!",
                        'title':"**{} challenges {}.**".format(challenger, challengee),

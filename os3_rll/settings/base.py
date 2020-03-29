@@ -49,6 +49,7 @@ LOGGING = {
 DISCORD_TOKEN = getenv('DISCORD_TOKEN')
 DISCORD_GUILD = getenv('DISCORD_GUILD', 'Cloud konijn')
 DISCORD_CHANNEL = getenv('DISCORD_CHANNEL', 'rocket-league')
+WEBSITE = 'http://sheffield.studlab.os3.nl/OS3-Rocket-League-Ladder/'
 
 # Database settings
 DB_HOST = '127.0.0.1'

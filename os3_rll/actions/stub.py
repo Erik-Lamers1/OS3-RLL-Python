@@ -22,11 +22,20 @@ def hello(*argv):
 
 
 def test_call_int(*argv):
-    logger.debug('actions.stub.testcalled: test_call_int()')
+    logger.debug('actions.stub.test_call_int: called with {}'.format(*argv))
     return 42
 
 
+def get_website(*argv):
+    args = list(*argv)
+    logger.debug('actions.stub.get_website: called with {}'.format(*argv))
+    user = args[0].mention
+    website = "http://sheffield.studlab.os3.nl/OS3-Rocket-League-Ladder/"
+    return "{} you can find the website at {}".format(user, settings.WEBSITE)
+
+
 def test_call_str(*argv):
+    args = list(*argv)
     logger.debug('called: test_call_str()')
     return "Don't know, but the answer to life the universe and everything is fourtytwo (42)\n"
 

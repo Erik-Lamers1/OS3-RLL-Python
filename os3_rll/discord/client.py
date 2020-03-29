@@ -6,9 +6,10 @@ from os3_rll.actions import stub
 
 logger = getLogger(__name__)
 
-commands = {'get_ranking': stub.test_call_list,
+commands = {'hi': stub.hello,
+            'get_ranking': stub.test_call_list,
             'get_active_challenges': stub.test_call_int,
-            # 'get_challenge': challenge.Challenge.get_challenge,
+            'get_challenge': challenge.Challenge.get_challenge,
             'create_challenge': stub.create_challenge,
             'complete_challenge': stub.complete_challenge,
             'reset_challenge': stub.reset_challenge,
@@ -39,7 +40,7 @@ async def on_message(message):
             logger.info('message.author: {}{}'.format(message.author.name, message.author.discriminator))
             full_command = message.content.lower()[1:]
             cmd = full_command.split(' ')[0]
-            params = [message.author.name, full_command.split(' ')[1:]]
+            params = [message.author, full_command.split(' ')[1:]]
             try:
                 try:
                     res = commands[cmd](params)

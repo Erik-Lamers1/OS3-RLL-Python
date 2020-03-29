@@ -1,8 +1,26 @@
 import random
 from logging import getLogger
+from collections import deque
 from os3_rll.conf import settings
 
 logger = getLogger(__name__)
+
+
+def hello(*argv):
+    args = deque(*argv)
+    logger.info('called: hello')
+    logger.info('called with: {}'.format(args))
+    user = args.popleft()
+    res = 'Hi {}\n'.format(user.mention)
+    responses = ["How are you doing today? Wait that's retorical, I am a bot I do not care.\n",
+                 "Did you know that you suck at rocket league? I heard some guy SquishyMuffinz was best.\n",
+                 "Please leave me alone. I am randomizing the rankings database to mess with Mr.Vin.\n",
+                 "Due to COVID-19 I've had to reimplement the transport protocol from QUIC to plain UDP to avoid handshakes.\n",
+                 "Please do not bother me. I am looking into this Markov Chain theory. It should be able to give me more human like responses.",
+                 "What are you doing here? LOL, your rank is so low you should practice uninstall.\n"]
+    res += random.choice(responses)
+    return res
+
 
 
 def test_call_int(*argv):

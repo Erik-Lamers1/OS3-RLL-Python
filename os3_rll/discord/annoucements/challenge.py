@@ -24,7 +24,7 @@ def announce_challenge(players):
         message = {'content': "New Challenge!",
                    'title': "**{} challenges {}.**".format(p1, p2),
                    'description': "This match should be played within one week or {} loses automatically.".format(
-                       challengee),
+                       p2),
                    'footer': "Good Luck!",
                    'colour': 2234352}
 

@@ -117,14 +117,19 @@ class Challenge:
         Return the outstanding challenge of the requesting player, if any.
         :type args: Player ID
         """
-        logger.info('get_challenge: called with {}'.format(args))
+        logger.debug('get_challenge: called with {}'.format(args))
         # Get the player ID
         pid = Player.get_id_by_gamertag(args[0].name)
-        logger.info('get_challenge: found player {} with id {}'.format(args[0].name, pid))
+        logger.debug('get_challenge: found player {} with id {}'.format(args[0].name, pid))
 
         db.execute('SELECT date, p1, p2 FROM challenges WHERE p1 = "{}" AND winner IS NULL'.format(pid))
         res = db.fetchone()
-        return "A challenge is active until {} between {} and {}".format(res[0], res[1], res[2])
+        logger.debug('get_challege: got database result: {}'.format(res))
+
+        if res is None:
+            return "No outstanding challenges for player {} with {} found.".format(args[0].name, pid)
+        else:
+            return "A challenge is active until {} between {} and {}".format(res[0], res[1], res[2])
 
     @staticmethod
     def get_all_challenges():

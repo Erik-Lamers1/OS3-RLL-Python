@@ -1,4 +1,8 @@
 import time
+from os3_rrl.mysql.db import Database
+from os3_rrl.actions.player import Player
+
+db = Database()
 
 
 class Challenge:
@@ -29,8 +33,7 @@ class Challenge:
 
     @staticmethod
     def create_challenge_entry(p1, p2):
-        # 'INSERT INTO challenges (date, p1, p2) VALUES (NOW(), {}, {}).format(p1.id, p2.id)
-        pass
+        db.execute('INSERT INTO challenges (date, p1, p2) VALUES (NOW(), {}, {})'.format(p1.id, p2.id))
 
     @staticmethod
     def announce_challenge(p1, p2):
@@ -46,8 +49,14 @@ class Challenge:
         # Obtain the player 2 from the challenges database
         # SQL
         # "SELECT p2 FROM challenges WHERE p1={} AND winner = NULL SORT DESC LIMIT 1".format(p1.id)
+        db.execute('SELECT p2 FROM challenges WHERE p1="{}" AND winner = NULL SORT DESC'.format(p1.id))
+        res = db.fetchone()
         # Except: no open challenges, someone fucked up.
-        p2 = "p2"
+        if res is None:
+            raise Exception("No challenges available")
+
+        # Get player gamertag by player ID and create an instance for player 2.
+        p2 = Player(Player.get_gamertag_by_id(res[0]))
 
         scores = data.replace(':', '-').split(' ')
 
@@ -62,16 +71,16 @@ class Challenge:
                 if s1 < s2:
                     p1_score -= 1
         except Exception:
-            raise Exception("The score format is invalid. Please use the format: [0-1 2-3 4-5]")
+            raise Exception("The score format is invalid. Please use the format: [$challenge_complete 0-1 2-3 4-5]")
 
         # Player 1 wins, clear timers
         if p1_score > 0:
-            p1.clear_timer()
-            p2.clear_timer()
+            p1.clear_timeout()
+            p2.clear_timeout()
 
         # Player 2 wins, only clear p2 timer
         if p1_score < 0:
-            p2.clear_timer()
+            p2.clear_timeout()
 
         # Someone made an boo-boo
         if p1_score == 0:
@@ -83,9 +92,41 @@ class Challenge:
 
     @staticmethod
     def update_player_rank(player, r):
-        # Update player rank += 1 WHERE rank >= r AND rank < player.rank
+        """
+        Updates the rank of the player to the new rank r. All player ranks between the old and new rank are increased
+        by 1.
+        :param player: The Player object
+        :param r: The new rank of the player
+        """
         # 'UPDATE users SET rank = rank + 1 WHERE rank >= {} AND rank < {}'.format(r, player.rank)
+        db.execute('UPDATE users SET rank = rank + 1 WHERE rank >= {} AND rank < {}'.format(r, player.rank))
 
         # Update player.rank = r
-        # 'UPDATE users SET rank={} WHERE id={player.id}'.format(r)
+        db.execute('UPDATE users SET rank={} WHERE id={}'.format(r, player.id))
+
+    # ################################# #
+    #  Methods for challenge management #
+    # ################################# #
+
+    @staticmethod
+    def get_challenge(args):
+        """
+        Return the outstanding challenge of the requesting player, if any.
+        :type args: Player ID
+        """
+        # Get the player ID
+        pid = Player.get_id_by_gamertag(args[0])
+
+        db.execute('SELECT date, p1, p2 FROM challenges WHERE p1 = "{}" AND winner IS NULL'.format(pid))
+        res = db.fetchone()
+        return "A challenge is active until {} between {} and {}".format(res[0], res[1], res[2])
+
+    @staticmethod
+    def get_all_challenges():
+        # Return all challenges
         pass
+
+    @staticmethod
+    def get_active_challenges():
+        pass
+

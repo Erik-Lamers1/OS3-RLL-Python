@@ -58,4 +58,4 @@ class Database:
         self.db.close()
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.db.close()
+        self.close()

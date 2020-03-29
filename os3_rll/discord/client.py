@@ -72,7 +72,7 @@ async def post_embed():
     channel = discord.utils.get(bot.get_all_channels(), name=settings.DISCORD_CHANNEL)
 
     while not bot.is_closed():
-        if not message_queue.empty:
+        if not message_queue.empty():
             msg = message_queue.get()
             logger.debug('client.post_embed: got an embed to post {}'.format(msg))
             embed = discord.Embed(title=msg['title'],

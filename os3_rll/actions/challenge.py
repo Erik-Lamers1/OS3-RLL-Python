@@ -2,6 +2,7 @@ import time
 from logging import getLogger
 from os3_rll.mysql.db import Database
 from os3_rll.actions.player import Player
+from os3_rll.discord import client
 
 logger = getLogger(__name__)
 
@@ -40,8 +41,29 @@ class Challenge:
 
     @staticmethod
     def announce_challenge(p1, p2):
-        # Do discord magic
-        pass
+        """Generates an announcement to be posted by the discord bot as an embed
+
+           Params:
+               p1: player1 (the challenger) its discord name.
+               p2: player2 (the challengee) its discord name.
+
+           return:
+               Dictionary with content, title, description, footer and colour as keys.
+        """
+        # Get the mentions of the players. Raises a TypeError if it cannot find the players
+        try:
+            challenger, challengee = client.get_player_mentions(p1, p2)
+            message = {'content':"New Challenge!",
+                       'title':"**{} challenges {}.**".format(challenger, challengee),
+                       'description':"This match should be played within one week or {} wins automatically.".format(challenger),
+                       'footer':"Good Luck!",
+                       'colour':"2234352"}
+
+            client.post_embed(message)
+        except TypeError:
+            logger.error("actions.challenge.announce_challenge: Found NoneType Object for {} or {}".format(p1, p2))
+
+
 
     # ####################################### #
     #  Methods when a challenge has completed #

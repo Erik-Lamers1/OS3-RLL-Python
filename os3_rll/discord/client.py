@@ -8,6 +8,7 @@ from os3_rll.actions import challenge
 logger = getLogger(__name__)
 
 commands = {'hi': stub.hello,
+            'announce': challenge.Challenge.announce_challenge,
             'get_ranking': stub.test_call_list,
             'get_active_challenges': stub.test_call_int,
             'what': stub.test_call_str,
@@ -54,6 +55,37 @@ async def on_message(message):
                 logger.error('Unknown command: {}'.format(cmd))
 
             await channel.send(res)
+
+
+async def post_embed(msg):
+    logger.info('client.post_embed: got an embed to post {}'.format(msg))
+    channel = settings.DISCORD_CHANNEL
+    embed = discord.Embed(title=msg['title'],
+                          description=msg['description'],
+                          url=settings.WEBSITE,
+                          color=msg['colour'])
+
+    embed.set_thumbnail("{}".format(settings.DISCORD_EMBED_THUMBNAIL))
+    embed.set_footer(msg['footer'])
+
+    await channel.send(content=msg['content'], embed=embedded_msg)
+
+
+def get_player_mentions(p1, p2):
+    # Iterates over all the members the bot can see. (have to be members of guilds that it is connected too)
+    members = client.get_all_members()
+    challenger = None
+    challengee = None
+    for member in members:
+        if p1 == member.name:
+            challenger = member.mention
+        if p2 == member.name:
+            challengee = member.mention
+
+    if challenger is None or challengee is None:
+        raise TypeError
+
+    return (challenger, challengee)
 
 
 def discord_client():

@@ -65,7 +65,10 @@ async def on_message(message):
             if res is None:
                 res = "Ok..."
 
-            await channel.send(res)
+            if res is dict:
+                await channel.send(**res)
+            else:
+                await channel.send(res)
 
 
 async def post():

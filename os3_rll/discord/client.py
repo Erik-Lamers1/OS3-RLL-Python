@@ -96,10 +96,11 @@ def get_player(player):
     challengee = None
 
     if player.startswith('<@!'):
-        logger.debug("bot.get_player: got a mention {}".format(player))
+        player_id = filter(lambda ch: ch not in "<@!>", player)
+        logger.debug("bot.get_player: got a mention for player_id {}".format(player_id))
         for member in members:
-            logger.debug("bot.get_player: check mentions if {} == {}".format(member.mention, player))
-            if member.mention == player:
+            logger.debug("bot.get_player: check mentions if {} == {}".format(member.id, player_id))
+            if member.id == player_id:
                 challengee = member
                 break
     else:

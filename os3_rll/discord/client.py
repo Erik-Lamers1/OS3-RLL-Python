@@ -74,13 +74,13 @@ async def website(ctx):
 @bot.command()
 async def get_challenge(ctx):
     logger.debug('bot.command.get_challenge: called')
-    await ctx.send(not_implemented())
+    await ctx.send(utils.not_implemented())
 
 
 @bot.command()
 async def create_challenge(ctx, *args):
     logger.debug('bot.command.create_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
-    await ctx.send(not_implemented())
+    await ctx.send(utils.not_implemented())
 
 
 @bot.command()

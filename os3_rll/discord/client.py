@@ -27,12 +27,13 @@ async def on_ready():
         if guild.name == settings.DISCORD_GUILD:
             break
 
-    logger.info('bot.on_ready: {} is connected to the following guild:\n'.format(bot.user))
+    logger.info('bot.on_ready: {} is connected to the following guild:'.format(bot.user))
     logger.info('bot.on_ready: {}(id: {})'.format(guild.name, guild.id))
 
 
 @bot.command()
 async def hi(ctx, *args):
+    """Say hi to the bot, maybe it'll greet you nicely."""
     logger.debug('bot.command.hi: called with {} arguments - {}'.format(len(args), ', '.join(args)))
     res = 'Hi {}\n'.format(ctx.author.mention)
     responses = ["How are you doing today? Wait that's retorical, I am a bot I do not care.\n",
@@ -48,7 +49,7 @@ async def hi(ctx, *args):
 @bot.command()
 async def announce(ctx, p2: discord.Member):
     """Test call to announce a challenge."""
-    logger.debug('bot.command.announce: called with {} arguments - {}'.format(len(args), ', '.join(args)))
+    logger.debug('bot.command.announce: called with {} - {}'.format(p2.name, p2))
     res = announce_challenge(ctx.author, p2)
     await ctx.send(res['content'], embed=res['embed'])
 
@@ -113,6 +114,7 @@ async def reset_challenge(ctx, *args):
 @bot.command()
 @is_rll_admin()
 async def add_player(ctx, player: discord.Member):
+    """Allows RRL Admins to add players to the Rocket-League-Ladder."""
     logger.debug('bot.command.add_player: called with {} - {}'.format(player.name, player))
     res = 'Yes master {}! Adding player {}'.format(ctx.author.mention, player.name)
     await ctx.send(res)

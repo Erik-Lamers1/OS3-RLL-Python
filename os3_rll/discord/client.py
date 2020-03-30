@@ -47,6 +47,7 @@ async def hi(ctx, *args):
 
 @bot.command()
 async def announce(ctx, p2: discord.Member):
+    """Test call to announce a challenge."""
     logger.debug('bot.command.announce: called with {} arguments - {}'.format(len(args), ', '.join(args)))
     res = announce_challenge(ctx.author, p2)
     await ctx.send(res['content'], embed=res['embed'])
@@ -62,7 +63,7 @@ async def get_ranking(ctx):
 
 @bot.command()
 async def get_active_challenges(ctx):
-    """Returns the number of challenges that are open at the current time."""
+    """Returns the number of active challenges."""
     logger.debug('bot.command.get_active_challenges: called')
     await ctx.send(stub.test_call_int(""))
 
@@ -83,24 +84,28 @@ async def website(ctx):
 
 @bot.command()
 async def get_challenge(ctx):
+    """Gives your current challenge deadline."""
     logger.debug('bot.command.get_challenge: called')
     await ctx.send(utils.not_implemented())
 
 
 @bot.command()
 async def create_challenge(ctx, *args):
+    """Creates a challenge between you and who you mention. """
     logger.debug('bot.command.create_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
     await ctx.send(utils.not_implemented())
 
 
 @bot.command()
 async def complete_challenge(ctx, *args):
+    """Completes the challenge you are parcitipating in."""
     logger.debug('bot.command.complete_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
     await ctx.send(utils.not_implemented())
 
 
 @bot.command()
 async def reset_challenge(ctx, *args):
+    """Resets the challenge you are parcitipating in."""
     logger.debug('bot.command.reset_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
     await ctx.send(utils.not_implemented())
 
@@ -118,6 +123,8 @@ async def on_command_error(ctx, error):
     logger.error('bot.on_command_error: {} - {}'.format(type(error).__name__, error))
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
+    if isinstance(error, commands.CommandInvokeError):
+        await ctx.send("OUCH! that hurts. Better tell the devs to check the logs, something broke!")
     if isinstance(error, commands.CheckFailure):
         await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin.")
     else:

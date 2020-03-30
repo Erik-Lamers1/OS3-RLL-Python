@@ -29,6 +29,9 @@ def announce_challenge(players):
         message = {'content': "New Challenge!",
                    'embed': client.create_embed(embed)}
 
-        client.message_queue.put(message)
+        #use this if you want to post the message via the bot's background routine
+        #client.message_queue.put(message)
+        #use this to return it with the players request.
+        return message
     except TypeError:
         logger.error("actions.challenge.announce_challenge: Found NoneType Object for {} or {}".format(p1, p2))

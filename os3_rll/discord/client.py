@@ -54,6 +54,7 @@ async def announce(ctx, p2: discord.Member):
 
 @bot.command()
 async def get_ranking(ctx):
+    """Returns the current top 5 ranking."""
     logger.debug('bot.command.get_ranking: called')
     res = stub.test_call_list("")
     await ctx.send(res)
@@ -61,18 +62,21 @@ async def get_ranking(ctx):
 
 @bot.command()
 async def get_active_challenges(ctx):
+    """Returns the number of challenges that are open at the current time."""
     logger.debug('bot.command.get_active_challenges: called')
     await ctx.send(stub.test_call_int(""))
 
 
 @bot.command()
 async def what(ctx, *args):
+    """Allows you to ask a random question to the bot."""
     logger.debug('bot.command.what: called with {} arguments - {}'.format(len(args), ', '.join(args)))
     await ctx.send(stub.test_call_str(""))
 
 
 @bot.command()
 async def website(ctx):
+    """Points you to the website of the Rocket-League-Ladder."""
     logger.debug('bot.command.website: called')
     await ctx.send('{} you can find the website at {}'.format(ctx.author.mention, settings.WEBSITE))
 

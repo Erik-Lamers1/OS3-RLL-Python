@@ -30,8 +30,9 @@ def bot_help():
     logger.debug('utils.bot_help: called')
     res = 'This bot supports the following commands:\n'
     for k,v in help_table.items():
-        res += '\t ${}  -  {}'.format(k,v)
-    pass
+        res += '\t ${}  -  {}\n'.format(k,v)
+
+    return res
 
 
 def pebkak():

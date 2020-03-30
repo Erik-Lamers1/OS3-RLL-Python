@@ -111,13 +111,13 @@ async def add_player(ctx, player: discord.Member):
 
 @bot.event
 async def on_command_error(ctx, error):
-    logger.error('bot.on_command_error: got error - {} - while handling commands'.format(error))
+    logger.error('bot.on_command_error: got error {} - {}'.format(type(error).__name__, error))
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
     if isinstance(error, commands.CommandInvokeError):
         await ctx.send(utils.bot_help())
-    if isinstance(error, commands.CheckAnyFailure):
-        await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin")
+    if isinstance(error, commands.CheckFailure):
+        await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin.")
 
 
 async def post():

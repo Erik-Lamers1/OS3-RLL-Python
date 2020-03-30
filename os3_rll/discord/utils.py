@@ -67,7 +67,7 @@ def get_player(p):
                 break
     else:
         for member in members:
-            logger.debug("bot.get_player: check name if {} == {}".format(member.name, player))
+            logger.debug("bot.get_player: check name if {} == {}".format(member.name, p))
             if member.name == p:
                 player = member
                 break

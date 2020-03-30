@@ -103,8 +103,8 @@ async def reset_challenge(ctx, *args):
 
 @bot.command()
 @is_rll_admin()
-async def add_player(ctx, *args, player: discord.Member):
-    logger.debug('bot.command.add_player: called with {} arguments - {}'.format(len(args), ', '.join(args)))
+async def add_player(ctx, player: discord.Member):
+    logger.debug('bot.command.add_player: called with {} - {}'.format(player.name, player))
     res = 'Yes master {}! Adding player {}'.format(ctx.author.mention, player.name)
     await ctx.send(res)
 

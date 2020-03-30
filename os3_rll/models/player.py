@@ -35,7 +35,7 @@ class Player:
         self._wins = 0
         self._losses = 0
         self._challenged = 0
-        self._timeout = time()
+        self._timeout = 0
         self._password = None
         self.force = False  # Force save
         self._new = True if self._id == 0 else False
@@ -43,8 +43,13 @@ class Player:
             self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, \
                 self._timeout = self.get_player_info_from_db()
         self.original = (
-            self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, self._timeout
+            self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged,
+            self._timeout
         )
+        if self._timeout:
+            self.timeout = datetime.fromtimestamp(self._timeout)
+        else:
+            self.timeout = datetime.fromtimestamp(time())
 
     def __enter__(self):
         return self
@@ -117,7 +122,7 @@ class Player:
 
     @property
     def timeout(self):
-        return datetime.fromtimestamp(self._timeout)
+        return self._timeout
 
     @timeout.setter
     def timeout(self, timeout):
@@ -172,7 +177,7 @@ class Player:
     def _save_existing_player_model(self):
         self.db.execute_prepared_statement(
             'UPDATE users SET name=%s, gamertag=%s, discord=%s, rank=%s, wins=%s, losses=%s, '
-            'challenged=%s, timeout=%s, password=%s WHERE id=%s',
+            'challenged=%s, timeout=%s WHERE id=%s',
             (self._name, self._gamertag, self._discord, self._rank, self._wins, self._losses, self._challenged,
              self._timeout.strftime("%Y-%m-%d %H:%M:%S"), self._id)
         )

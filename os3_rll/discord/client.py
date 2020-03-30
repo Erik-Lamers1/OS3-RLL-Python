@@ -41,7 +41,7 @@ async def on_ready():
 @bot.command()
 async def hi(ctx, *args):
     logger.debug('bot.command.hi: called with: {} arguments - {}'.format(len(args), ', '.join(args)))
-    res = 'Hi {}\n'.format(ctx.user.mention)
+    res = 'Hi {}\n'.format(ctx.author.mention)
     responses = ["How are you doing today? Wait that's retorical, I am a bot I do not care.\n",
                  "I was just looking at your rank. Did you know that you suck at rocket league? I heard some guy SquishyMuffinz is best.\n",
                  "Please leave me alone. I am randomizing the rankings database to mess with Mr.Vin.\n",

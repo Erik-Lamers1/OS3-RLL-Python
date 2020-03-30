@@ -114,8 +114,10 @@ async def on_command_error(ctx, error):
     logger.error('bot.on_command_error: got error - {} - while handling commands'.format(error))
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
-    else:
+    if isinstance(error, commands.CommandInvokeError):
         await ctx.send(utils.bot_help())
+    if isinstance(error, commands.CheckAnyFailure):
+        await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin")
 
 
 async def post():

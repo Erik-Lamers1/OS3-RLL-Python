@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from os3_rll.discord import client
+from os3_rll.discord import utils
 
 logger = getLogger(__name__)
 
@@ -22,7 +22,7 @@ def announce_challenge(p1, p2):
                  'colour': 2234352}
 
         message = {'content': "New Challenge!",
-                   'embed': client.create_embed(embed)}
+                   'embed': utils.create_embed(embed)}
 
         #use this if you want to post the message via the bot's background routine
         #client.message_queue.put(message)

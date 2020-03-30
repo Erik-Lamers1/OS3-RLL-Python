@@ -95,11 +95,19 @@ def get_player(player):
     members = bot.get_all_members()
     challengee = None
 
-    for member in members:
-        logger.debug("bot.get_player_mentions: check if {} == {}".format(member.name, player))
-        if member.name == player:
-            challengee = member
-            break
+    if player.startswith('<@!'):
+        logger.debug("bot.get_player: got a mention {}".format(player))
+        for member in members:
+            logger.debug("bot.get_player: check mentions if {} == {}".format(member.mention, player))
+            if member.mention == player:
+                challengee = member
+                break
+    else:
+        for member in members:
+            logger.debug("bot.get_player: check mentions if {} == {}".format(member.mention, player))
+            if member.name == player:
+                challengee = member
+                break
 
     if challengee is None:
         raise TypeError

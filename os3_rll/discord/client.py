@@ -96,7 +96,7 @@ def get_player(player):
     challengee = None
 
     if player.startswith('<@!'):
-        player_id = player[2:-1]
+        player_id = player[3:-1]
         logger.debug("bot.get_player: got a mention for player_id {}".format(player_id))
         for member in members:
             logger.debug("bot.get_player: check mentions if {} == {}".format(member.id, player_id))

@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix='$')
 
 def is_rll_admin():
     async def predicate(ctx):
-        rlladmin = discord.utils.find(lambda role: role.name == 'RLL Admin', ctx.message.server.roles)
+        rlladmin = discord.utils.find(lambda role: role.name == 'RLL Admin', ctx.guild.roles)
         return rlladmin in ctx.author.roles
     return commands.check(predicate)
 

@@ -14,6 +14,12 @@ logger = getLogger(__name__)
 message_queue = queue.Queue()
 bot = commands.Bot(command_prefix='$')
 
+def is_rll_admin():
+    async def predicate(ctx):
+        rlladmin = discord.utils.find(lambda role: role.name == 'RLL Admin', ctx.message.server.roles)
+        return rlladmin in ctx.author.roles
+    return commands.check(predicate)
+
 
 @bot.event
 async def on_ready():
@@ -93,6 +99,14 @@ async def complete_challenge(ctx, *args):
 async def reset_challenge(ctx, *args):
     logger.debug('bot.command.reset_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
     await ctx.send(utils.not_implemented())
+
+
+@bot.command()
+@is_rll_admin()
+async def add_player(ctx, *, player: discord.Member):
+    logger.debug('bot.command.add_player: called with {} arguments - {}'.format(len(args), ', '.join(args)))
+    res = 'Yes master {}! Adding player {}'.format(ctx.author.mention, player.name)
+    await ctx.send(res)
 
 
 @bot.event

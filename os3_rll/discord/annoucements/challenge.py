@@ -5,21 +5,16 @@ from os3_rll.discord import client
 logger = getLogger(__name__)
 
 
-def announce_challenge(players):
+def announce_challenge(p1, p2):
     """Generates an announcement to be posted by the discord bot as an embed
 
        Params:
-           players: (list of players)
-           p1: player1 (the challenger) its discord name.
-           p2: player2 (the challengee) its discord name.
+           p1: player1 (the challenger) as a discord.Member object.
+           p2: player2 (the challengee) as a discord.Member object.
 
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
-    p1 = players[0]
-    # Get the mentions of the players. Raises a TypeError if it cannot find the players
-    p2 = client.get_player(players[1][0])
-
     try:
         embed = {'title': "**{} challenges {}.**".format(p1.name, p2.name),
                  'description': "This match should be played within one week or {} loses automatically.".format(p2.mention),

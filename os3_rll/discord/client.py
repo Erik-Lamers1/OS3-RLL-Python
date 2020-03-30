@@ -11,7 +11,7 @@ from os3_rll.operations.challenge import get_challenge
 
 logger = getLogger(__name__)
 
-commands = {'hi': stub.hello,
+command_table = {'hi': stub.hello,
             'announce': announce_challenge,
             'get_ranking': stub.test_call_list,
             'get_active_challenges': stub.test_call_int,

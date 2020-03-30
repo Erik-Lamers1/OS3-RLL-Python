@@ -123,9 +123,9 @@ async def on_command_error(ctx, error):
     logger.error('bot.on_command_error: {} - {}'.format(type(error).__name__, error))
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
-    if isinstance(error, commands.CommandInvokeError):
+    elif isinstance(error, commands.CommandInvokeError):
         await ctx.send("OUCH! that hurts. Better tell the devs to check the logs, something broke!")
-    if isinstance(error, commands.CheckFailure):
+    elif isinstance(error, commands.CheckFailure):
         await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin.")
     else:
         await ctx.send(utils.bot_help())

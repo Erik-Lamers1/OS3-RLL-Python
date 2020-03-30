@@ -65,7 +65,7 @@ async def on_message(message):
             if res is None:
                 res = "Ok..."
 
-            if res is dict:
+            if type(res) is dict:
                 await channel.send(res['content'], embed=res['embed'])
             else:
                 await channel.send(res)

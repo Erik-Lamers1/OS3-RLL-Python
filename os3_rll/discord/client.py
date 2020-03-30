@@ -101,7 +101,7 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
     else:
-        await ctx.send(utils.help())
+        await ctx.send(utils.bot_help())
 
 
 async def post():

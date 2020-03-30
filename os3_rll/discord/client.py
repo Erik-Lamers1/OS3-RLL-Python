@@ -108,7 +108,7 @@ def get_player(player):
                 break
     else:
         for member in members:
-            logger.debug("bot.get_player: check mentions if {} == {}".format(member.mention, player))
+            logger.debug("bot.get_player: check name if {} == {}".format(member.name, player))
             if member.name == player:
                 challengee = member
                 break

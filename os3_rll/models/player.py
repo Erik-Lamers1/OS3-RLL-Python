@@ -27,9 +27,9 @@ class Player:
         """
         self.db = Database()
         self._id = i
-        self._name = ''
+        self._name = None
         self._rank = 0
-        self._gamertag = ''
+        self._gamertag = None
         self._discord = ''
         self._wins = 0
         self._losses = 0
@@ -174,6 +174,7 @@ class Player:
         self.db.commit()
 
     def _save_existing_player_model(self):
+        logger.info('Updating DB for player with id {}'.format(self._id))
         self.db.execute_prepared_statement(
             'UPDATE users SET name=%s, gamertag=%s, discord=%s, rank=%s, wins=%s, losses=%s, '
             'challenged=%s, timeout=%s WHERE id=%s',
@@ -191,8 +192,8 @@ class Player:
             self._discord = self._gamertag
         logger.info('Inserting new player into DB')
         self.db.execute_prepared_statement(
-            'INSERT INTO users SET name=%s, gamertag=%s, discord=%s, password=%s',
-            (self._name, self._gamertag, self._discord, self._password)
+            'INSERT INTO users SET name=%s, gamertag=%s, discord=%s, password=%s, timeout=%s',
+            (self._name, self._gamertag, self._discord, self._password, self._timeout)
         )
 
     def _check_row_count(self, rowcount=1):

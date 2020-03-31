@@ -15,9 +15,6 @@ logger = getLogger(__name__)
 message_queue = queue.Queue()
 description = '''A competition manager bot. This bot manages the Rocket Leage ladder'''
 
-# directory specifies what extentions (cogs which is a command aggregate)
-# the bot should load at startup. For now its the example code.
-cogs_dir = "cogs"
 
 bot = commands.Bot(command_prefix='$', description=description)
 
@@ -198,9 +195,11 @@ async def post():
 
 def discord_client():
     logger.info('Initializing Discord client')
-    for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
+    # directory specifies what extentions (cogs which is a command aggregate)
+    # the bot should load at startup. For now its the example code.
+    for extension in [f.replace('.py', '') for f in listdir(settings.COGS_DIR) if isfile(join(settings.COGS_DIR, f))]:
         try:
-            bot.load_extension(cogs_dir + "." + extension)
+            bot.load_extension(settings.COGS_DIR + "." + extension)
         except Exception as e:
             logger.error("bot.discord_client:\n```py\n{}: {}\n```".format(type(e).__name__, str(e)))
 

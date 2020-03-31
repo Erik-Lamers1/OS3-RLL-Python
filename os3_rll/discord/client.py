@@ -204,7 +204,9 @@ def discord_client():
     logger.debug('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
         try:
-            bot.load_extension(cogs_dir + "." + extension)
+            module = cogs_dir + '.' + extension
+            logger.debug('bot.discord_client: loading module: {}'.format(module))
+            bot.load_extension(module)
         except Exception as e:
             logger.error('bot.discord_client: {} - {}'.format(type(e).__name__, str(e)))
 

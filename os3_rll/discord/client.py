@@ -68,14 +68,15 @@ async def on_ready():
     logger.info('bot.on_ready: {} is connected to the following guild:'.format(bot.user))
     logger.info('bot.on_ready: {}(id: {})'.format(guild.name, guild.id))
 
-    logger.debug('bot.discord_client: loading modules from cogs directory - {}'.format(settings.COGS_DIR))
-    module_list = filter(lambda m: m != '__init__', [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
+    #logger.debug('bot.discord_client: loading modules from cogs directory - {}'.format(settings.COGS_DIR))
+    #module_list = filter(lambda m: m != '__init__', [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
 
+    module_list = ['cogs.members', 'cogs.rnd']
     logger.info('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:
         try:
-            module = cogs_dir.replace('/','.') + '.' + extension
-            logger.debug('bot.discord_client: loading module: {}'.format(module))
+            #module = cogs_dir.replace('/','.') + '.' + extension
+            logger.debug('bot.discord_client: loading module: {}'.format(extension))
             bot.load_extension(module)
         except Exception as e:
             logger.error('bot.discord_client: {} - {}'.format(type(e).__name__, str(e)))

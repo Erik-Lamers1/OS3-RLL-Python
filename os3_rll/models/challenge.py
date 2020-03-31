@@ -79,6 +79,8 @@ class Challenge:
     def p1(self, p1):
         if p1 < 0:
             raise ChallengeException("p1 can't be lower then 0")
+        if p1 == self.p2:
+            raise ChallengeException("Id of p1 can't be equal to p2")
         self._p1 = int(p1)
 
     @property
@@ -89,6 +91,8 @@ class Challenge:
     def p2(self, p2):
         if p2 < 0:
             raise ChallengeException("p2 can't be lower then 0")
+        if p2 == self.p1:
+            raise ChallengeException("Id of p2 can't be equal to p1")
         self._p2 = int(p2)
 
     @property
@@ -99,6 +103,8 @@ class Challenge:
     def p1_score(self, p1_score):
         if p1_score < 0:
             raise ChallengeException("p1_score can't be lower then 0")
+        if p1_score == self.p2_score:
+            raise ChallengeException("p1_score can't be equal to the score of player 2")
         self._p1_score = p1_score
 
     @property
@@ -109,6 +115,8 @@ class Challenge:
     def p2_score(self, p2_score):
         if p2_score < 0:
             raise ChallengeException("p2_score can't be lower then 0")
+        if p2_score == self.p1_score:
+            raise ChallengeException("p2_score can't be equal to the score of player 1")
         self._p2_score = p2_score
 
     @property
@@ -130,7 +138,7 @@ class Challenge:
         if self._new:
             self._save_new_challenge()
         else:
-            if self.check_if_player_info_has_changed():
+            if self.check_if_challenge_info_has_changed():
                 if not self.force:
                     raise ChallengeException(
                         'DB info has changed while trying to save, refusing save. Set force=True to overwrite'
@@ -165,7 +173,7 @@ class Challenge:
         self._check_row_count()
         return self.db.fetchone()
 
-    def check_if_player_info_has_changed(self):
+    def check_if_challenge_info_has_changed(self):
         logger.debug('Checking if challenge info has changed')
         challenge_info = self.get_challenge_info_from_db()
         return True if challenge_info != self.original else False

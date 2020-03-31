@@ -174,6 +174,7 @@ class Player:
         self.db.commit()
 
     def _save_existing_player_model(self):
+        logger.info('Updating DB for player with id {}'.format(self._id))
         self.db.execute_prepared_statement(
             'UPDATE users SET name=%s, gamertag=%s, discord=%s, rank=%s, wins=%s, losses=%s, '
             'challenged=%s, timeout=%s WHERE id=%s',

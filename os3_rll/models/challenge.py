@@ -11,7 +11,9 @@ class ChallengeException(RuntimeError):
 
 
 class Challenge:
-    def __init__(self, i=0):
+    def __init__(self, i=0, force=False):
+        # Set force to true to force a model save on __exit__ and disregard DB changes
+        self.force = force
         self._id = i
         self.db = Database()
         self._date = 0
@@ -24,9 +26,10 @@ class Challenge:
         if not self._new:
             self._date, self._p1, self._p2, self._p1_score, self._p2_score, self._winner = \
                 self.get_challenge_info_from_db()
+        self.original = (self._date, self._p1, self._p2, self._p1_score, self._p2_score, self._winner)
         if self._date:
             self._date = datetime.fromtimestamp(self._date)
-        else
+        else:
             self._date = datetime.now()
 
     def __enter__(self):
@@ -118,7 +121,40 @@ class Challenge:
 
     @winner.setter
     def winner(self, winner):
-        raise ChallengeException('Winner cannot be set, please set p1_score and p2_score instead and the winner will be calculated')
+        raise ChallengeException(
+            'Winner cannot be set, please set p1_score and p2_score instead and the winner will be calculated'
+        )
+
+    def save(self):
+        if self._new:
+            self._save_new_challenge()
+        else:
+            if self.check_if_player_info_has_changed():
+                if not self.force:
+                    raise ChallengeException(
+                        'DB info has changed while trying to save, refusing save. Set force=True to overwrite'
+                    )
+                else:
+                    logger.warning('DB info has changed! Force enabled, overwriting DB info...')
+            self._save_existing_challenge_model()
+        self.db.commit()
+
+    def _save_new_challenge(self):
+        # Check if any of the required args are missing
+        if any(arg is None for arg in (self._p1, self._p2)):
+            raise ChallengeException('When creating a new challenge the p1, and p2 properties are required')
+        logger.info('Inserting new challenge into DB')
+        self.db.execute_prepared_statement(
+            'INSERT INTO challenges SET date=%s, p1=%s, p2=%s', (self._date, self._p1, self._p2)
+        )
+
+    def _save_existing_challenge_model(self):
+        logger.info('Updating DB for challenge with id {}'.format(self._id))
+        # Check the actual winner property so if the user didn't set it we still appoint a winner
+        self.db.execute_prepared_statement(
+            'UPDATE challenges SET date=%s, p1=%s, p2=%s, p1_score=%s, p2_score=%s, winner=%s',
+            (self._date, self._p1, self._p2, self._p1_score, self._p2_score, self.winner)
+        )
 
     def get_challenge_info_from_db(self):
         logger.debug('Getting challenge info for challenge with id {} from DB'.format(self._id))
@@ -128,6 +164,11 @@ class Challenge:
         self._check_row_count()
         return self.db.fetchone()
 
+    def check_if_player_info_has_changed(self):
+        logger.debug('Checking if challenge info has changed')
+        challenge_info = self.get_challenge_info_from_db()
+        return True if challenge_info != self.original else False
+
     def _check_row_count(self, rowcount=1):
         if self.db.rowcount != rowcount:
             raise ChallengeException(
@@ -135,4 +176,6 @@ class Challenge:
             )
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.force:
+            self.save()
         self.db.close()

@@ -75,7 +75,7 @@ async def on_ready():
     logger.info('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:
         try:
-            module = cogs_dir + '.' + extension
+            module = cogs_dir.replace('/','.') + '.' + extension
             logger.debug('bot.discord_client: loading module: {}'.format(module))
             await bot.load_extension(module)
         except Exception as e:

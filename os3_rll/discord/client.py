@@ -19,7 +19,8 @@ description = '''A competition manager bot. This bot manages the Rocket Leage la
 
 # directory specifies what extentions (cogs which is a command aggregate)
 # the bot should load at startup. For now its the example code.
-cogs_dir = settings.COGS_DIR
+cogs_dir = settings.COGS_DIR#
+cogs_module_path = settings.COGS_DIR.replace("/",".")
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('$'), description=description)
 
 
@@ -68,13 +69,13 @@ async def on_ready():
     logger.info('bot.on_ready: {} is connected to the following guild:'.format(bot.user))
     logger.info('bot.on_ready: {}(id: {})'.format(guild.name, guild.id))
 
-    logger.debug('bot.discord_client: loading modules from cogs directory - {}'.format(settings.COGS_DIR))
-    module_list = filter(lambda m: m != '__init__', [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
+    logger.debug('bot.discord_client: loading modules from module path - {}'.format(cogs_module_path))
+    module_list = filter(lambda m: m != '__init__', [f.replace('.py','') for f in listdir(cogs_dir) if isfile(f)])
 
     logger.info('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:
         try:
-            module = cogs_dir.replace('/','.') + '.' + extension
+            module = cogs_module_path + '.' + extension
             logger.debug('bot.discord_client: loading module: {}'.format(module))
             bot.load_extension(module)
         except Exception as e:

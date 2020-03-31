@@ -11,15 +11,49 @@ from os3_rll.discord import utils
 
 logger = getLogger(__name__)
 message_queue = queue.Queue()
-bot = commands.Bot(command_prefix='$')
+description = '''A competition manager bot. This bot manages the Rocket Leage ladder'''
+
+# specifies what extentions (cogs which is a command aggregate)
+# the bot should load at startup. For now its the example code.
+startup_extensions = ["members", "rng"]
+
+bot = commands.Bot(command_prefix='$', description=description)
 
 
 def is_rll_admin():
+    """
+    Command Checks decorator to check if a user has the RLL Admin role.
+    """
     async def predicate(ctx):
         rlladmin = discord.utils.find(lambda role: role.name == 'RLL Admin', ctx.guild.roles)
         return rlladmin in ctx.author.roles
 
     return commands.check(predicate)
+
+
+@bot.command()
+@is_rll_admin()
+async def load(ctx, extension_name : str):
+    """
+    Loads an extension into the bot
+    """
+    try:
+        bot.load_extension(extension_name)
+    except (AttributeError, ImportError) as e:
+        logger.error("bot.load_extension:\n```py\n{}: {}\n```".format(type(e).__name__, str(e)))
+        await ctx.send("Failed to load extension.")
+        return
+    await ctx.send("{} loaded.".format(type(e).__name__, str(e)))
+
+
+@bot.command()
+@is_rll_admin()
+async def unload(ctx, extension_name : str):
+    """
+    Unloads an extension from the bot.
+    """
+    bot.unload_extension(extension_name)
+    await ctx.send("{} unloaded.".format(extension_name))
 
 
 @bot.event
@@ -52,7 +86,10 @@ async def hi(ctx, *args):
 
 @bot.command()
 async def announce(ctx, p2: discord.Member):
-    """Test call to announce a challenge."""
+    """
+    Test call to announce a challenge.
+    param discord.Member
+    """
     logger.debug('bot.command.announce: called with {} - {}'.format(p2.name, p2))
     res = announce_challenge(ctx.author, p2)
     await ctx.send(res['content'], embed=res['embed'])
@@ -60,7 +97,9 @@ async def announce(ctx, p2: discord.Member):
 
 @bot.command()
 async def get_ranking(ctx):
-    """Returns the current top 5 ranking."""
+    """
+    Returns the current top 5 ranking.
+    """
     logger.debug('bot.command.get_ranking: called')
     res = stub.test_call_list("")
     await ctx.send(res)
@@ -68,21 +107,27 @@ async def get_ranking(ctx):
 
 @bot.command()
 async def get_active_challenges(ctx):
-    """Returns the number of active challenges."""
+    """
+    Returns the number of active challenges.
+    """
     logger.debug('bot.command.get_active_challenges: called')
     await ctx.send(stub.test_call_int(""))
 
 
 @bot.command()
 async def what(ctx, *args):
-    """Allows you to ask a random question to the bot."""
+    """
+    Allows you to ask a random question to the bot.
+    """
     logger.debug('bot.command.what: called with {} arguments - {}'.format(len(args), ', '.join(args)))
     await ctx.send(stub.test_call_str(""))
 
 
 @bot.command()
 async def website(ctx):
-    """Points you to the website of the Rocket-League-Ladder."""
+    """
+    Points you to the website of the Rocket-League-Ladder.
+    """
     logger.debug('bot.command.website: called')
     await ctx.send('{} you can find the website at {}'.format(ctx.author.mention, settings.WEBSITE))
 
@@ -151,6 +196,12 @@ async def post():
 
 def discord_client():
     logger.info('Initializing Discord client')
+    for extension in startup_extensions:
+        try:
+            bot.load_extension(extension)
+        except Exception as e:
+            logger.error("bot.discord_client:\n```py\n{}: {}\n```".format(type(e).__name__, str(e)))
+
     bot.loop.create_task(post())
 
     while True:

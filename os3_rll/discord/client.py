@@ -10,7 +10,7 @@ from os3_rll.conf import settings
 from os3_rll.actions import stub
 from os3_rll.discord.annoucements.challenge import announce_challenge
 from os3_rll.discord import utils
-from os3_rll.discord.cogs import members
+#from os3_rll.discord.cogs import members
 
 logger = getLogger(__name__)
 message_queue = queue.Queue()

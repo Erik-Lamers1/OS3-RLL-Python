@@ -17,16 +17,17 @@ def announce_challenge(p1, p2):
     """
     try:
         embed = {'title': "**{} challenges {}.**".format(p1.name, p2.name),
-                 'description': "This match should be played within one week or {} loses automatically.".format(p2.mention),
+                 'description': "This match should be played within one week or {} loses automatically.".format(
+                     p2.mention),
                  'footer': "Good Luck!",
                  'colour': 2234352}
 
         message = {'content': "New Challenge!",
                    'embed': utils.create_embed(embed)}
 
-        #use this if you want to post the message via the bot's background routine
-        #client.message_queue.put(message)
-        #use this to return it with the players request.
+        # use this if you want to post the message via the bot's background routine
+        # client.message_queue.put(message)
+        # use this to return it with the players request.
         return message
     except TypeError:
         logger.error("actions.challenge.announce_challenge: Found NoneType Object for {} or {}".format(p1, p2))

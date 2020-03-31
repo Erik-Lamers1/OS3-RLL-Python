@@ -7,17 +7,17 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 help_table = {'hi': 'Sends a rude greeting.',
-            'announce': 'Sends a test announcement.',
-            'get_ranking': 'Gives a list of the top 5 ranked player.',
-            'get_active_challenges': 'Returns the number of active challenges.',
-            'what': 'Allows the user to ask a random question',
-            'website': 'Returns the website of the Rocket-League-Ladder.',
-            'get_challenge': 'Returns the challenge the calling player is participating in.',
-            'create_challenge': 'Creates a challenge.',
-            'complete_challenge': 'Completes a challenge; requires the score of each round',
-            'reset_challenge': 'Resets an active challenge.',
-            'help': 'Either returns this or insults the user.'
-            }
+              'announce': 'Sends a test announcement.',
+              'get_ranking': 'Gives a list of the top 5 ranked player.',
+              'get_active_challenges': 'Returns the number of active challenges.',
+              'what': 'Allows the user to ask a random question',
+              'website': 'Returns the website of the Rocket-League-Ladder.',
+              'get_challenge': 'Returns the challenge the calling player is participating in.',
+              'create_challenge': 'Creates a challenge.',
+              'complete_challenge': 'Completes a challenge; requires the score of each round',
+              'reset_challenge': 'Resets an active challenge.',
+              'help': 'Either returns this or insults the user.'
+              }
 
 
 def not_implemented():
@@ -29,17 +29,17 @@ def not_implemented():
 def bot_help():
     logger.debug('utils.bot_help: called')
     res = 'This bot supports the following commands:\n'
-    for k,v in help_table.items():
-        res += '\t ${}  -  {}\n'.format(k,v)
+    for k, v in help_table.items():
+        res += '\t ${}  -  {}\n'.format(k, v)
 
     return res
 
 
 def pebkak():
-    responses =['I cannot believe what a stupid FUCK you really are...\n Please do kill -9 $(pgrep yourself)\n',
-                'Is it that difficult to type, do you have butter fingers?\n',
-                'OH MY GOD you are stupid, please rm -rf ./your_life\n',
-                "WHAHAHAHAHAhahahaHAHAHAA, seriously you can't even operate a normal discord bot.\n"]
+    responses = ['I cannot believe what a stupid FUCK you really are...\n Please do kill -9 $(pgrep yourself)\n',
+                 'Is it that difficult to type, do you have butter fingers?\n',
+                 'OH MY GOD you are stupid, please rm -rf ./your_life\n',
+                 "WHAHAHAHAHAhahahaHAHAHAA, seriously you can't even operate a normal discord bot.\n"]
     return random.choice(responses)
 
 

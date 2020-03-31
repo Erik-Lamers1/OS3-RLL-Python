@@ -8,16 +8,17 @@ from os3_rll.conf import settings
 from os3_rll.actions import stub
 from os3_rll.discord.annoucements.challenge import announce_challenge
 from os3_rll.discord import utils
-from os3_rll.operations.challenge import get_challenge
 
 logger = getLogger(__name__)
 message_queue = queue.Queue()
 bot = commands.Bot(command_prefix='$')
 
+
 def is_rll_admin():
     async def predicate(ctx):
         rlladmin = discord.utils.find(lambda role: role.name == 'RLL Admin', ctx.guild.roles)
         return rlladmin in ctx.author.roles
+
     return commands.check(predicate)
 
 
@@ -37,10 +38,13 @@ async def hi(ctx, *args):
     logger.debug('bot.command.hi: called with {} arguments - {}'.format(len(args), ', '.join(args)))
     res = 'Hi {}\n'.format(ctx.author.mention)
     responses = ["How are you doing today? Wait that's retorical, I am a bot I do not care.\n",
-                 "I was just looking at your rank. Did you know that you suck at rocket league? I heard some guy SquishyMuffinz is best.\n",
+                 "I was just looking at your rank. Did you know that you suck at rocket league? I heard some guy "
+                 "SquishyMuffinz is best.\n",
                  "Please leave me alone. I am randomizing the rankings database to mess with Mr.Vin.\n",
-                 "Due to COVID-19 I've had to reimplement the transport protocol from QUIC to plain UDP to avoid handshakes.\n",
-                 "Please do not bother me. I am looking into this Markov Chain theory. It should be able to give me more human like responses.",
+                 "Due to COVID-19 I've had to reimplement the transport protocol from QUIC to plain UDP to avoid "
+                 "handshakes.\n",
+                 "Please do not bother me. I am looking into this Markov Chain theory. It should be able to give me "
+                 "more human like responses.",
                  "What are you doing here? LOL, your rank is so low you should practice uninstall.\n"]
     res += random.choice(responses)
     await ctx.send(res)

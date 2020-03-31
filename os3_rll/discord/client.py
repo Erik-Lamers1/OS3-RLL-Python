@@ -10,8 +10,6 @@ from os3_rll.conf import settings
 from os3_rll.actions import stub
 from os3_rll.discord.annoucements.challenge import announce_challenge
 from os3_rll.discord import utils
-from os3_rll.discord.cogs import members
-from os3_rll.discord.cogs import rng
 
 logger = getLogger(__name__)
 message_queue = queue.Queue()
@@ -78,7 +76,7 @@ async def on_ready():
         try:
             module = cogs_dir.replace('/','.') + '.' + extension
             logger.debug('bot.discord_client: loading module: {}'.format(module))
-            await bot.load_extension(module)
+            bot.load_extension(module)
         except Exception as e:
             logger.error('bot.discord_client: {} - {}'.format(type(e).__name__, str(e)))
 

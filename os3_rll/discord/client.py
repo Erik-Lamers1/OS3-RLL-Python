@@ -5,7 +5,7 @@ import random
 from discord.ext import commands, tasks
 from logging import getLogger
 from os import listdir
-from os import isfile, join
+from os.path import isfile, join
 from os3_rll.conf import settings
 from os3_rll.actions import stub
 from os3_rll.discord.annoucements.challenge import announce_challenge

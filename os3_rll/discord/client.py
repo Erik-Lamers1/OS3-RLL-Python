@@ -77,7 +77,7 @@ async def on_ready():
         try:
             #module = cogs_dir.replace('/','.') + '.' + extension
             logger.debug('bot.discord_client: loading module: {}'.format(extension))
-            bot.load_extension(module)
+            bot.load_extension(extension)
         except Exception as e:
             logger.error('bot.discord_client: {} - {}'.format(type(e).__name__, str(e)))
 

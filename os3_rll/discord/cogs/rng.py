@@ -31,4 +31,5 @@ class RNG(commands.Cog):
 
 
 def setup(bot):
+    logger.debug('{}: added to bot {}'.format(__name__, bot))
     bot.add_cog(RNG(bot))

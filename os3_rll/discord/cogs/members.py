@@ -62,4 +62,4 @@ class Members(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Members(bot))
-    logger.debug('os3_rll.discord.cogs.{}: added cog to bot {}'.format(__name__, bot))
+    logger.debug('{} added to bot {}'.format(__name__, bot))

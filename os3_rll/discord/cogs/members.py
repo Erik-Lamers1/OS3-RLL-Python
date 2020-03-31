@@ -14,7 +14,7 @@ class Members(commands.Cog):
         """Says when a member joined."""
         await ctx.send('{0.name} joined in {0.joined_at}'.format(member))
 
-    @commands.command(pass_context=True)
+    @commands.group(pass_context=True)
     async def cool(self, ctx):
         """
         Says if a user is cool.

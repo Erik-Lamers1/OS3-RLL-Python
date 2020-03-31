@@ -1,7 +1,6 @@
 from datetime import datetime
 from logging import getLogger
 from hashlib import sha256
-from time import time
 
 from os3_rll.models.db import Database
 
@@ -19,10 +18,10 @@ class Player:
 
     This class will hold a local copy of the Player object.
     When self.save() is called the changes are written to the database
-    If this class is called in a with block it will save the object automatically
+    If this class is called in a with block it will save the object automatically if force is set to True
     """
 
-    def __init__(self, i=0):
+    def __init__(self, i=0, force=False):
         """
         param int id: The id of the player to assign this instance to. 0 means a new player.
         """
@@ -37,7 +36,7 @@ class Player:
         self._challenged = 0
         self._timeout = 0
         self._password = None
-        self.force = False  # Force save
+        self.force = force  # Force save when closing
         self._new = True if self._id == 0 else False
         if not self._new:
             self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, \
@@ -49,7 +48,7 @@ class Player:
         if self._timeout:
             self.timeout = datetime.fromtimestamp(self._timeout)
         else:
-            self.timeout = datetime.fromtimestamp(time())
+            self.timeout = datetime.now()
 
     def __enter__(self):
         return self
@@ -128,7 +127,7 @@ class Player:
     def timeout(self, timeout):
         """
         Set the player timeout from a datatime object
-        params datatime.datetime() timeout: The datetime to set the player timeout to
+        param datatime.datetime() timeout: The datetime to set the player timeout to
         """
         if not isinstance(timeout, datetime):
             raise PlayerException('Timeout can only be set to a datetime.datetime object')
@@ -218,5 +217,6 @@ class Player:
         return self.db.fetchone()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.save()
+        if self.force:
+            self.save()
         self.db.close()

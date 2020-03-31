@@ -1,5 +1,8 @@
 import discord
 from discord.ext import commands
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 
 class Members(commands.Cog):
@@ -59,3 +62,4 @@ class Members(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Members(bot))
+    logger.debug('os3_rll.discord.cogs.{}: added cog to bot {}'.format(__name__, bot))

@@ -10,6 +10,7 @@ from os3_rll.conf import settings
 from os3_rll.actions import stub
 from os3_rll.discord.annoucements.challenge import announce_challenge
 from os3_rll.discord import utils
+from os3_rll.discord.cogs import members
 
 logger = getLogger(__name__)
 message_queue = queue.Queue()
@@ -18,7 +19,7 @@ description = '''A competition manager bot. This bot manages the Rocket Leage la
 
 # directory specifies what extentions (cogs which is a command aggregate)
 # the bot should load at startup. For now its the example code.
-cogs_dir = 'os3_rll/discord/cogs' #settings.COGS_DIR
+cogs_dir = 'os3_rll.discord.cogs' #settings.COGS_DIR
 #cogs_dir = settings.COGS_DIR
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('$'), description=description)
 

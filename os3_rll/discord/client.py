@@ -10,7 +10,8 @@ from os3_rll.conf import settings
 from os3_rll.actions import stub
 from os3_rll.discord.annoucements.challenge import announce_challenge
 from os3_rll.discord import utils
-#from os3_rll.discord.cogs import members
+from os3_rll.discord.cogs import members
+from os3_rll.discord.cogs import rng
 
 logger = getLogger(__name__)
 message_queue = queue.Queue()
@@ -70,7 +71,7 @@ async def on_ready():
     logger.info('bot.on_ready: {}(id: {})'.format(guild.name, guild.id))
 
     logger.debug('bot.discord_client: loading modules from cogs directory - {}'.format(settings.COGS_DIR))
-    module_list = [f for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
+    module_list = filter(lambda m: m != '__init__.py', [f for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
 
     logger.info('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:

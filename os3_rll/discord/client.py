@@ -198,8 +198,9 @@ async def post():
 
 def discord_client():
     logger.info('Initializing Discord client')
-    module_list = [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
-    logger.debug('bot.discord_client: start loading modules\n{}'.format('\n'.join(module_list)))
+    module_list = filter(lambda m: not m.startswith('__') , [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
+
+    logger.debug('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
         try:
             bot.load_extension(cogs_dir + "." + extension)

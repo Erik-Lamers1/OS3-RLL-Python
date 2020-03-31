@@ -68,7 +68,7 @@ async def on_ready():
     logger.info('bot.on_ready: {}(id: {})'.format(guild.name, guild.id))
 
     logger.debug('bot.discord_client: loading modules from cogs directory - {}'.format(settings.COGS_DIR))
-    module_list = [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
+    module_list = filter(lambda m: m.equals('__init__'), [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
 
     logger.debug('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:

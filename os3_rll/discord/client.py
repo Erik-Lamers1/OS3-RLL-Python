@@ -70,7 +70,7 @@ async def on_ready():
     logger.debug('bot.discord_client: loading modules from cogs directory - {}'.format(settings.COGS_DIR))
     module_list = filter(lambda m: m != '__init__', [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
 
-    logger.debug('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
+    logger.info('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:
         try:
             module = cogs_dir + '.' + extension
@@ -79,6 +79,7 @@ async def on_ready():
         except Exception as e:
             logger.error('bot.discord_client: {} - {}'.format(type(e).__name__, str(e)))
 
+    logger.info('bot.discord_client: completed loading modules')
 
 @bot.command()
 async def hi(ctx, *args):

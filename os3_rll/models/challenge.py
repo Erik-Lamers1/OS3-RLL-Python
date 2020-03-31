@@ -165,6 +165,25 @@ class Challenge:
             (self._date, self._p1, self._p2, self._p1_score, self._p2_score, self.winner, self._id)
         )
 
+    def reset(self):
+        """
+        Reset a challenge
+        This will clear the scores of p1 and p2 and the winner value
+        """
+        # First check if force is set
+        if not self.force:
+            raise ChallengeException('Resetting a challenge requires the force flag to be set')
+        if self._new:
+            raise ChallengeException('New Challenges cannot be reset')
+        logger.info('Resetting the scores of challenge {}'.format(self._id))
+        self.db.execute_prepared_statement(
+            'UPDATE challenge SET p1_score=NULL, p2_score=NULL, winner=NULL WHERE id=%s',
+            (self._id,)
+        )
+        logger.info('Reloading myself')
+        self.db.commit()
+        self.__init__(i=self._id, force=self.force)
+
     def get_challenge_info_from_db(self):
         logger.debug('Getting challenge info for challenge with id {} from DB'.format(self._id))
         self.db.execute_prepared_statement(

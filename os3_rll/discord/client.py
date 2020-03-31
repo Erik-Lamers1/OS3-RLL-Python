@@ -10,7 +10,7 @@ from os3_rll.conf import settings
 from os3_rll.actions import stub
 from os3_rll.discord.annoucements.challenge import announce_challenge
 from os3_rll.discord import utils
-from os3_rll.discord import rll_cogs
+from os3_rll.discord import cogs
 
 logger = getLogger(__name__)
 message_queue = queue.Queue()
@@ -72,7 +72,7 @@ async def on_ready():
     #logger.debug('bot.discord_client: loading modules from cogs directory - {}'.format(settings.COGS_DIR))
     #module_list = filter(lambda m: m != '__init__', [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
 
-    module_list = ['rll_cogs.members', 'rll_cogs.rnd']
+    module_list = ['cogs.members', 'cogs.rnd']
     logger.info('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:
         try:

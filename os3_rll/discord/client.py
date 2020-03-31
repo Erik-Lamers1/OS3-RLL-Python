@@ -18,7 +18,8 @@ description = '''A competition manager bot. This bot manages the Rocket Leage la
 
 # directory specifies what extentions (cogs which is a command aggregate)
 # the bot should load at startup. For now its the example code.
-cogs_dir = 'os3_rll/discord/cogs' #settings.COGS_DIR
+#cogs_dir = 'os3_rll/discord/cogs' #settings.COGS_DIR
+cogs_dir = settings.COGS_DIR
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('$'), description=description)
 
 
@@ -68,7 +69,7 @@ async def on_ready():
     logger.info('bot.on_ready: {}(id: {})'.format(guild.name, guild.id))
 
     logger.debug('bot.discord_client: loading modules from cogs directory - {}'.format(settings.COGS_DIR))
-    module_list = [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
+    module_list = [f for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
 
     logger.info('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:

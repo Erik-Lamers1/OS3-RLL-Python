@@ -47,13 +47,14 @@ class Challenge:
         """
         with Database() as db:
             db.execute_prepared_statement(
-                'SELECT id FROM challenges WHERE p1=%s AND p2=%s AND winner IS {} NULL ORDER BY id DESC'.format(
-                    '' if should_be_completed else 'NOT'
+                'SELECT id FROM challenges WHERE p1=%s AND p2=%s AND winner IS {} NULL ORDER BY id DESC LIMIT 1'.format(
+                    'NOT' if should_be_completed else ''
                 ),
                 (p1, p2)
             )
+            # Check for non existing challenge
             if db.rowcount != 1:
-                raise ChallengeException('Challenge not found, or duplicate challenges found')
+                raise ChallengeException('Challenge not found')
             return db.fetchone()[0]
 
     @property
@@ -152,8 +153,8 @@ class Challenge:
         logger.info('Updating DB for challenge with id {}'.format(self._id))
         # Check the actual winner property so if the user didn't set it we still appoint a winner
         self.db.execute_prepared_statement(
-            'UPDATE challenges SET date=%s, p1=%s, p2=%s, p1_score=%s, p2_score=%s, winner=%s',
-            (self._date, self._p1, self._p2, self._p1_score, self._p2_score, self.winner)
+            'UPDATE challenges SET date=%s, p1=%s, p2=%s, p1_score=%s, p2_score=%s, winner=%s WHERE id=%s',
+            (self._date, self._p1, self._p2, self._p1_score, self._p2_score, self.winner, self._id)
         )
 
     def get_challenge_info_from_db(self):

@@ -192,8 +192,8 @@ class Player:
             self._discord = self._gamertag
         logger.info('Inserting new player into DB')
         self.db.execute_prepared_statement(
-            'INSERT INTO users SET name=%s, gamertag=%s, discord=%s, password=%s',
-            (self._name, self._gamertag, self._discord, self._password)
+            'INSERT INTO users SET name=%s, gamertag=%s, discord=%s, password=%s, timeout=%s',
+            (self._name, self._gamertag, self._discord, self._password, self._timeout)
         )
 
     def _check_row_count(self, rowcount=1):

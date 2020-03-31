@@ -200,7 +200,7 @@ def discord_client():
     logger.info('Initializing Discord client')
     for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
         try:
-            bot.load_extension(extension)
+            bot.load_extension(cogs_dir + "." + extension)
         except Exception as e:
             logger.error("bot.discord_client:\n```py\n{}: {}\n```".format(type(e).__name__, str(e)))
 

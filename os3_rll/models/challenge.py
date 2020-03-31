@@ -177,7 +177,7 @@ class Challenge:
             raise ChallengeException('New Challenges cannot be reset')
         logger.info('Resetting the scores of challenge {}'.format(self._id))
         self.db.execute_prepared_statement(
-            'UPDATE challenge SET p1_score=NULL, p2_score=NULL, winner=NULL WHERE id=%s',
+            'UPDATE challenges SET p1_score=NULL, p2_score=NULL, winner=NULL WHERE id=%s',
             (self._id,)
         )
         logger.info('Reloading myself')

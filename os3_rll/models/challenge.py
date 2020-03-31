@@ -17,8 +17,8 @@ class Challenge:
         self._id = i
         self.db = Database()
         self._date = 0
-        self._p1 = 0
-        self._p2 = 0
+        self._p1 = None
+        self._p2 = None
         self._p1_score = 0
         self._p2_score = 0
         self._winner = 0

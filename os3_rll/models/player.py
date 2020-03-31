@@ -27,9 +27,9 @@ class Player:
         """
         self.db = Database()
         self._id = i
-        self._name = ''
+        self._name = None
         self._rank = 0
-        self._gamertag = ''
+        self._gamertag = None
         self._discord = ''
         self._wins = 0
         self._losses = 0

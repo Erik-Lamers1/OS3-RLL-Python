@@ -202,7 +202,7 @@ def discord_client():
     module_list = filter(lambda m: not m.startswith('__') , [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
 
     logger.debug('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
-    for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
+    for extension in module_list:
         try:
             module = cogs_dir + '.' + extension
             logger.debug('bot.discord_client: loading module: {}'.format(module))

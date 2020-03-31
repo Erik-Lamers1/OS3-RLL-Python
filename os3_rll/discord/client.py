@@ -202,7 +202,7 @@ def discord_client():
         try:
             bot.load_extension(cogs_dir + "." + extension)
         except Exception as e:
-            logger.error("bot.discord_client:\n```py\n{}: {}\n```".format(type(e).__name__, str(e)))
+            logger.error('bot.discord_client: {} - {}'.format(type(e).__name__, str(e)))
 
     bot.loop.create_task(post())
 

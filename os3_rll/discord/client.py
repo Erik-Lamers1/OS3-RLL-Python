@@ -198,6 +198,7 @@ async def post():
 
 def discord_client():
     logger.info('Initializing Discord client')
+    logger.debug('bot.discord_client: loading modules from cogs directory - {}'.format(settings.COGS_DIR))
     module_list = filter(lambda m: not m.startswith('__') , [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))])
 
     logger.debug('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))

@@ -63,4 +63,4 @@ def process_completed_challenge_args(args):
     # Check for a draw
     if p1_wins == p2_wins:
         raise ChallengeException('Draws are not allowed')
-    return p1_wins, p2_wins, p1_score , p2_score
+    return p1_wins, p2_wins, p1_score, p2_score

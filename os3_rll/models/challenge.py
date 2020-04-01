@@ -29,8 +29,8 @@ class Challenge:
         self._date = 0
         self._p1 = None
         self._p2 = None
-        self._p1_wins = 0
-        self._p2_wins = 0
+        self._p1_wins = None
+        self._p2_wins = None
         self._p1_score = 0
         self._p2_score = 0
         self._winner = 0
@@ -38,7 +38,16 @@ class Challenge:
         if not self._new:
             self._date, self._p1, self._p2, self._p1_wins, self._p2_wins, self._p1_score, self._p2_score, \
                 self._winner = self.get_challenge_info_from_db()
-        self.original = (self._date, self._p1, self._p2, self._p1_score, self._p2_score, self._winner)
+        self.original = (
+            self._date,
+            self._p1,
+            self._p2,
+            self._p1_wins,
+            self._p2_wins,
+            self._p1_score,
+            self._p2_score,
+            self._winner
+        )
         if self._date:
             self._date = datetime.fromtimestamp(self._date)
         else:
@@ -160,7 +169,8 @@ class Challenge:
 
     @property
     def winner(self):
-        if self._p1_wins and self._p2_wins:
+        # Explicitly check for None, because 0 is also a valid number
+        if self._p1_wins is not None and self._p2_wins is not None:
             if self._p1_wins > self._p2_wins:
                 self._winner = self._p1
             else:

@@ -70,6 +70,10 @@ class Challenge:
             return db.fetchone()[0]
 
     @property
+    def id(self):
+        return self._id
+
+    @property
     def date(self):
         return self._date
 

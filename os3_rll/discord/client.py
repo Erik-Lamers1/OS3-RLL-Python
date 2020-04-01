@@ -1,16 +1,12 @@
 import discord
 import asyncio
 import queue
-import random
-from discord.ext import commands, tasks
+from discord.ext import commands
 from logging import getLogger
 from os import listdir
 from os.path import isfile, join
 from os3_rll.conf import settings
-from os3_rll.actions import stub
-from os3_rll.discord.annoucements.challenge import announce_challenge
 from os3_rll.discord import utils
-from os3_rll.discord import cogs
 
 logger = getLogger(__name__)
 message_queue = queue.Queue()
@@ -21,6 +17,7 @@ cogs_dir = settings.COGS_DIR
 cogs_module_path = settings.COGS_DIR.replace("/",".")
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('$'), description=description)
+
 
 def is_rll_admin():
     """

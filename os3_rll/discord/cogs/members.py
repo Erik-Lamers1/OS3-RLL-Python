@@ -32,14 +32,14 @@ class Members(commands.Cog):
         await ctx.send('Yes, I am cool.')
 
     @cool.command(pass_context=True, name='Mr. Vin')
-    async def _mr_vin(self):
+    async def _mr_vin(self, ctx):
         """
         Is Mr. Vin cool?
         """
         await ctx.send('Yes, Mr. Vin is cool, because he is my developer.')
 
     @cool.command(pass_context=True, name='SyntheticOxygen')
-    async def _syntheticoxygen(self):
+    async def _syntheticoxygen(self, ctx):
         """
         Is SyntheticOxygen cool?
         """

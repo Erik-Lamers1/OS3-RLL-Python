@@ -1,13 +1,14 @@
 import discord
+import random
 from discord.ext import commands
 from logging import getLogger
 from os3_rll.conf import settings
 from os3_rll.actions import stub
-from os3_rll.discord.annoucements import challenge
 from os3_rll.discord import utils
-from os3_rll.discord import cogs
+from os3_rll.discord.annoucements.challenge import announce_challenge
 
 logger = getLogger(__name__)
+
 
 class RLL(commands.Cog):
     def __init__(self, bot):
@@ -24,7 +25,8 @@ class RLL(commands.Cog):
                      "Please leave me alone. I am randomizing the rankings database to mess with Mr.Vin.\n",
                      "Due to COVID-19 I've had to reimplement the transport protocol from QUIC to plain UDP to avoid "
                      "handshakes.\n",
-                     "Please do not bother me. I am looking into this Markov Chain theory. It should be able to give me "
+                     "Please do not bother me. I am looking into this Markov Chain theory. It should be able to give "
+                     "me "
                      "more human like responses.",
                      "What are you doing here? LOL, your rank is so low you should practice uninstall.\n",
                      "You know what's so great about COVID-19? I can't get it, I get other bugs though.\n"]
@@ -59,7 +61,7 @@ class RLL(commands.Cog):
         await ctx.send(stub.test_call_int(""))
 
     @commands.command(pass_context=True)
-    async def what(ctx, *args):
+    async def what(self, ctx, *args):
         """
         Allows you to ask a random question to the bot.
         """
@@ -67,7 +69,7 @@ class RLL(commands.Cog):
         await ctx.send(stub.test_call_str(""))
 
     @commands.command(pass_context=True)
-    async def website(ctx):
+    async def website(self, ctx):
         """
         Points you to the website of the Rocket-League-Ladder.
         """
@@ -75,25 +77,25 @@ class RLL(commands.Cog):
         await ctx.send('{} you can find the website at {}'.format(ctx.author.mention, settings.WEBSITE))
 
     @commands.command(pass_context=True)
-    async def get_challenge(ctx):
+    async def get_challenge(self, ctx):
         """Gives your current challenge deadline."""
         logger.debug('bot.command.get_challenge: called')
         await ctx.send(utils.not_implemented())
 
     @commands.command(pass_context=True)
-    async def create_challenge(ctx, *args):
+    async def create_challenge(self, ctx, *args):
         """Creates a challenge between you and who you mention. """
         logger.debug('bot.command.create_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
         await ctx.send(utils.not_implemented())
 
     @commands.command(pass_context=True)
-    async def complete_challenge(ctx, *args):
+    async def complete_challenge(self, ctx, *args):
         """Completes the challenge you are parcitipating in."""
         logger.debug('bot.command.complete_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
         await ctx.send(utils.not_implemented())
 
     @commands.command(pass_context=True)
-    async def reset_challenge(ctx, *args):
+    async def reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
         logger.debug('bot.command.reset_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
         await ctx.send(utils.not_implemented())

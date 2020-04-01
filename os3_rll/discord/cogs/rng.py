@@ -1,5 +1,9 @@
 import random
 from discord.ext import commands
+from logging import getLogger
+
+logger = getLogger(__name__)
+
 
 class RNG(commands.Cog):
     def __init__(self, bot):
@@ -18,7 +22,8 @@ class RNG(commands.Cog):
         """
         try:
             rolls, limit = map(int, dice.split('d'))
-        except Exception:
+        except ValueError:
+            logger.error('Could not convert to rolls and dice from user input, sending error message to user')
             await ctx.send("Format has to be in NdN!")
 
         result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))

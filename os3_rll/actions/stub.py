@@ -23,7 +23,6 @@ def hello(*argv):
     res += random.choice(responses)
     return res
 
-
 def test_call_int(*argv):
     logger.debug('actions.stub.test_call_int: called with {}'.format(*argv))
     return 42

@@ -79,22 +79,22 @@ async def on_ready():
         if guild.name == settings.DISCORD_GUILD:
             break
 
-    logger.info('bot.on_ready: {} is connected to the following guild:'.format(bot.user))
-    logger.info('bot.on_ready: {}(id: {})'.format(guild.name, guild.id))
+    logger.info('{} is connected to the following guild:'.format(bot.user))
+    logger.info('{}(id: {})'.format(guild.name, guild.id))
 
-    logger.debug('bot.discord_client: loading modules from module path - {}'.format(cogs_module_path))
+    logger.debug('loading modules from module path - {}'.format(cogs_module_path))
     module_list = [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
 
-    logger.info('bot.discord_client: start loading modules {}'.format(', '.join(module_list)))
+    logger.info('start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:
         try:
             module = cogs_module_path + '.' + extension
-            logger.debug('bot.discord_client: loading module: {}'.format(module))
+            logger.debug('loading module: {}'.format(module))
             bot.load_extension(module)
         except Exception as e:
-            logger.error('bot.discord_client: {} - {}'.format(type(e).__name__, str(e)))
+            logger.error('{} - {}'.format(type(e).__name__, str(e)))
 
-    logger.info('bot.discord_client: completed loading modules')
+    logger.info('completed loading modules')
 
 
 @bot.command()

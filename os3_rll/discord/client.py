@@ -83,6 +83,7 @@ async def on_ready():
     logger.info('{}(id: {})'.format(guild.name, guild.id))
 
     logger.debug('loading modules from module path - {}'.format(cogs_module_path))
+    logger.debug('finding modules at filesystem path - {}'.format(cogs_dir))
     module_list = [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
 
     logger.info('start loading modules {}'.format(', '.join(module_list)))

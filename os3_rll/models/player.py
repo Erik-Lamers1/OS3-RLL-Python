@@ -24,6 +24,8 @@ class Player:
     def __init__(self, i=0, force=False):
         """
         param int id: The id of the player to assign this instance to. 0 means a new player.
+        param bool force: Set the force parameter to True to enable certain (dangerous) operations,
+            Like auto-saving on __exit__, overwriting changed DB values or deleting a player
         """
         self.db = Database()
         self._id = i
@@ -171,6 +173,18 @@ class Player:
                                    'forcing save')
             self._save_existing_player_model()
         logger.debug('Committing player model change to stable storage')
+        self.db.commit()
+
+    def delete(self):
+        """
+        Delete the player associated this instance
+        """
+        if not self.force:
+            raise PlayerException('Deleting a player requires the force parameter to be set')
+        if self._new:
+            raise PlayerException('A new player instance cannot be deleted')
+        logger.info('Deleting player with id {}'.format(self._id))
+        self.db.execute_prepared_statement('DELETE FROM users WHERE id=%s', (self._id,))
         self.db.commit()
 
     def _save_existing_player_model(self):

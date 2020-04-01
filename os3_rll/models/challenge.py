@@ -11,7 +11,17 @@ class ChallengeException(RuntimeError):
 
 
 class Challenge:
+    """
+    The Challenge model allows a operator to get or create a challenge from the DB and interface with it
+    This class will hold a local copy of the Player object
+    When self.save() is called the changes are written to the database
+    """
     def __init__(self, i=0, force=False):
+        """
+        param int i: The id of the challenge to get, if left to 0 a new challenge will be created
+        param bool force: Set the force parameter to True to enable certain (dangerous) operations,
+            Like auto-saving on __exit__, overwriting changed DB values and resetting or deleting a challenge
+        """
         # Set force to true to force a model save on __exit__ and disregard DB changes
         self.force = force
         self._id = i
@@ -172,9 +182,9 @@ class Challenge:
         """
         # First check if force is set
         if not self.force:
-            raise ChallengeException('Resetting a challenge requires the force flag to be set')
+            raise ChallengeException('Resetting a challenge requires the parameter flag to be set')
         if self._new:
-            raise ChallengeException('New Challenges cannot be reset')
+            raise ChallengeException('New challenges cannot be reset')
         logger.info('Resetting the scores of challenge {}'.format(self._id))
         self.db.execute_prepared_statement(
             'UPDATE challenges SET p1_score=NULL, p2_score=NULL, winner=NULL WHERE id=%s',
@@ -183,6 +193,18 @@ class Challenge:
         logger.info('Reloading myself')
         self.db.commit()
         self.__init__(i=self._id, force=self.force)
+
+    def delete(self):
+        """
+        Delete the challenge associated with this instance
+        """
+        if not self.force:
+            raise ChallengeException('Deleting a challenge requires the force parameter to be set')
+        if self._new:
+            raise ChallengeException('New challenges cannot be deleted')
+        logger.info('Deleting challenge with id {}'.format(self._id))
+        self.db.execute_prepared_statement('DELETE FROM challenges WHERE id=%s', (self._id,))
+        self.db.commit()
 
     def get_challenge_info_from_db(self):
         logger.debug('Getting challenge info for challenge with id {} from DB'.format(self._id))

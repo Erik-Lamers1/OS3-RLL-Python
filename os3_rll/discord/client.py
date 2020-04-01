@@ -14,7 +14,7 @@ description = '''A competition manager bot. This bot manages the Rocket Leage la
 
 # This directory specifies what extentions (cogs which is a command aggregate) the bot should load at startup.
 cogs_dir = settings.COGS_DIR
-cogs_module_path = settings.COGS_DIR.replace("/",".")
+cogs_module_path = settings.COGS_DIR.replace("/", ".")
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('$'), description=description)
 
@@ -23,6 +23,7 @@ def is_rll_admin():
     """
     Command Checks decorator to check if a user has the RLL Admin role.
     """
+
     async def predicate(ctx):
         rlladmin = discord.utils.find(lambda role: role.name == 'RLL Admin', ctx.guild.roles)
         return rlladmin in ctx.author.roles
@@ -32,7 +33,7 @@ def is_rll_admin():
 
 @bot.command()
 @is_rll_admin()
-async def load(ctx, extension_name : str):
+async def load(ctx, extension_name: str):
     """
     Loads an extension into the bot
     """
@@ -47,7 +48,7 @@ async def load(ctx, extension_name : str):
 
 @bot.command()
 @is_rll_admin()
-async def unload(ctx, extension_name : str):
+async def unload(ctx, extension_name: str):
     """
     Unloads an extension from the bot.
     """
@@ -84,19 +85,18 @@ async def on_ready():
 
     logger.debug('loading modules from module path - {}'.format(cogs_module_path))
     logger.debug('loading modules from filesystem path - {}'.format(cogs_dir))
-    #module_list = [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
-    module_list = []
-    for f in listdir(cogs_dir):
-        file_path = join(cogs_dir, f)
-        if isfile(file_path):
-            logger.debug('├── found module {} at {}'.format(f, file_path))
-            module = f.replace('.py', '')
-            module_list.append(module)
+    module_list = [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
+#    for f in listdir(cogs_dir):
+#        file_path = join(cogs_dir, f)
+#        if isfile(file_path):
+#            logger.debug('├── found module {} at {}'.format(f, file_path))
+#            module = f.replace('.py', '')
+#            module_list.append(module)
 
     logger.info('start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:
         try:
-            module = 'cogs.' + extension #cogs_module_path + '.' + extension
+            module = cogs_module_path + '.' + extension
             logger.debug('loading module: {}'.format(module))
             bot.load_extension(module)
         except Exception as e:

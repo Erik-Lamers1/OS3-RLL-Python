@@ -94,10 +94,9 @@ async def on_ready():
             module_list.append(module)
 
     logger.info('start loading modules {}'.format(', '.join(module_list)))
-    cogs_module_path = 'cogs'
     for extension in module_list:
         try:
-            module = cogs_module_path + '.' + extension
+            module = 'cogs.' + extension #cogs_module_path + '.' + extension
             logger.debug('loading module: {}'.format(module))
             bot.load_extension(module)
         except Exception as e:

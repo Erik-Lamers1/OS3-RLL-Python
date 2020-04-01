@@ -29,13 +29,15 @@ class Challenge:
         self._date = 0
         self._p1 = None
         self._p2 = None
+        self._p1_wins = 0
+        self._p2_wins = 0
         self._p1_score = 0
         self._p2_score = 0
         self._winner = 0
         self._new = True if self._id == 0 else False
         if not self._new:
-            self._date, self._p1, self._p2, self._p1_score, self._p2_score, self._winner = \
-                self.get_challenge_info_from_db()
+            self._date, self._p1, self._p2, self._p1_wins, self._p2_wins, self._p1_score, self._p2_score, \
+                self._winner = self.get_challenge_info_from_db()
         self.original = (self._date, self._p1, self._p2, self._p1_score, self._p2_score, self._winner)
         if self._date:
             self._date = datetime.fromtimestamp(self._date)
@@ -106,6 +108,29 @@ class Challenge:
         self._p2 = int(p2)
 
     @property
+    def p1_wins(self):
+        return self._p1_wins
+
+    @p1_wins.setter
+    def p1_wins(self, wins):
+        if wins < 0:
+            raise ChallengeException("p1_wins can't be lower then 0")
+        if wins == self.p2_wins:
+            raise ChallengeException("p1_wins can't be equal to p2_wins")
+        self._p1_wins = wins
+
+    @property
+    def p2_wins(self):
+        return self._p2_wins
+
+    @p2_wins.setter
+    def p2_wins(self, wins):
+        if wins < 0:
+            raise ChallengeException("p2_wins can't be lower then 0")
+        if wins == self.p1_wins:
+            raise ChallengeException("p2_wins can't be equal to p1_wins")
+
+    @property
     def p1_score(self):
         return self._p1_score
 
@@ -131,8 +156,8 @@ class Challenge:
 
     @property
     def winner(self):
-        if self._p1_score and self._p2_score:
-            if self._p1_score > self._p2_score:
+        if self._p1_wins and self._p2_wins:
+            if self._p1_wins > self._p2_wins:
                 self._winner = self._p1
             else:
                 self._winner = self._p2
@@ -141,7 +166,7 @@ class Challenge:
     @winner.setter
     def winner(self, winner):
         raise ChallengeException(
-            'Winner cannot be set, please set p1_score and p2_score instead and the winner will be calculated'
+            'Winner cannot be set, please set p1_wins and p2_wins instead and the winner will be calculated'
         )
 
     def save(self):
@@ -171,8 +196,19 @@ class Challenge:
         logger.info('Updating DB for challenge with id {}'.format(self._id))
         # Check the actual winner property so if the user didn't set it we still appoint a winner
         self.db.execute_prepared_statement(
-            'UPDATE challenges SET date=%s, p1=%s, p2=%s, p1_score=%s, p2_score=%s, winner=%s WHERE id=%s',
-            (self._date, self._p1, self._p2, self._p1_score, self._p2_score, self.winner, self._id)
+            'UPDATE challenges SET date=%s, p1=%s, p2=%s, p1_wins=%s, p2_wins=%s, p1_score=%s, p2_score=%s, winner=%s '
+            'WHERE id=%s',
+            (
+                self._date,
+                self._p1,
+                self._p2,
+                self._p1_wins,
+                self._p2_wins,
+                self._p1_score,
+                self._p2_score,
+                self.winner,
+                self._id
+            )
         )
 
     def reset(self):
@@ -187,7 +223,7 @@ class Challenge:
             raise ChallengeException('New challenges cannot be reset')
         logger.info('Resetting the scores of challenge {}'.format(self._id))
         self.db.execute_prepared_statement(
-            'UPDATE challenges SET p1_score=NULL, p2_score=NULL, winner=NULL WHERE id=%s',
+            'UPDATE challenges SET p1_wins=NULL, p2_wins=NULL, p1_score=NULL, p2_score=NULL, winner=NULL WHERE id=%s',
             (self._id,)
         )
         logger.info('Reloading myself')
@@ -209,7 +245,9 @@ class Challenge:
     def get_challenge_info_from_db(self):
         logger.debug('Getting challenge info for challenge with id {} from DB'.format(self._id))
         self.db.execute_prepared_statement(
-            'SELECT UNIX_TIMESTAMP(date), p1, p2, p1_score, p2_score, winner FROM challenges WHERE id=%s', (self._id,)
+            'SELECT UNIX_TIMESTAMP(date), p1, p2, p1_wins, p2_wins, p1_score, p2_score, winner FROM challenges '
+            'WHERE id=%s',
+            (self._id,)
         )
         self._check_row_count()
         return self.db.fetchone()

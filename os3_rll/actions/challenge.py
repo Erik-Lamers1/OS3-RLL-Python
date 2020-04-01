@@ -94,7 +94,7 @@ def complete_challenge(p1, p2, match_results):
         else:
             logger.error(
                 'Could not find winner id {} corresponding to any of the player IDs in this challenge, '
-                'throwing exception'
+                'throwing exception'.format(winner)
             )
             raise ChallengeException(
                 'Winner could not be found in player IDs, this is a programming error. Please contact an admin'

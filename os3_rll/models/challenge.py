@@ -169,8 +169,8 @@ class Challenge:
 
     @property
     def winner(self):
-        # Explicitly check for None, because 0 is also a valid number
-        if self._p1_wins is not None and self._p2_wins is not None:
+        # Explicitly check for int, because 0 is also a valid number
+        if isinstance(self._p1_wins, int) and isinstance(self._p2_wins, int):
             if self._p1_wins > self._p2_wins:
                 self._winner = self._p1
             else:

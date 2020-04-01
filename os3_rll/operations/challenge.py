@@ -1,7 +1,9 @@
 from logging import getLogger
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from os3_rll.models.challenge import ChallengeException
+from os3_rll.models.player import Player
+from os3_rll.models.db import Database
 
 logger = getLogger(__name__)
 
@@ -64,3 +66,24 @@ def process_completed_challenge_args(args):
     if p1_wins == p2_wins:
         raise ChallengeException('Draws are not allowed')
     return p1_wins, p2_wins, p1_score, p2_score
+
+
+def get_player_objects_from_complete_challenge_info(message_author):
+    """
+    Search for a challenge in the DB corresponding to the message_author
+
+    param str message_author: The discord_user that send the message (eg. Pandabeer#2202)
+    """
+    with Database() as db:
+        db.execute_prepared_statement('SELECT id FROM users WHERE discord=%s', (message_author,))
+        if db.rowcount != 1:
+            raise ChallengeException('Player with discord username {}, not found'.format(message_author))
+        user_id = db.fetchone()[0]
+        db.execute_prepared_statement(
+            'SELECT p1, p2 FROM challenges WHERE (p1=%s OR p2=%s) AND winner IS NULL ORDER BY id DESC',
+            (user_id, user_id)
+        )
+        if db.rowcount == 0:
+            raise ChallengeException('No challenges found')
+        p1, p2 = db.fetchone()
+    return Player(p1), Player(p2)

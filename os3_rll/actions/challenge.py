@@ -61,6 +61,7 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
     param str match_results: The results of the games played between the two players, example "2-1 5-2"
     param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
     raises: ChallengeException/PlayerException on error
+    return: int: ID from the winner
     """
     logger.debug('Getting challenge info for challenge between player {} and {}'.format(p1, p2))
     # First check if gamertags were passed and convert them to player IDs
@@ -107,3 +108,4 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
         p1.save()
         p2.save()
         logger.info('Challenge between {} and {} successfully completed'.format(p1.gamertag, p2.gamertag))
+    return winner

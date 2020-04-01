@@ -89,13 +89,14 @@ async def on_ready():
     for f in listdir(cogs_dir):
         file_path = join(cogs_dir, f)
         if isfile(file_path):
-            logger.debug('\t ├── found module {} at {}'.format(f, file_path))
+            logger.debug('├── found module {} at {}'.format(f, file_path))
             module = f.replace('.py', '')
             module_list.append(module)
 
     logger.info('start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:
         try:
+            cogs_module_path = 'cogs'
             module = cogs_module_path + '.' + extension
             logger.debug('loading module: {}'.format(module))
             bot.load_extension(module)

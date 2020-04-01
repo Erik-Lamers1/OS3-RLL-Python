@@ -91,7 +91,7 @@ async def on_ready():
         if isfile(file_path):
             logger.debug('\t ├── found module {} at {}'.format(f, file_path))
             module = f.replace('.py', '')
-            module_list += module
+            module_list.append(module)
 
     logger.info('start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:

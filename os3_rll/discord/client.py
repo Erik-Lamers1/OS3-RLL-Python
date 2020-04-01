@@ -83,8 +83,15 @@ async def on_ready():
     logger.info('{}(id: {})'.format(guild.name, guild.id))
 
     logger.debug('loading modules from module path - {}'.format(cogs_module_path))
-    logger.debug('finding modules at filesystem path - {}'.format(cogs_dir))
-    module_list = [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
+    logger.debug('loading modules from filesystem path - {}'.format(cogs_dir))
+    #module_list = [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]
+    for f in listdir(cogs_dir):
+        file_path = join(cogs_dir, f)
+        if isfile(file_path):
+            logger.debug('\t ├── found module {} at {}'.format(f, file_path))
+            module = f.replace('.py', '')
+            logger.debug('adding module {}'.format(module))
+            module_list += module
 
     logger.info('start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:

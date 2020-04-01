@@ -94,9 +94,9 @@ async def on_ready():
             module_list.append(module)
 
     logger.info('start loading modules {}'.format(', '.join(module_list)))
+    cogs_module_path = 'cogs'
     for extension in module_list:
         try:
-            cogs_module_path = 'cogs'
             module = cogs_module_path + '.' + extension
             logger.debug('loading module: {}'.format(module))
             bot.load_extension(module)

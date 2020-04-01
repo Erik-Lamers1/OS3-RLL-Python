@@ -68,6 +68,10 @@ class Player:
             return db.fetchone()[0]
 
     @property
+    def id(self):
+        return self._id
+
+    @property
     def name(self):
         return self._name
 

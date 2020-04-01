@@ -1,7 +1,8 @@
 from logging import getLogger
-from time import time
+from datetime import datetime
 
 from os3_rll.models.db import Database
+from os3_rll.models.challenge import ChallengeException
 from os3_rll.actions.player import Player
 
 logger = getLogger(__name__)
@@ -40,24 +41,35 @@ def update_player_rank(player, r):
     db.execute('UPDATE users SET rank={} WHERE id={}'.format(r, player.id))
 
 
-def do_player_sanity_check(p1, p2):
+def do_challenge_sanity_check(p1, p2):
+    """
+    Preform checks for a new challenge to be created
+
+    param os3_rll.models.player.Player() p1: The player model for player 1
+    param os3_rll.models.player.Player() p2: The player model for player 2
+    raises ChallengeException on sanity check failure
+    """
     if p1.challenged:
-        raise Exception('{} is already challenged'.format(p1))
+        raise ChallengeException('{} is already challenged'.format(p1.gamertag))
 
     if p2.challenged:
-        raise Exception('{} is already challenged'.format(p2))
+        raise ChallengeException('{} is already challenged'.format(p2.gamertag))
 
     # Check if the rank of player 1 is lower than the rank of player 2:
     if p1.rank < p2.rank:
-        raise Exception('The rank of {} is lower than of {}'.format(p1, p2))
+        raise ChallengeException('The rank of {} is lower than of {}'.format(p1.gamertag, p2.gamertag))
 
     # Check if the ranks are the same; this should not happen
     if p1.rank == p2.rank:
-        raise Exception("The ranks of both players are the same. This should not happen. EVERYBODY PANIC!!!")
+        raise ChallengeException(
+            "The ranks of both player {} and player {} are the same. This should not happen. EVERYBODY PANIC!!!".format(
+                p1.gamertag, p2.gamertag
+            )
+        )
 
     # Check if the timeout of player 1 has expired
-    if p1.timeout > int(time()):
-        raise Exception("The timeout counter of {} is still active".format(p1))
+    if p1.timeout > datetime.now():
+        raise ChallengeException("The timeout counter of {} is still active".format(p1.gamertag))
 
 
 def create_challenge_entry(p1, p2):

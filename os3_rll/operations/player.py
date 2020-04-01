@@ -43,5 +43,3 @@ def update_rank_of_player_cascading(player, rank):
                     _update_rank_of_player_cascading(other_player, other_rank+1)
 
         _update_rank_of_player_cascading(player, rank)
-
-

@@ -3,6 +3,7 @@ from logging import getLogger
 from hashlib import sha256
 
 from os3_rll.models.db import Database
+from os3_rll.operations.utils import get_max_rank
 
 logger = getLogger(__name__)
 
@@ -81,6 +82,9 @@ class Player:
 
     @property
     def rank(self):
+        if self._new:
+            # When creating a new player we set the rank to the highest value plus 1
+            self._rank = get_max_rank() + 1
         return self._rank
 
     @rank.setter
@@ -210,8 +214,15 @@ class Player:
             self._discord = self._gamertag
         logger.info('Inserting new player into DB')
         self.db.execute_prepared_statement(
-            'INSERT INTO users SET name=%s, gamertag=%s, discord=%s, password=%s, timeout=%s',
-            (self._name, self._gamertag, self._discord, self._password, self._timeout)
+            'INSERT INTO users SET name=%s, gamertag=%s, discord=%s, rank=%s, password=%s, timeout=%s',
+            (
+                self._name,
+                self._gamertag,
+                self._discord,
+                self.rank,
+                self._password,
+                self._timeout
+            )
         )
 
     def _check_row_count(self, rowcount=1):

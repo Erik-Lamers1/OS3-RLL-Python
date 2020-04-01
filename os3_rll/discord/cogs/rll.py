@@ -3,9 +3,11 @@ import random
 from discord.ext import commands
 from logging import getLogger
 from os3_rll.conf import settings
+from os3_rll.actions.challenge import create_challenge, complete_challenge
 from os3_rll.actions import stub
-from os3_rll.discord import utils
-from os3_rll.discord.annoucements.challenge import announce_challenge
+from os3_rll.discord.utils import not_implemented
+from os3_rll.discord import annoucements
+from os3_rll.operations.challenge import get_player_objects_from_complete_challenge_info
 
 logger = getLogger(__name__)
 
@@ -13,35 +15,6 @@ logger = getLogger(__name__)
 class RLL(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command(pass_context=True)
-    async def hi(self, ctx, *args):
-        """Say hi to the bot, maybe it'll greet you nicely."""
-        logger.debug('bot.command.hi: called with {} arguments - {}'.format(len(args), ', '.join(args)))
-        res = 'Hi {}\n'.format(ctx.author.mention)
-        responses = ["How are you doing today? Wait that's retorical, I am a bot I do not care.\n",
-                     "I was just looking at your rank. Did you know that you suck at rocket league? I heard some guy "
-                     "SquishyMuffinz is best.\n",
-                     "Please leave me alone. I am randomizing the rankings database to mess with Mr.Vin.\n",
-                     "Due to COVID-19 I've had to reimplement the transport protocol from QUIC to plain UDP to avoid "
-                     "handshakes.\n",
-                     "Please do not bother me. I am looking into this Markov Chain theory. It should be able to give "
-                     "me "
-                     "more human like responses.",
-                     "What are you doing here? LOL, your rank is so low you should practice uninstall.\n",
-                     "You know what's so great about COVID-19? I can't get it, I get other bugs though.\n"]
-        res += random.choice(responses)
-        await ctx.send(res)
-
-    @commands.command(pass_context=True)
-    async def announce(self, ctx, p2: discord.Member):
-        """
-        Test call to announce a challenge.
-        param discord.Member
-        """
-        logger.debug('bot.command.announce: called with {} - {}'.format(p2.name, p2))
-        res = announce_challenge(ctx.author, p2)
-        await ctx.send(res['content'], embed=res['embed'])
 
     @commands.command(pass_context=True)
     async def get_ranking(self, ctx):
@@ -61,38 +34,42 @@ class RLL(commands.Cog):
         await ctx.send(stub.test_call_int(""))
 
     @commands.command(pass_context=True)
-    async def what(self, ctx, *args):
-        """
-        Allows you to ask a random question to the bot.
-        """
-        logger.debug('bot.command.what: called with {} arguments - {}'.format(len(args), ', '.join(args)))
-        await ctx.send(stub.test_call_str(""))
-
-    @commands.command(pass_context=True)
-    async def website(self, ctx):
-        """
-        Points you to the website of the Rocket-League-Ladder.
-        """
-        logger.debug('bot.command.website: called')
-        await ctx.send('{} you can find the website at {}'.format(ctx.author.mention, settings.WEBSITE))
-
-    @commands.command(pass_context=True)
     async def get_challenge(self, ctx):
         """Gives your current challenge deadline."""
         logger.debug('bot.command.get_challenge: called')
         await ctx.send(utils.not_implemented())
 
     @commands.command(pass_context=True)
-    async def create_challenge(self, ctx, *args):
-        """Creates a challenge between you and who you mention. """
-        logger.debug('bot.command.create_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
-        await ctx.send(utils.not_implemented())
+    async def create_challenge(self, ctx, p: discord.Member):
+        """
+        Creates a challenge between you and who you mention.
+        param discord.Member
+        """
+        p1 = str(ctx.author.name + "#" + str(ctx.author.discriminator))
+        p2 = str(p.name + "#" + str(p.discriminator))
+        logger.debug('creating challenge between {} and {}'.format(p1, p2))
+        challenge.create_challenge(ctx.author, p2)
+        announcement = announcements.challenge.announce_challenge(ctx.author, p)
+        await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)
-    async def complete_challenge(self, ctx, *args):
+    async def complete_challenge(self, ctx, str : match_results):
         """Completes the challenge you are parcitipating in."""
-        logger.debug('bot.command.complete_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
-        await ctx.send(utils.not_implemented())
+        requester = ctx.author.name + "#" + str(ctx.author.discriminator)
+        logger.debug('complete_challenge requested by {}'.format(requester))
+        challenger, defender = get_player_objects_from_complete_challenge_info(requester)
+        winner_id = complete_challenge(challenger, defender, match_results)
+        name = None
+        disc = None
+        if challenger.id == winner_id:
+            name, disc = challenger.discord.split('#')
+        elif defender.id == winner_id:
+            name, disc = defender.discord.split('#')
+        else:
+            raise ValueError
+        winner = discord.utils.get(ctx.message.channel.guild_members, name=name, discriminator=disc)
+        announcement = announcement.challenger.announce_winner()
+        await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)
     async def reset_challenge(self, ctx, *args):

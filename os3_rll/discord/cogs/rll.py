@@ -21,7 +21,7 @@ class RLL(commands.Cog):
         """
         Returns the current top 5 ranking.
         """
-        logger.debug('bot.command.get_ranking: called')
+        logger.debug('called')
         res = stub.test_call_list("")
         await ctx.send(res)
 
@@ -30,13 +30,13 @@ class RLL(commands.Cog):
         """
         Returns the number of active challenges.
         """
-        logger.debug('bot.command.get_active_challenges: called')
+        logger.debug('called')
         await ctx.send(stub.test_call_int(""))
 
     @commands.command(pass_context=True)
     async def get_challenge(self, ctx):
         """Gives your current challenge deadline."""
-        logger.debug('bot.command.get_challenge: called')
+        logger.debug('called')
         await ctx.send(utils.not_implemented())
 
     @commands.command(pass_context=True)
@@ -53,7 +53,7 @@ class RLL(commands.Cog):
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)
-    async def complete_challenge(self, ctx, str : match_results):
+    async def complete_challenge(self, ctx, match_results : str):
         """Completes the challenge you are parcitipating in."""
         requester = ctx.author.name + "#" + str(ctx.author.discriminator)
         logger.debug('complete_challenge requested by {}'.format(requester))
@@ -74,7 +74,7 @@ class RLL(commands.Cog):
     @commands.command(pass_context=True)
     async def reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
-        logger.debug('bot.command.reset_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
+        logger.debug('called with {} arguments - {}'.format(len(args), ', '.join(args)))
         await ctx.send(utils.not_implemented())
 
 

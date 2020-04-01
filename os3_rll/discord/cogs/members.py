@@ -36,7 +36,7 @@ class Members(commands.Cog):
         """
         Is Mr. Vin cool?
         """
-        await ctx.send('Yes, Mr. Vin is cool, because he is my developer.')
+        await ctx.send('No, Mr. Vin is not cool, he is a lazy f*ck.')
 
     @cool.command(pass_context=True, name='SyntheticOxygen')
     async def _syntheticoxygen(self, ctx):
@@ -50,16 +50,16 @@ class Members(commands.Cog):
         """
         Is Pandabeer cool?
         """
-        await self.bot.say('Yes, Pandabeer is cool, because he is my developer.')
+        await ctx.send('Yes, Pandabeer is cool, because he is my developer.')
 
     @cool.command(pass_context=True, name='wilmar446')
     async def _wilmar446(self):
         """
         Is wilmar446 cool?
         """
-        await self.bot.say('No, that motherfucker is just a toxic asshole.')
+        await ctx.send('No, that motherfucker is just a toxic asshole.')
 
 
 def setup(bot):
     bot.add_cog(Members(bot))
-    logger.debug('{} added to bot {}'.format(__name__, bot))
+    logger.debug('{} added to bot {}'.format(bot.user))

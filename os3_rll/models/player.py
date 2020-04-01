@@ -57,13 +57,15 @@ class Player:
         return self
 
     @staticmethod
-    def get_player_id_by_gamertag(gamertag):
+    def get_player_id_by_username(username, discord_name=False):
         """
-        Use this function to get the player id from a gamertag
-        param str gamertag: The gamertag to search for
+        Use this function to get the player id from a username. This can either be a gamertag or a discord_name
+        param str username: The username to search for
+        param bool discord_name: Search for discord_name instead of gamertag
         """
+        row_name = 'discord' if discord_name else 'gamertag'
         with Database() as db:
-            db.execute_prepared_statement('SELECT id FROM users WHERE gamertag=%s', (gamertag,))
+            db.execute_prepared_statement('SELECT id FROM users WHERE {}=%s'.format(row_name), (username,))
             if db.rowcount != 1:
                 raise PlayerException('Player not found, or to many players found')
             return db.fetchone()[0]

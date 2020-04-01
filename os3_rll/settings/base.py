@@ -15,7 +15,7 @@ LOGGING = {
     'formatters': {
         'console': {
             '()': 'os3_rll.utils.logging.formatters.ConsoleFormatter',
-            'fmt': '%(asctime)s %(name)s [%(levelname)s] %(message)s',
+            'fmt': '%(asctime)s [%(name)8s] [%(levelname)s] %(message)s',
             'colored': sys.stderr.isatty,  # StreamHandler uses stderr by default
         },
         'syslog': {

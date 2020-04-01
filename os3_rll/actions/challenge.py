@@ -10,20 +10,21 @@ from os3_rll.operations.player import update_rank_of_player_cascading
 logger = getLogger(__name__)
 
 
-def create_challenge(p1, p2):
+def create_challenge(p1, p2, search_by_discord_name=True):
     """
     Create a challenge between p1 and p2. Where p1 is the one challenging and p2 is the one defending
 
     param str/int p1: The id or gamertag of p1
     param str/int p2: The id or gamertag of p2
+    param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
     raises ChallengeException/PlayerException on error
     """
     logger.debug('Getting info for challenge creation between {} and {}'.format(p1, p2))
     # First check if gamertags were passed and convert them to player IDs
     if isinstance(p1, str):
-        p1 = Player.get_player_id_by_gamertag(p1)
+        p1 = Player.get_player_id_by_username(p1, discord_name=search_by_discord_name)
     if isinstance(p2, str):
-        p2 = Player.get_player_id_by_gamertag(p2)
+        p2 = Player.get_player_id_by_username(p2, discord_name=search_by_discord_name)
 
     # Get the player objects
     p1 = Player(p1)
@@ -51,21 +52,22 @@ def create_challenge(p1, p2):
     logger.info('Challenge between player {} and {} successfully created'.format(p1.gamertag, p2.gamertag))
 
 
-def complete_challenge(p1, p2, match_results):
+def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
     """
     Complete a challenge between two players
 
     param str/int p1: The id or gamertag of p1
     param str/int p2: The id or gamertag of p2
     param str match_results: The results of the games played between the two players, example "2-1 5-2"
+    param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
     raises: ChallengeException/PlayerException on error
     """
     logger.debug('Getting challenge info for challenge between player {} and {}'.format(p1, p2))
     # First check if gamertags were passed and convert them to player IDs
     if isinstance(p1, str):
-        p1 = Player.get_player_id_by_gamertag(p1)
+        p1 = Player.get_player_id_by_username(p1, discord_name=search_by_discord_name)
     if isinstance(p2, str):
-        p2 = Player.get_player_id_by_gamertag(p2)
+        p2 = Player.get_player_id_by_username(p2, discord_name=search_by_discord_name)
 
     logger.debug('Parsing challenge scores')
     p1_wins, p2_wins, p1_score, p2_score = process_completed_challenge_args(match_results)

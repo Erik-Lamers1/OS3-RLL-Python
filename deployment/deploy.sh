@@ -12,6 +12,9 @@ function set_env() {
 }
 
 function deploy() {
+    cd $project_dir
+    echo "cleaning pyc files..."
+    find . -name '*.pyc' -delete
     echo "deploying..."
     set_env
     git pull --no-edit
@@ -36,7 +39,6 @@ function clean_up() {
 }
 
 if [[ $1 == "prod" || $1 == "debug" ]]; then
-    cd $project_dir
     deploy
     start $1
 elif [[ $1 == "run_only" ]]; then

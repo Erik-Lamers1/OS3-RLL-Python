@@ -122,7 +122,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.CheckFailure):
         await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin.")
     else:
-        await ctx.send(bot.help())
+        await ctx.send(bot.help_command())
 
 
 async def post():

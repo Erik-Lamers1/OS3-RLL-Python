@@ -93,12 +93,9 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
             p1.db.execute(
                 'UPDATE users SET rank = rank + 1 WHERE rank >= {} AND rank < {}'.format(p2.rank, p1.rank)
             )
-            # player info will have changed, reload
-            p1.db.commit()
-            p1.reload_player_info()
             # Lastly give player 1 his new rank and reload player 2
             p1.rank = p2.rank
-            p2.reload_player_info()
+            p2.rank = p2.rank + 1
             # Update the player stats
             p1.wins = p1.wins + 1
             p2.losses = p2.losses + 1

@@ -5,7 +5,7 @@ from logging import getLogger
 from os3_rll.conf import settings
 from os3_rll.actions.challenge import create_challenge, complete_challenge
 from os3_rll.actions import stub
-from os3_rll.discord.utils import not_implemented
+from os3_rll.discord.utils import not_implemented, get_player
 from os3_rll.discord.annoucements.challenge import announce_challenge, announce_rankings
 from os3_rll.operations.challenge import get_player_objects_from_complete_challenge_info
 
@@ -61,14 +61,20 @@ class RLL(commands.Cog):
         winner_id = complete_challenge(challenger, defender, match_results)
         name = None
         disc = None
+        winner = None
+        loser = None
         if challenger.id == winner_id:
             name, disc = challenger.discord.split('#')
+            winner = challenger
+            loser = defender
         elif defender.id == winner_id:
             name, disc = defender.discord.split('#')
+            winner = defender
+            loser = challenger
         else:
             raise ValueError
         winner = discord.utils.get(ctx.message.channel.guild_members, name=name, discriminator=disc)
-        announcement = announce_winner()
+        announcement = announce_winner(get_player(winner.name), get_player(loser.name))
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)

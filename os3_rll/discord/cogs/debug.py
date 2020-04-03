@@ -52,6 +52,11 @@ class Debug(commands.Cog):
         announcement = announcements.challenge.announce_challenge(ctx.author, p)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
+
+    @commands.command(pass_context=True)
+    async def announce_rankings(self, ctx)
+    announcement = announcements.rankings.announce_rankings()
+
     @commands.command(pass_context=True)
     async def debug_reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""

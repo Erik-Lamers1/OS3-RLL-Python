@@ -45,6 +45,7 @@ class Player:
         self._new = True if self._id == 0 else False
         self.original = ()
         self.reload_player_info()
+        self._discord_member = get_player(self._discord) #ik had het eerst in je reload player info functie gedaan dat gind kapot iets met tuple index errors omdat je code kut is.
 
     def __enter__(self):
         return self
@@ -70,7 +71,6 @@ class Player:
         if not self._new:
             self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, \
                 self._timeout = self.get_player_info_from_db()
-            self._discord_member = get_player(self._discord)
         self.original = (
             self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged,
             self._timeout

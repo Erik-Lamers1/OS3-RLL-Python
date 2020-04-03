@@ -12,7 +12,7 @@ logger = getLogger(__name__)
 message_queue = queue.Queue()
 description = '''A competition manager bot. This bot manages the Rocket Leage ladder.'''
 
-# This directory specifies what extentions (cogs which is a command aggregate) the bot should load at startup.
+# This directory specifies what extensions (cogs which is a command aggregate) the bot should load at startup.
 cogs_dir = settings.COGS_DIR
 cogs_module_path = settings.COGS_DIR.replace("/", ".")
 

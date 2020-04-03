@@ -95,7 +95,8 @@ async def on_ready():
             logger.debug('loading module: {}'.format(module))
             bot.load_extension(module)
         except Exception as e:
-            logger.error('{} - {}'.format(type(e).__name__, e), exc_info=True)
+            logger.error('{} - {}'.format(type(e).__name__, e))
+            logger.error('Stack Trace', exc_info=True)
 
     logger.info('completed loading modules')
 
@@ -111,7 +112,8 @@ async def add_player(ctx, player: discord.Member):
 
 @bot.event
 async def on_command_error(ctx, error):
-    logger.error('bot.on_command_error: {} - {}'.format(type(error).__name__, error), exc_info=True)
+    logger.error('bot.on_command_error: {} - {}'.format(type(error).__name__, error))
+    logger.error('Stack Trace', exc_info=True)
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
     elif isinstance(error, commands.CommandInvokeError):

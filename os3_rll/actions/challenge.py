@@ -1,5 +1,6 @@
 from logging import getLogger
 from datetime import datetime, timedelta
+from copy import deepcopy
 
 from os3_rll.models.player import Player
 from os3_rll.models.challenge import Challenge, ChallengeException
@@ -86,7 +87,7 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
             c.p2_wins = p2_wins
             c.p1_score = p1_score
             c.p2_score = p2_score
-            winner = c.winner
+            winner = deepcopy(c.winner)
             c.save()
         if winner == p1.id:
             logger.info('Challenger has won the challenge updating ranks...')

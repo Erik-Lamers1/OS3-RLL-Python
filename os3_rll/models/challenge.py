@@ -142,6 +142,7 @@ class Challenge:
             raise ChallengeException("p2_wins can't be lower then 0")
         if wins == self.p1_wins:
             raise ChallengeException("p2_wins can't be equal to p1_wins")
+        self._p2_wins = wins
 
     @property
     def p1_score(self):
@@ -175,7 +176,7 @@ class Challenge:
                 self._winner = self._p1
             else:
                 self._winner = self._p2
-        return self._winner
+        return int(self._winner)
 
     @winner.setter
     def winner(self, winner):

@@ -53,7 +53,7 @@ class Debug(commands.Cog):
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)
-    async def reset_challenge(self, ctx, *args):
+    async def debug_reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
         logger.debug('bot.command.reset_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
         await ctx.send(utils.not_implemented())
@@ -61,4 +61,4 @@ class Debug(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Debug(bot))
-    logger.debug('{} added to bot {}'.format(__name__, bot))
+    logger.debug('{} added to bot {}'.format(__name__, bot.user))

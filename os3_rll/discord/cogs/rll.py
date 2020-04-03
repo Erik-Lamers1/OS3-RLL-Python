@@ -80,4 +80,4 @@ class RLL(commands.Cog):
 
 def setup(bot):
     bot.add_cog(RLL(bot))
-    logger.debug('{} added to bot {}'.format(__name__, bot))
+    logger.debug('{} added to bot {}'.format(__name__, bot.user))

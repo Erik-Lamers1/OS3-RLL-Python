@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from os3_rll.discord import utils
+from os3_rll.discord.utils import create_embed, get_player
 
 logger = getLogger(__name__)
 
@@ -23,7 +23,7 @@ def announce_challenge(p1, p2):
                  'colour': 2234352}
 
         message = {'content': "New Challenge!",
-                   'embed': utils.create_embed(embed)}
+                   'embed': create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine
         # client.message_queue.put(message)
@@ -40,7 +40,7 @@ def announce_rankings(ranks : dict):
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
-    sorted_ranks = {k: v for k, v in sorted(ranks.items(), key=lambda item: item[1])}
+    sorted_ranks = {get_player(k): v for k, v in sorted(ranks.items(), key=lambda item: item[1])}
     champion = next(iter(sorted_ranks.keys()))
     description = ""
 
@@ -53,8 +53,8 @@ def announce_rankings(ranks : dict):
                  'footer': "Become the best!",
                  'colour': 2234352}
 
-        message = {'content': "Current OS3 Rocket League Ladder leaderboard",
-                   'embed': utils.create_embed(embed)}
+        message = {'content': "Current OS3 Rocket League Ladder leaderboard:",
+                   'embed': create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine
         # client.message_queue.put(message)
@@ -62,7 +62,6 @@ def announce_rankings(ranks : dict):
         return message
     except TypeError:
         logger.error("Found NoneType Object for {}".format(ranks))
-
 
 
 def announce_winner(winner, loser):
@@ -82,7 +81,7 @@ def announce_winner(winner, loser):
                  'colour': 2234352}
 
         message = {'content': "Challenge Completed!",
-                   'embed': utils.create_embed(embed)}
+                   'embed': create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine
         # client.message_queue.put(message)

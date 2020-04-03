@@ -1,38 +1,17 @@
 import discord
+import re
 import random
 from os3_rll.conf import settings
 from os3_rll.discord import client
 from logging import getLogger
 
 logger = getLogger(__name__)
-
-help_table = {'hi': 'Sends a rude greeting.',
-              'announce': 'Sends a test announcement.',
-              'get_ranking': 'Gives a list of the top 5 ranked player.',
-              'get_active_challenges': 'Returns the number of active challenges.',
-              'what': 'Allows the user to ask a random question',
-              'website': 'Returns the website of the Rocket-League-Ladder.',
-              'get_challenge': 'Returns the challenge the calling player is participating in.',
-              'create_challenge': 'Creates a challenge.',
-              'complete_challenge': 'Completes a challenge; requires the score of each round',
-              'reset_challenge': 'Resets an active challenge.',
-              'help': 'Either returns this or insults the user.'
-              }
-
+discord_regex = re.compile('^.{2,32}#[0-9]{4}$')
 
 def not_implemented():
     developers = ['SyntheticOxygen', 'Mr. Vin', 'Mr. Vin', 'Mr. Vin', 'Mr. Vin', 'Pandabeer']
     developer = get_player(random.choice(developers))
     return 'This command is not finished because {} is lazy as f*ck'.format(developer.mention)
-
-
-def bot_help():
-    logger.debug('utils.bot_help: called')
-    res = 'This bot supports the following commands:\n'
-    for k, v in help_table.items():
-        res += '\t ${}  -  {}\n'.format(k, v)
-
-    return res
 
 
 def pebkak():
@@ -60,15 +39,22 @@ def get_player(p):
 
     if p.startswith('<@!'):
         player_id = p[3:-1]
-        logger.debug("bot.get_player: got a mention for player_id {}".format(player_id))
+        logger.debug("got a mention for player_id {}".format(player_id))
         for member in members:
-            logger.debug("bot.get_player: check mentions if {} == {}".format(member.id, player_id))
+            logger.debug("check mentions if {} == {}".format(member.id, player_id))
             if str(member.id) == player_id:
+                player = member
+                break
+    if discord_regex.match(p):
+        logger.debug("got a discord user name and discriminator {}".format())
+        for member in members:
+            logger.debug("check if {} == {0.name}#{0.discriminator}".format(p, member))
+            if member.name == p.split('#')[0] and str(member.discriminator) == p.split('#')[1]:
                 player = member
                 break
     else:
         for member in members:
-            logger.debug("bot.get_player: check name if {} == {}".format(member.name, p))
+            logger.debug("check name if {} == {}".format(member.name, p))
             if member.name == p:
                 player = member
                 break

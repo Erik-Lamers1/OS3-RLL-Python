@@ -1,58 +1,24 @@
-import time
-from os3_rll.models.db import Database
+from logging import getLogger
 
-db = Database()
+from os3_rll.models.db import Database, DBException
+
+logger = getLogger(__name__)
 
 
-class Player:
-    def __init__(self, gamertag):
-        playerinfo = Player.get_player_info(gamertag)
-        self.id = playerinfo['pid']
-        self.gamertag = gamertag
-        self.rank = playerinfo['rank']
-        self.challenged = playerinfo['challenged']
-        self.timeout = playerinfo['challenged']
+def get_player_ranking():
+    """
+    Gets the current player ranking from the DB
 
-    def create_challenge(self, p2):
-        opponent = Player(p2)
-        self.challenged = opponent.id
-        opponent.challenged = self.id
-
-    def get_rank(self):
-        return self.rank
-
-    def set_rank(self, rank):
-        # Write to database
-        self.rank = rank
-
-    def get_timeout(self):
-        return self.timeout
-
-    def set_timeout(self, t):
-        # Write to database
-        self.timeout = t
-
-    def clear_timeout(self):
-        self.timeout = int(time.time())
-
-    @staticmethod
-    def get_player_info(gamertag):
-        db.execute('SELECT id, gamertag, rank, challenged, UNIX_TIMESTAMP(timeout) FROM users WHERE gamertag="{}"'
-                   .format(gamertag))
-        res = db.fetchone()
-        return {"pid": res[0], "gamertag": res[1], "rank": res[2], "challenged": res[3], "timeout": res[4]}
-
-    @staticmethod
-    def get_gamertag_by_id(id):
-        db.execute('SELECT gamertag FROM users WHERE id={}'.format(id))
-        res = db.fetchone()
-        return res[0]
-
-    @staticmethod
-    def get_id_by_gamertag(gamertag):
-        db.execute('SELECT gamertag FROM users WHERE gamertag="{}"'.format(gamertag))
-        res = db.fetchone()
-        return res[0]
-
-    def __repr__(self):
-        return self.gamertag.__str__
+    returns dict: {str discord: int rank, ...}
+    """
+    players = {}
+    logger.info('Getting current player ranking from DB')
+    with Database() as db:
+        db.execute('SELECT discord, rank FROM users WHERE rank > 0 ORDER BY rank')
+        if db.rowcount == 0:
+            raise DBException('No players found')
+        rows = db.fetchall()
+        for row in rows:
+            # Fill the dict with discord => rank
+            players[row[0]] = row[1]
+    return players

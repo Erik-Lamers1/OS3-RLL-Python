@@ -176,7 +176,9 @@ class Challenge:
                 self._winner = self._p1
             else:
                 self._winner = self._p2
-        return int(self._winner)
+            return int(self._winner)
+        else:
+            return None
 
     @winner.setter
     def winner(self, winner):
@@ -279,6 +281,7 @@ class Challenge:
             )
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.force:
+        # Auto save on force, don't save if the challenge has been reset (no winner)
+        if self.force and self.winner:
             self.save()
         self.db.close()

@@ -41,17 +41,8 @@ class Player:
         self._password = None
         self.force = force  # Force save when closing
         self._new = True if self._id == 0 else False
-        if not self._new:
-            self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, \
-                self._timeout = self.get_player_info_from_db()
-        self.original = (
-            self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged,
-            self._timeout
-        )
-        if self._timeout:
-            self.timeout = datetime.fromtimestamp(self._timeout)
-        else:
-            self.timeout = datetime.now()
+        self.original = ()
+        self.reload_player_info()
 
     def __enter__(self):
         return self
@@ -69,6 +60,22 @@ class Player:
             if db.rowcount != 1:
                 raise PlayerException('Player not found, or to many players found')
             return db.fetchone()[0]
+
+    def reload_player_info(self):
+        """
+        Fills the local variables with info from the DB if needed and sets a timeout object
+        """
+        if not self._new:
+            self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, \
+                self._timeout = self.get_player_info_from_db()
+        self.original = (
+            self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged,
+            self._timeout
+        )
+        if self._timeout:
+            self.timeout = datetime.fromtimestamp(self._timeout)
+        else:
+            self.timeout = datetime.now()
 
     @property
     def id(self):

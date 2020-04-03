@@ -6,7 +6,6 @@ from os3_rll.models.player import Player
 from os3_rll.models.challenge import Challenge, ChallengeException
 from os3_rll.operations.challenge import do_challenge_sanity_check, process_completed_challenge_args
 from os3_rll.operations.utils import check_date_is_older_than_x_days
-from os3_rll.operations.player import update_rank_of_player_cascading
 
 logger = getLogger(__name__)
 
@@ -91,13 +90,22 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
             c.save()
         if winner == p1.id:
             logger.info('Challenger has won the challenge updating ranks...')
+            p1.rank = p2.rank
             p1.db.execute(
                 'UPDATE users SET rank = rank + 1 WHERE rank >= {} AND rank < {}'.format(p2.rank, p1.rank)
             )
-            p1.rank = p2.rank
+            p1.db.commit()
+            # Rank of p2 will have changed, reload the class
+            p2.reload_player_info()
+            # Update the player stats
+            p1.wins = p1.wins + 1
+            p2.losses = p2.losses + 1
         elif winner == p2.id:
             logger.info('Defender has won the challenge increasing timeout of {}'.format(p1.gamertag))
             p1.timeout = datetime.now() + timedelta(weeks=1)
+            # Update the player stats
+            p1.losses = p1.losses + 1
+            p2.wins = p2.wins + 1
         else:
             logger.error(
                 'Could not find winner id {} corresponding to any of the player IDs in this challenge, '

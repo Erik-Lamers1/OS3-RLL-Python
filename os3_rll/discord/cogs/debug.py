@@ -53,9 +53,9 @@ class Debug(commands.Cog):
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
 
-    @commands.command(pass_context=True)
-    async def announce_rankings(self, ctx)
-    announcement = announcements.rankings.announce_rankings()
+    #@commands.command(pass_context=True)
+    #async def announce_rankings(self, ctx)
+    #announcement = announcements.rankings.announce_rankings()
 
     @commands.command(pass_context=True)
     async def debug_reset_challenge(self, ctx, *args):

@@ -63,27 +63,27 @@ def announce_rankings(ranks : dict):
         logger.error("Found NoneType Object for {}".format(ranks))
 
 
-def announce_reset(p1, p2):
-    """Generates an announcement for the current rankings.
-       Params:
-           ranks: List of rankings, with {'gamertag':'rank'}
-       return:
-           Dictionary with content, title, description, footer and colour as keys.
-    """
-    sorted_ranks = {k: v for k, v in sorted(
-    try:
-        embed = {'title': "**{} is the current champion**".format(),
-                 'description': "This match should be played within one week or {} loses automatically.".format(
-                     p2.mention),
-                 'footer': "Good Luck!",
-                 'colour': 2234352}
-
-        message = {'content': "New Challenge!",
-                   'embed': utils.create_embed(embed)}
-
-        # use this if you want to post the message via the bot's background routine
-        # client.message_queue.put(message)
-        # use this to return it with the players request.
-        return message
-    except TypeError:
-        logger.error("Found NoneType Object for {}".format(ranks))
+#def announce_reset(p1, p2):
+#    """Generates an announcement for the current rankings.
+#       Params:
+#           ranks: List of rankings, with {'gamertag':'rank'}
+#       return:
+#           Dictionary with content, title, description, footer and colour as keys.
+#    """
+#    sorted_ranks = {k: v for k, v in sorted(
+#    try:
+#        embed = {'title': "**{} is the current champion**".format(),
+#                 'description': "This match should be played within one week or {} loses automatically.".format(
+#                     p2.mention),
+#                 'footer': "Good Luck!",
+#                 'colour': 2234352}
+#
+#        message = {'content': "New Challenge!",
+#                   'embed': utils.create_embed(embed)}
+#
+#        # use this if you want to post the message via the bot's background routine
+#        # client.message_queue.put(message)
+#        # use this to return it with the players request.
+#        return message
+#    except TypeError:
+#        logger.error("Found NoneType Object for {}".format(ranks))

@@ -37,7 +37,7 @@ class RLL(commands.Cog):
     async def get_challenge(self, ctx):
         """Gives your current challenge deadline."""
         logger.debug('called')
-        await ctx.send(utils.not_implemented())
+        await ctx.send(not_implemented())
 
     @commands.command(pass_context=True)
     async def create_challenge(self, ctx, p: discord.Member):
@@ -75,7 +75,7 @@ class RLL(commands.Cog):
     async def reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
         logger.debug('called with {} arguments - {}'.format(len(args), ', '.join(args)))
-        await ctx.send(utils.not_implemented())
+        await ctx.send(not_implemented())
 
 
 def setup(bot):

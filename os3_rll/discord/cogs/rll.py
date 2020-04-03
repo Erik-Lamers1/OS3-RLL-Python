@@ -6,7 +6,7 @@ from os3_rll.conf import settings
 from os3_rll.actions.challenge import create_challenge, complete_challenge
 from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented
-from os3_rll.discord import annoucements
+from os3_rll.discord.annoucements.challenge import announce_challenge, announce_rankings
 from os3_rll.operations.challenge import get_player_objects_from_complete_challenge_info
 
 logger = getLogger(__name__)
@@ -48,7 +48,7 @@ class RLL(commands.Cog):
         p1 = str(ctx.author.name + "#" + str(ctx.author.discriminator))
         p2 = str(p.name + "#" + str(p.discriminator))
         logger.debug('creating challenge between {} and {}'.format(p1, p2))
-        challenge.create_challenge(ctx.author, p2)
+        create_challenge(ctx.author, p2)
         announcement = announcements.challenge.announce_challenge(ctx.author, p)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
@@ -68,7 +68,7 @@ class RLL(commands.Cog):
         else:
             raise ValueError
         winner = discord.utils.get(ctx.message.channel.guild_members, name=name, discriminator=disc)
-        announcement = announcement.challenger.announce_winner()
+        announcement = announce_winner()
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)

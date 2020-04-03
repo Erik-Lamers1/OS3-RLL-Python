@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import queue
+import traceback
 from discord.ext import commands
 from logging import getLogger
 from os import listdir
@@ -94,7 +95,8 @@ async def on_ready():
             logger.debug('loading module: {}'.format(module))
             bot.load_extension(module)
         except Exception as e:
-            logger.error('{} - {}\n {}'.format(type(e).__name__, str(e), e.__traceback__))
+            #logger.error('{} - {}'.format(type(e).__name__, str(e), e.__traceback__.print))
+            logger.error('{} - {}'.format(exc_info=(type(e), str(e), e.__traceback__)))
 
     logger.info('completed loading modules')
 

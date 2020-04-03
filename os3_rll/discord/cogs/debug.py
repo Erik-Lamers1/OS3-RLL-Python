@@ -56,7 +56,7 @@ class Debug(commands.Cog):
     async def debug_reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
         logger.debug('bot.command.reset_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
-        await ctx.send(utils.not_implemented())
+        await ctx.send(not_implemented())
 
 
 def setup(bot):

@@ -121,3 +121,60 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
         p2.save()
         logger.info('Challenge between {} and {} successfully completed'.format(p1.gamertag, p2.gamertag))
     return winner
+
+
+def reset_challenge(p1, p2, search_by_discord_name=True):
+    """
+    Resets the last challenge between two players
+
+    param str/int p1: The id or gamertag of p1
+    param str/int p2: The id or gamertag of p2
+    param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
+    raises: ChallengeException/PlayerException on error
+    """
+    logger.debug('Getting challenge info for challenge between player {} and {}'.format(p1, p2))
+    # First check if gamertags were passed and convert them to player IDs
+    if isinstance(p1, str):
+        p1 = Player.get_player_id_by_username(p1, discord_name=search_by_discord_name)
+    if isinstance(p2, str):
+        p2 = Player.get_player_id_by_username(p2, discord_name=search_by_discord_name)
+
+    logger.debug('Getting Player and Challenge objects to be reset')
+    with Player(p1) as p1, Player(p2) as p2:
+        c = Challenge.get_latest_challenge_from_player(p1.id, p2.id, should_be_completed=True)
+        # Get the challenge
+        with Challenge(c) as c:
+            if check_date_is_older_than_x_days(c.date, 7):
+                raise ChallengeException('Challenge {} is older then a week and cannot be reset'.format(c.id))
+            logger.info('Resetting challenge {} between {} and {}'.format(c.id, p1.gamertag, p2.gamertag))
+            if c.winner == p1.id:
+                p1.wins = p1.wins - 1
+                p2.losses = p2.losses - 1
+                if p1.rank < p2.rank:
+                    logger.info('Resetting ranks')
+                    # Simply swap the ranks
+                    p1.rank, p2.rank = p2.rank, p1.rank
+            elif c.winner == p2.id:
+                p2.wins = p2.wins - 1
+                p1.losses = p2.losses - 1
+                if p1.timeout > datetime.now():
+                    logger.info('Resetting timeout of player {}'.format(p1.gamertag))
+                    p1.timeout = datetime.now()
+            else:
+                logger.error(
+                    'Could not find winner id {} corresponding to any of the player IDs in this challenge, '
+                    'throwing exception'.format(c.winner)
+                )
+                raise ChallengeException(
+                    'Challenge winner not found in both player IDs, this is a programming error. '
+                    'Please contact an admin.'
+                )
+            # Now for the actual reset
+            c.force = True
+            c.reset()
+        logger.info('Setting players challenged state to True')
+        p1.challenged = True
+        p2.challenged = True
+        p1.save()
+        p2.save()
+        logger.info('Challenge between {} and {} reset'.format(p1.gamertag, p2.gamertag))

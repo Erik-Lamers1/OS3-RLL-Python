@@ -113,7 +113,8 @@ async def add_player(ctx, player: discord.Member):
 @bot.event
 async def on_command_error(ctx, error):
     logger.error('bot.on_command_error: {} - {}'.format(type(error).__name__, error))
-    logger.error('Stack Trace', exc_info=True)
+    if error.__traceback__ is not None:
+        logger.error('Stack Trace', exc_info=True)
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
     elif isinstance(error, commands.CommandInvokeError):

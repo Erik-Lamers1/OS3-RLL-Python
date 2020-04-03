@@ -46,14 +46,14 @@ class Members(commands.Cog):
         await ctx.send('Yes, SyntheticOxygen is cool, because he is my developer.')
 
     @cool.command(pass_context=True, name='Pandabeer')
-    async def _pandabeer(self):
+    async def _pandabeer(self, ctx):
         """
         Is Pandabeer cool?
         """
         await ctx.send('Yes, Pandabeer is cool, because he is my developer.')
 
     @cool.command(pass_context=True, name='wilmar446')
-    async def _wilmar446(self):
+    async def _wilmar446(self, ctx):
         """
         Is wilmar446 cool?
         """

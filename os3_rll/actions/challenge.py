@@ -91,7 +91,10 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
             c.save()
         if winner == p1.id:
             logger.info('Challenger has won the challenge updating ranks...')
-            update_rank_of_player_cascading(p1.id, p2.rank)
+            p1.db.execute(
+                'UPDATE users SET rank = rank + 1 WHERE rank >= {} AND rank < {}'.format(p2.rank, p1.rank)
+            )
+            p1.rank = p2.rank
         elif winner == p2.id:
             logger.info('Defender has won the challenge increasing timeout of {}'.format(p1.gamertag))
             p1.timeout = datetime.now() + timedelta(weeks=1)

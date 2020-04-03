@@ -21,7 +21,7 @@ class RLL(commands.Cog):
         """
         Returns the current top 5 ranking.
         """
-        logger.debug('called')
+        logger.debug('get_ranking: called')
         res = stub.test_call_list("")
         await ctx.send(res)
 
@@ -30,13 +30,13 @@ class RLL(commands.Cog):
         """
         Returns the number of active challenges.
         """
-        logger.debug('called')
+        logger.debug('get_active_challenges: called')
         await ctx.send(stub.test_call_int(""))
 
     @commands.command(pass_context=True)
     async def get_challenge(self, ctx):
         """Gives your current challenge deadline."""
-        logger.debug('called')
+        logger.debug('get_challenge: called')
         await ctx.send(not_implemented())
 
     @commands.command(pass_context=True)
@@ -59,22 +59,17 @@ class RLL(commands.Cog):
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_complete_challenge_info(requester)
         winner_id = complete_challenge(challenger, defender, match_results)
-        name = None
-        disc = None
         winner = None
         loser = None
         if challenger.id == winner_id:
-            name, disc = challenger.discord.split('#')
             winner = challenger
             loser = defender
         elif defender.id == winner_id:
-            name, disc = defender.discord.split('#')
             winner = defender
             loser = challenger
         else:
             raise ValueError
-        winner = discord.utils.get(ctx.message.channel.guild_members, name=name, discriminator=disc)
-        announcement = announce_winner(get_player(winner.name), get_player(loser.name))
+        announcement = announce_winner(winner.discord_member, loser.discord_member)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)

@@ -33,6 +33,15 @@ def create_embed(data):
 
 
 def get_player(p):
+    """ Get player by name/mention
+        params:
+            Can either be a string with the nickname
+            or the mention: <@00000000000001>
+            or the full discord name: NickName#0001
+
+        returns: discord.Member
+    """
+
     # Iterates over all the members the bot can see. (have to be members of guilds that it is connected too)
     members = client.bot.get_all_members()
     player = None

@@ -2,6 +2,7 @@ from datetime import datetime
 from logging import getLogger
 from hashlib import sha256
 
+from os3_rll.discord.utils import get_player
 from os3_rll.models.db import Database
 from os3_rll.operations.utils import get_max_rank
 
@@ -34,6 +35,7 @@ class Player:
         self._rank = 0
         self._gamertag = None
         self._discord = ''
+        self._discord_member = None
         self._wins = 0
         self._losses = 0
         self._challenged = 0
@@ -68,6 +70,7 @@ class Player:
         if not self._new:
             self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, \
                 self._timeout = self.get_player_info_from_db()
+            self._discord_member = get_player(self._discord)
         self.original = (
             self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged,
             self._timeout
@@ -117,6 +120,10 @@ class Player:
     @discord.setter
     def discord(self, discord):
         self._discord = discord
+
+    @property
+    def discord_member(self):
+        return self._discord_member
 
     @property
     def wins(self):

@@ -6,6 +6,10 @@ from os3_rll.conf import settings
 logger = getLogger(__name__)
 
 
+class DBException(pymysql.MySQLError):
+    pass
+
+
 class Database:
     """
     This class will make a connection to the Database defined in the settings

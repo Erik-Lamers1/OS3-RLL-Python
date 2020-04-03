@@ -90,11 +90,10 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
             c.save()
         if winner == p1.id:
             logger.info('Challenger has won the challenge updating ranks...')
-            p1.rank = p2.rank
             p1.db.execute(
                 'UPDATE users SET rank = rank + 1 WHERE rank >= {} AND rank < {}'.format(p2.rank, p1.rank)
             )
-            p1.db.commit()
+            p1.rank = p2.rank
             # Rank of p2 will have changed, reload the class
             p2.reload_player_info()
             # Update the player stats

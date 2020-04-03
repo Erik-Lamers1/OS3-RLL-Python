@@ -95,7 +95,7 @@ async def on_ready():
             logger.debug('loading module: {}'.format(module))
             bot.load_extension(module)
         except Exception as e:
-            logger.error('{} - {}'.format(type(error).__name__, error), exc_info=True)
+            logger.error('{} - {}'.format(type(e).__name__, e), exc_info=True)
 
     logger.info('completed loading modules')
 

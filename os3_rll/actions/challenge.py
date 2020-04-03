@@ -6,6 +6,7 @@ from os3_rll.models.player import Player
 from os3_rll.models.challenge import Challenge, ChallengeException
 from os3_rll.operations.challenge import do_challenge_sanity_check, process_completed_challenge_args
 from os3_rll.operations.utils import check_date_is_older_than_x_days
+from os3_rll.models.db import Database
 
 logger = getLogger(__name__)
 
@@ -177,3 +178,15 @@ def reset_challenge(p1, p2, search_by_discord_name=True):
         p1.save()
         p2.save()
         logger.info('Challenge between {} and {} reset'.format(p1.gamertag, p2.gamertag))
+
+
+def check_uncompleted_challenges():
+    """
+    :return:
+    """
+    with Database() as db:
+        db.execute('SELECT id, date, p1, p2 FROM challenges WHERE winner is NULL')
+        challenges = db.fetchall()
+        for challenge in challenges:
+            if check_date_is_older_than_x_days(challenge[1], 7):
+                complete_challenge(challenge[2], challenge[3], "1-0")

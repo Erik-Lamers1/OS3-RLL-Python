@@ -49,7 +49,7 @@ class RLL(commands.Cog):
         p2 = str(p.name + "#" + str(p.discriminator))
         logger.debug('creating challenge between {} and {}'.format(p1, p2))
         create_challenge(p1, p2)
-        announcement = announcements.challenge.announce_challenge(ctx.author, p)
+        announcement = announce_challenge(ctx.author, p)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)

@@ -8,7 +8,7 @@ from os3_rll.actions.player import get_player_ranking, get_player_stats
 from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented, get_player
 from os3_rll.discord.announcements.challenge import announce_challenge
-from os3_rll.discord.announcements.player import announce_rankings
+from os3_rll.discord.announcements.player import announce_rankings, announce_stats
 from os3_rll.operations.challenge import get_player_objects_from_complete_challenge_info
 
 logger = getLogger(__name__)

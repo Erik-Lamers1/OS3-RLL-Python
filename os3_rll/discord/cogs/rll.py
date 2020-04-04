@@ -26,7 +26,17 @@ class RLL(commands.Cog):
         logger.debug('get_ranking: called by'.format(ctx.message.author))
         rankings = get_player_ranking() # returns dict with {'discordtag':'rank'}
         announcement = announce_rankings(rankings)
-        await ctx.send(announcement['content'], announcement['embed'])
+        await ctx.send(announcement['content'], embed=announcement['embed'])
+
+    @commands.command(pass_context=True)
+    async def get_stats(self, ctx):
+        """
+        Returns the current player stats.
+        """
+        logger.debug('get_stats: called by'.format(ctx.message.author))
+        stats = get_player_stats()
+        announcement = announce_stats(stats)
+        await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)
     async def get_active_challenges(self, ctx):

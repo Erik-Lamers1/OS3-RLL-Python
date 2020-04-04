@@ -15,7 +15,7 @@ def not_implemented():
 
 
 def pebkak():
-    responses = ['I cannot believe what a stupid FUCK you really are...\n Please do kill -9 $(pgrep yourself)\n',
+    responses = ['I cannot believe what a stupid DUCK you really are...\n Please do kill -9 $(pgrep yourself)\n',
                  'Is it that difficult to type, do you have butter fingers?\n',
                  'OH MY GOD you are stupid, please rm -rf ./your_life\n',
                  "WHAHAHAHAHAhahahaHAHAHAA, seriously you can't even operate a normal discord bot.\n"]
@@ -39,7 +39,7 @@ def get_player(p):
             or the mention: <@00000000000001>
             or the full discord name: NickName#0001
 
-        returns: discord.Member
+        returns: discord.Member or None
     """
 
     # Iterates over all the members the bot can see. (have to be members of guilds that it is connected too)

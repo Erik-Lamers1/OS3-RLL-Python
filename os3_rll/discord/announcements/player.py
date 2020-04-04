@@ -69,7 +69,7 @@ def announce_stats(stats : dict):
 
     try:
         embed = {'title': "** Player statistics **",
-                 'description': "{}".format(description),
+                 'description': "```{}```".format(description),
                  'footer': "Knowing better is doing better!",
                  'colour': 2234352}
 

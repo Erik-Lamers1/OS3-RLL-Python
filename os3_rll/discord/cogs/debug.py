@@ -1,5 +1,6 @@
 import discord
 import random
+import base64
 from discord.ext import commands
 from logging import getLogger
 from os3_rll.conf import settings
@@ -62,6 +63,52 @@ class Debug(commands.Cog):
         """Resets the challenge you are parcitipating in."""
         logger.debug('bot.command.reset_challenge: called with {} arguments - {}'.format(len(args), ', '.join(args)))
         await ctx.send(not_implemented())
+
+
+    @commands.command(pass_context=True, hidden=True)
+    async def pickachu_i_choose_you(self, ctx):
+        """Whut?... It's super effective."""
+        n25 = ('ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLC0u'
+            'CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF8ufCAg'
+            'JwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLicgIHwg'
+            'LwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICwnICAgIHwn'
+            'CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvICAgICAgLwog'
+            'ICAgICAgICAgICAgICAgICAgICAgIF8uLi0tLS0iIi0tLS4nICAgICAgLwogXy4u'
+            'Li4uLS0tLS0tLS0tLi4uLC0iIiAgICAgICAgICAgICAgICAgICwnCiBgLS5fICBc'
+            'ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvCiAgICAgYC0uK18gICAg'
+            'ICAgICAgICBfXyAgICAgICAgICAgLC0tLiAuCiAgICAgICAgICBgLS4uXyAgICAg'
+            'LjogICkuICAgICAgICAoYC0tInwgXAogICAgICAgICAgICAgICA3ICAgIHwgYCIg'
+            'fCAgICAgICAgIGAuLi4nICBcCiAgICAgICAgICAgICAgIHwgICAgIGAtLScgICAg'
+            'ICcrIiAgICAgICAgLCIuICwiIi0KICAgICAgICAgICAgICAgfCAgIF8uLi4gICAg'
+            'ICAgIC5fX19fICAgICB8IHwvICAgICcKICAgICAgICAgIF8uICAgfCAgLiAgICBg'
+            'LiAgJy0tIiAgIC8gICAgICBgLi8gICAgIGoKICAgICAgICAgXCcgYC0ufCAgJyAg'
+            'ICAgfCAgIGAuICAgLyAgICAgICAgLyAgICAgLwogICAgICAgICAnICAgICBgLS4g'
+            'YC0tLSIgICAgICBgLSIgICAgICAgIC8gICAgIC8KICAgICAgICAgIFwgICAgICAg'
+            'YC4gICAgICAgICAgICAgICAgICBfLCcgICAgIC8KICAgICAgICAgICBcICAgICAg'
+            'ICBgICAgICAgICAgICAgICAgICAgICAgICAgLgogICAgICAgICAgICBcICAgICAg'
+            'ICAgICAgICAgICAgICAgICAgICAgICAgICBqCiAgICAgICAgICAgICBcICAgICAg'
+            'ICAgICAgICAgICAgICAgICAgICAgICAgLwogICAgICAgICAgICAgIGAuICAgICAg'
+            'ICAgICAgICAgICAgICAgICAgICAgLgogICAgICAgICAgICAgICAgKyAgICAgICAg'
+            'ICAgICAgICAgICAgICAgICAgXAogICAgICAgICAgICAgICAgfCAgICAgICAgICAg'
+            'ICAgICAgICAgICAgICAgIEwKICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAg'
+            'ICAgICAgICAgICAgICB8CiAgICAgICAgICAgICAgICB8ICBfIC8sICAgICAgICAg'
+            'ICAgICAgICAgICAgfAogICAgICAgICAgICAgICAgfCB8IEwpJy4uICAgICAgICAg'
+            'ICAgICAgICAgIHwKICAgICAgICAgICAgICAgIHwgLiAgICB8IGAgICAgICAgICAg'
+            'ICAgICAgICB8CiAgICAgICAgICAgICAgICAnICBcJyAgIEwgICAgICAgICAgICAg'
+            'ICAgICAgJwogICAgICAgICAgICAgICAgIFwgIFwgICB8ICAgICAgICAgICAgICAg'
+            'ICAgagogICAgICAgICAgICAgICAgICBgLiBgX18nICAgICAgICAgICAgICAgICAv'
+            'CiAgICAgICAgICAgICAgICBfLC4tLS4tLS0uLi4uLi4uLl9fICAgICAgLwogICAg'
+            'ICAgICAgICAgICAtLS0uLCctLS1gICAgICAgICAgfCAgIC1qIgogICAgICAgICAg'
+            'ICAgICAgLi0nICAnLi4uLl9fICAgICAgTCAgICB8CiAgICAgICAgICAgICAgIiIt'
+            'LS4uICAgIF8sLScgICAgICAgXCBsfHwKICAgICAgICAgICAgICAgICAgLC0nICAu'
+            'Li4uLi0tLS0tLS4gYHx8JwogICAgICAgICAgICAgICBfLCcgICAgICAgICAgICAg'
+            'ICAgLwogICAgICAgICAgICAgLCcgICAgICAgICAgICAgICAgICAvCiAgICAgICAg'
+            'ICAgICctLS0tLS0tLS0rLSAgICAgICAgLwogICAgICAgICAgICAgICAgICAgICAv'
+            'ICAgICAgICAgLwogICAgICAgICAgICAgICAgICAgLicgICAgICAgICAvCiAgICAg'
+            'ICAgICAgICAgICAgLicgICAgICAgICAgLwogICAgICAgICAgICAgICAsJyAgICAg'
+            'ICAgICAgLwogICAgICAgICAgICAgXycuLi4uLS0tLSIiIiIiIG1o')
+        pokeball = '```{}```'.format(str(base64.b64decode(n25), "ascii"))
+        await ctx.send(pokeball)
 
 
 def setup(bot):

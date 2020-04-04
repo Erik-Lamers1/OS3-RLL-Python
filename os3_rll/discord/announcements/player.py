@@ -69,11 +69,11 @@ def announce_stats(stats : dict):
 
     try:
         embed = {'title': "** Player statistics **",
-                 'description': "```{}```".format(description),
+                 'description': "Look at those nice stats.",
                  'footer': "Knowing better is doing better!",
                  'colour': 2234352}
 
-        message = {'content': "Current OS3 Rocket League Ladder leaderboard:",
+        message = {'content': "Current OS3 Rocket League Ladder leaderboard:\n```{}```\n".format(description),
                    'embed': create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine

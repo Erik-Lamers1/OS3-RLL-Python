@@ -47,8 +47,13 @@ def announce_stats(stats : dict):
     description = ""
 
     for player_id, player_stats in stats.items():
+        description += '{}'.format('='*28)
+
         for stat_name, stat_value in player_stats.items():
-            description += '{0:24}: {1}\n'.format(stat_name, stat_value)
+            description += '{0:>24}: {1}\n'.format(stat_name, stat_value)
+
+        description += '{}'.format('-'*28)
+
 
     try:
         embed = {'title': "** Player statistics **",

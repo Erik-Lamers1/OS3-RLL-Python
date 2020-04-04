@@ -180,6 +180,31 @@ def reset_challenge(p1, p2, search_by_discord_name=True):
         logger.info('Challenge between {} and {} reset'.format(p1.gamertag, p2.gamertag))
 
 
+def get_challenge(player, search_by_discord=True):
+    """
+    Returns the deadline of the challenge the requesting player is participating in.
+
+    param str/int p1: The id or gamertag of the player
+    param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
+    raises: ChallengeException/PlayerException on error
+    """
+    logger.debug('Getting challenge info for player {}'.format(player))
+    # First check if gamertags were passed and convert them to player IDs
+    if isinstance(p1, str):
+        p1 = Player.get_player_id_by_username(player, discord_name=search_by_discord_name)
+
+    with Player(player) as p:
+        # TODO: I need a function that can lookup the challenges a single player is defender or challenger for.
+        # c = Challenge.get_current_challenges_from_player(p1.id)
+        # Get the challenge
+        #with Challenge(c) as c:
+        #    pass
+
+        pass
+
+    return None
+
+
 def check_uncompleted_challenges():
     """
     :return:

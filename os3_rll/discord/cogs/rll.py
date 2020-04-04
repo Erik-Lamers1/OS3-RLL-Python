@@ -3,10 +3,12 @@ import random
 from discord.ext import commands
 from logging import getLogger
 from os3_rll.conf import settings
-from os3_rll.actions.challenge import create_challenge, complete_challenge
+from os3_rll.actions.challenge import create_challenge, complete_challenge, get_challenge
+from os3_rll.actions.player import get_player_ranking
 from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented, get_player
-from os3_rll.discord.annoucements.challenge import announce_challenge, announce_rankings
+from os3_rll.discord.announcements.challenge import announce_challenge
+from os3_rll.discord.announcements.player import announce_rankings
 from os3_rll.operations.challenge import get_player_objects_from_complete_challenge_info
 
 logger = getLogger(__name__)
@@ -19,11 +21,12 @@ class RLL(commands.Cog):
     @commands.command(pass_context=True)
     async def get_ranking(self, ctx):
         """
-        Returns the current top 5 ranking.
+        Returns the current player ranking leaderboard.
         """
-        logger.debug('get_ranking: called')
-        res = stub.test_call_list("")
-        await ctx.send(res)
+        logger.debug('get_ranking: called by'.format(ctx.message.author))
+        rankings = get_player_ranking() # returns dict with {'discordtag':'rank'}
+        announcement = announce_rankings(rankings)
+        await ctx.send(announcement['content'], announcement['embed'])
 
     @commands.command(pass_context=True)
     async def get_active_challenges(self, ctx):
@@ -34,9 +37,11 @@ class RLL(commands.Cog):
         await ctx.send(stub.test_call_int(""))
 
     @commands.command(pass_context=True)
-    async def get_challenge(self, ctx):
+    async def get_my_challenges(self, ctx):
         """Gives your current challenge deadline."""
-        logger.debug('get_challenge: called')
+        player = ctx.message.author.name + "#" + str(ctx.message.author.discriminator)
+        logger.debug('get_challenge: called for player {}'.format(player))
+        res = get_challenge(player) #TODO should return a list of strings
         await ctx.send(not_implemented())
 
     @commands.command(pass_context=True)

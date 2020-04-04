@@ -46,16 +46,19 @@ def announce_stats(stats : dict):
     """
     description = ""
     first_stats = next(iter(stats.values()))
-    table_heading = first_stats.keys()
-    table_data = table_heading + list(zip([v.values() for k, v in stats.values()]))
-
-    for i, d in enumerate(table_data):
-        line = '|'.join(str(x).ljust(24) for x in d)
-        description += '{}\n'.format(line)
-        if i == 0:
-            description += "{}\n".format('-' * len(line))
-
-
+    table_heading = list(first_stats.keys())
+    table_data = [list(v.values()) for v in stats.values()]
+    description += '|'
+    for e in table_heading:
+        line = ''.join("  {}|".format(str(e).ljust(24)))
+        description += '{}'.format(line)
+    description += '\n{}\n'.format('-' * len(description))
+    for player_entry in table_data:
+        description += '|'
+        for stat in player_entry:
+            line = ''.join("  {}|".format(str(stat).ljust(24)))
+            description += '{}'.format(line)
+        description += '\n'
 
     #for player_id, player_stats in stats.items():
     #    description += '{}\n'.format('='*28)

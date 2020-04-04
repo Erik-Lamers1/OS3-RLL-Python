@@ -4,7 +4,7 @@ from discord.ext import commands
 from logging import getLogger
 from os3_rll.conf import settings
 from os3_rll.actions.challenge import create_challenge, complete_challenge, get_challenge
-from os3_rll.actions.player import get_player_ranking
+from os3_rll.actions.player import get_player_ranking, get_player_stats
 from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented, get_player
 from os3_rll.discord.announcements.challenge import announce_challenge

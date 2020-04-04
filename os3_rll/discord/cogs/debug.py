@@ -66,7 +66,7 @@ class Debug(commands.Cog):
 
 
     @commands.command(pass_context=True, hidden=True)
-    async def pickachu_i_choose_you(self, ctx):
+    async def i_choose_you(self, ctx):
         """Whut?... It's super effective."""
         n25 = ('ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLC0u'
             'CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF8ufCAg'

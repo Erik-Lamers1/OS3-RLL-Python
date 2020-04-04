@@ -88,7 +88,10 @@ def get_average_goals_per_challenge(player):
             logger.warning('Player with id {} has never challenged someone, setting average challenger score to 0')
             avg_challenger_score = 0
         else:
-            avg_challenger_score = int(db.fetchone())
+            avg_challenger_score = db.fetchone()[0]
+            # If the player has never scored this variable will be None
+            if avg_challenger_score is None:
+                avg_challenger_score = 0
         # Average goals as p2
         db.execute_prepared_statement(
             'SELECT AVG(p2_score) FROM challenges WHERE p2=%s AND WINNER IS NOT NULL', (player,)
@@ -97,6 +100,9 @@ def get_average_goals_per_challenge(player):
             logger.warning('Player with id {} has never been challenged, setting average challenged score to 0')
             avg_challenged_score = 0
         else:
-            avg_challenged_score = int(db.fetchone())
+            avg_challenged_score = db.fetchone()[0]
+            # If the player has never scored this variable will be None
+            if avg_challenged_score is None:
+                avg_challenged_score = 0
     # Return the average of the two numbers
     return int(avg_challenger_score + avg_challenged_score / 2)

@@ -55,9 +55,9 @@ def get_player(p):
                 player = member
                 break
     if discord_regex.match(p):
-        logger.debug("got a discord user name and discriminator {}".format())
+        logger.debug("got a discord user name and discriminator {}".format(p))
         for member in members:
-            logger.debug("check if {} == {0.name}#{0.discriminator}".format(p, member))
+            logger.debug("check if {0} == {1.name}#{1.discriminator}".format(p, member))
             if member.name == p.split('#')[0] and str(member.discriminator) == p.split('#')[1]:
                 player = member
                 break
@@ -67,8 +67,8 @@ def get_player(p):
             if member.name == p:
                 player = member
                 break
-
-    if player is None:
-        raise TypeError
+    # TODO: unhandled exception, return None if fail for now. This currently breaks the player model
+    # if player is None:
+    #     raise TypeError
 
     return player

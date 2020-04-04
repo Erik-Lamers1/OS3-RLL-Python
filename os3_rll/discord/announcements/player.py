@@ -50,7 +50,11 @@ def announce_stats(stats : dict):
     table_data = [list(v.values()) for v in stats.values()]
     description += '|'
     for e in table_heading:
-        line = ''.join("  {}|".format(str(e).ljust(24)))
+        if e == "avg_goals_per_challenge":
+            e = "goal avg."
+        if e == "is_challenged":
+            e = "challenged"
+        line = ''.join("  {}|".format(str(e).ljust(10)))
         description += '{}'.format(line)
     description += '\n{}\n'.format('-' * len(description))
     for player_entry in table_data:

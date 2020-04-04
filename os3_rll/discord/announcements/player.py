@@ -52,15 +52,13 @@ def announce_stats(stats : dict):
     for e in table_heading:
         if e == "avg_goals_per_challenge":
             e = "goal avg."
-        if e == "is_challenged":
-            e = "challenged"
-        line = ''.join("  {}|".format(str(e).ljust(10)))
+        line = ''.join("  {}|".format(str(e).ljust(21)))
         description += '{}'.format(line)
     description += '\n{}\n'.format('-' * len(description))
     for player_entry in table_data:
         description += '|'
         for stat in player_entry:
-            line = ''.join("  {}|".format(str(stat).ljust(10)))
+            line = ''.join("  {}|".format(str(stat).ljust(21)))
             description += '{}'.format(line)
         description += '\n'
 

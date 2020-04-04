@@ -60,7 +60,7 @@ def announce_stats(stats : dict):
     for player_entry in table_data:
         description += '|'
         for stat in player_entry:
-            line = ''.join("  {}|".format(str(stat).ljust(24)))
+            line = ''.join("  {}|".format(str(stat).ljust(10)))
             description += '{}'.format(line)
         description += '\n'
 

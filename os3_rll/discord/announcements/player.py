@@ -45,14 +45,23 @@ def announce_stats(stats : dict):
            Dictionary with content, title, description, footer and colour as keys.
     """
     description = ""
+    first_stats = next(iter(stats.values()))
+    table_heading = first_stats.keys()
+    table_data = table_heading + list(zip([v.values() for k, v in stats.values()]))
 
-    for player_id, player_stats in stats.items():
-        description += '{}\n'.format('='*28)
+    for i, d in enumerate(table_data):
+        line = '|'.join(str(x).ljust(24) for x in d)
+        description += '{}\n'.format(line)
+        if i == 0:
+            description += "{}\n".format('-' * len(line))
 
-        for stat_name, stat_value in player_stats.items():
-            description += '{0:>24}: {1}\n'.format(stat_name, stat_value)
 
-        description += '{}\n'.format('-'*28)
+
+    #for player_id, player_stats in stats.items():
+    #    description += '{}\n'.format('='*28)
+
+    #    for stat_name, stat_value in player_stats.items():
+    #        description += '{0:>24}: {1}\n'.format(stat_name, stat_value)
 
 
     try:

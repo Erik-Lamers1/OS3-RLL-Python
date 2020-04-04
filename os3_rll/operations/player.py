@@ -105,4 +105,4 @@ def get_average_goals_per_challenge(player):
             if avg_challenged_score is None:
                 avg_challenged_score = 0
     # Return the average of the two numbers
-    return int(avg_challenger_score + avg_challenged_score / 2)
+    return float(avg_challenger_score) + float(avg_challenged_score) / 2

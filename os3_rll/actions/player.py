@@ -37,7 +37,7 @@ def get_player_stats():
             wins                    -> int wins,
             losses                  -> int losses
             is_challenged
-            avg_goals_per_challenge -> int goals
+            avg_goals_per_challenge -> float goals
             },
             ...
         }

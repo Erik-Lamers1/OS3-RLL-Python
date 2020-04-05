@@ -45,12 +45,22 @@ def announce_stats(stats : dict):
            Dictionary with content, title, description, footer and colour as keys.
     """
     description = ""
+    longest_key = 0
+    longest_value = 0
+
     for player_id, player_stats in stats.items():
-        description += '{}\n'.format('='*28)
+        for k, v in player_stats.items():
+            if len(k) > longest_key:
+                longest_key = len(k)
+            if len(v) > longest_value:
+                longest_value = len(v)
+
+    padding = longest_key + longest_value + 2
+    for player_id, player_stats in stats.items():
+        description += '{}\n'.format('='*padding)
 
         for stat_name, stat_value in player_stats.items():
             description += '{0:>24}: {1}\n'.format(stat_name, stat_value)
-
 
     try:
         embed = {'title': "** Player statistics **",

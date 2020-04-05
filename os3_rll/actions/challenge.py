@@ -186,11 +186,12 @@ def reset_challenge(p1, p2, search_by_discord_name=True):
         logger.info('Challenge between {} and {} reset'.format(p1.gamertag, p2.gamertag))
 
 
-def get_challenge(player, search_by_discord_name=True):
+def get_challenge(player, should_be_completed=True, search_by_discord_name=True):
     """
     Returns the deadline of the challenge the requesting player is participating in.
 
     param str/int p1: The id or gamertag of the player
+    param bool should_be_completed: If the challenge should already be completed or not
     param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
     returns dict: {
         str p1: {int id, int rank, str name, str discord}, str p2: {int id, int rank, str name, str discord},
@@ -206,7 +207,7 @@ def get_challenge(player, search_by_discord_name=True):
         # Try to find the challenge
         challenge = get_latest_challenge_from_player_id(player)
         # Try to get the players
-        p1, p2 = get_player_objects_from_challenge_info(player)
+        p1, p2 = get_player_objects_from_challenge_info(player, should_be_completed=should_be_completed)
     except Exception as e:
         # Raise out own exception
         logger.error('Encountered exception while trying to retrieve challenge info')

@@ -16,8 +16,6 @@ logger = getLogger(__name__)
 class RLL(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        #self.match_regex = re.compile('^([0-9]{1,2}-[0-9]{1,2})$|^(([0-9]{1,2}-[0-9]{1,2}) ?)+$')
-        self.match_regex = re.compile('[0-9]+-[0-9]+\s+')
 
     @commands.command(pass_context=True)
     async def get_ranking(self, ctx):
@@ -73,11 +71,6 @@ class RLL(commands.Cog):
     async def complete_challenge(self, ctx, match_results : str):
         """Completes the challenge you are parcitipating in."""
         requester = str(ctx.author)
-        match = self.match_regex.fullmatch(match_results)
-        groups = match.groups()
-        if not match:
-            raise commands.UserInputError('Wrong match results formatting. Should be e.g.: "4-5 3-1 1-3"')
-        logger.debug('regex found fullmatch for: {0} on {1} with pattern: {2.re}'.format(groups, match_results, match))
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_challenge_info(requester)
         winner_id = complete_challenge(challenger.id, defender.id, match_results)

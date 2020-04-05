@@ -72,7 +72,7 @@ class RLL(commands.Cog):
         requester = ctx.author.name + "#" + str(ctx.author.discriminator)
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_uncomplete_challenge_info(requester)
-        winner_id = complete_challenge(challenger, defender, match_results)
+        winner_id = complete_challenge(challenger.id, defender.id, match_results)
         announcement = announce_winner(challenger, defender, winner_id, match_results)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 

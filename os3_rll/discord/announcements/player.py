@@ -44,6 +44,7 @@ def announce_stats(stats : dict):
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
+    description = ""
     for player_id, player_stats in stats.items():
         description += '{}\n'.format('='*28)
 

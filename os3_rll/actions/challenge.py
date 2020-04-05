@@ -4,7 +4,8 @@ from copy import deepcopy
 
 from os3_rll.models.player import Player
 from os3_rll.models.challenge import Challenge, ChallengeException
-from os3_rll.operations.challenge import do_challenge_sanity_check, process_completed_challenge_args
+from os3_rll.operations.challenge import do_challenge_sanity_check, process_completed_challenge_args, \
+    get_latest_challenge_from_player_id, get_player_objects_from_uncomplete_challenge_info
 from os3_rll.operations.utils import check_date_is_older_than_x_days
 from os3_rll.models.db import Database
 
@@ -180,29 +181,56 @@ def reset_challenge(p1, p2, search_by_discord_name=True):
         logger.info('Challenge between {} and {} reset'.format(p1.gamertag, p2.gamertag))
 
 
-def get_challenge(player, search_by_discord=True):
+def get_challenge(player, search_by_discord_name=True):
     """
     Returns the deadline of the challenge the requesting player is participating in.
 
     param str/int p1: The id or gamertag of the player
     param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
-    raises: ChallengeException/PlayerException on error
+    returns dict: {
+        str p1: {int id, str name, str discord}, str p2: {int id, str name, str discord},
+        str deadline: obj datetime.datetime
+    }
+    raises: ChallengeException on error
     """
-    logger.debug('Getting challenge info for player {}'.format(player))
-    # First check if gamertags were passed and convert them to player IDs
-    if isinstance(p1, str):
-        p1 = Player.get_player_id_by_username(player, discord_name=search_by_discord_name)
-
-    with Player(player) as p:
-        # TODO: I need a function that can lookup the challenges a single player is defender or challenger for.
-        # c = Challenge.get_current_challenges_from_player(p1.id)
-        # Get the challenge
-        #with Challenge(c) as c:
-        #    pass
-
-        pass
-
-    return None
+    logger.debug('Getting challenge info for player with id {}'.format(player))
+    try:
+        # First check if gamertags were passed and convert them to player IDs
+        if isinstance(player, str):
+            player = Player.get_player_id_by_username(player, discord_name=search_by_discord_name)
+        # Try to find the challenge
+        challenge = get_latest_challenge_from_player_id(player)
+        # Try to get the players
+        p1, p2 = get_player_objects_from_uncomplete_challenge_info(player)
+    except Exception as e:
+        # Raise out own exception
+        logger.error('Encountered exception while trying to retrieve challenge info')
+        raise ChallengeException(e)
+    finally:
+        # Cleanup
+        try:
+            challenge.db.close()
+            p1.db.close()
+            p2.db.close()
+        except UnboundLocalError:
+            # Variable didn't exist
+            pass
+    # Get the deadline
+    deadline = challenge.date + timedelta(weeks=1)
+    # Return relevant data
+    return {
+        "p1": {
+            "id": p1.id,
+            "name": p1.gamertag,
+            "discord": p1.discord,
+        },
+        "p2": {
+            "id": p2.id,
+            "name": p2.gamertag,
+            "discord": p2.discord,
+        },
+        "deadline": deadline
+    }
 
 
 def check_uncompleted_challenges():

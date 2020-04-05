@@ -123,7 +123,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.CommandInvokeError):
         error_msg = str(error)
         if 'Command raised an exception' in error_msg:
-            await ctx.send(error_msg.split(':')[1:])
+            await ctx.send(": ".join(error_msg.split(':')[1:]))
         else:
             await ctx.send("OUCH! that hurts. Better tell the devs to check the logs, something broke!")
     elif isinstance(error, commands.CheckFailure):

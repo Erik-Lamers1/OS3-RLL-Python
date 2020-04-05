@@ -8,7 +8,7 @@ from os3_rll.actions.challenge import create_challenge, complete_challenge
 from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented
 from os3_rll.discord.announcements import challenge
-from os3_rll.operations.challenge import get_player_objects_from_complete_challenge_info
+from os3_rll.operations.challenge import get_player_objects_from_uncomplete_challenge_info
 
 logger = getLogger(__name__)
 

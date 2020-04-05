@@ -241,7 +241,7 @@ class Player:
             )
         )
 
-    def _check_row_count(self, rowcount=1):
+    def check_row_count(self, rowcount=1):
         if self.db.rowcount != rowcount:
             raise PlayerException(
                 'Excepting {} rows to be returned by DB, got {} rows instead'.format(rowcount, self.db.rowcount)
@@ -259,7 +259,7 @@ class Player:
             'FROM users WHERE id=%s',
             (self._id,)
         )
-        self._check_row_count()
+        self.check_row_count()
         return self.db.fetchone()
 
     def __exit__(self, exc_type, exc_val, exc_tb):

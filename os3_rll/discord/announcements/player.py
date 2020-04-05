@@ -44,38 +44,20 @@ def announce_stats(stats : dict):
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
-    description = ""
-    first_stats = next(iter(stats.values()))
-    table_heading = list(first_stats.keys())
-    table_data = [list(v.values()) for v in stats.values()]
-    description += '|'
-    for e in table_heading:
-        if e == "avg_goals_per_challenge":
-            e = "goal avg."
-        line = ''.join("  {}|".format(str(e).ljust(21)))
-        description += '{}'.format(line)
-    description += '\n{}\n'.format('-' * len(description))
-    for player_entry in table_data:
-        description += '|'
-        for stat in player_entry:
-            line = ''.join("  {}|".format(str(stat).ljust(21)))
-            description += '{}'.format(line)
-        description += '\n'
+    for player_id, player_stats in stats.items():
+        description += '{}\n'.format('='*28)
 
-    #for player_id, player_stats in stats.items():
-    #    description += '{}\n'.format('='*28)
-
-    #    for stat_name, stat_value in player_stats.items():
-    #        description += '{0:>24}: {1}\n'.format(stat_name, stat_value)
+        for stat_name, stat_value in player_stats.items():
+            description += '{0:>24}: {1}\n'.format(stat_name, stat_value)
 
 
     try:
         embed = {'title': "** Player statistics **",
-                 'description': "Look at those nice stats.",
+                 'description': "```{}```".format(description),
                  'footer': "Knowing better is doing better!",
                  'colour': 2234352}
 
-        message = {'content': "Current OS3 Rocket League Ladder leaderboard:\n```{}```\n".format(description),
+        message = {'content': "Current OS3 Rocket League Ladder Player Statistics:",
                    'embed': create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine
@@ -84,3 +66,25 @@ def announce_stats(stats : dict):
         return message
     except TypeError:
         logger.error("Found NoneType Object for {}".format(stats))
+
+
+def create_stats_table(stats: dict):
+    table = ""
+    first_stats = next(iter(stats.values()))
+    table_heading = list(first_stats.keys())
+    table_data = [list(v.values()) for v in stats.values()]
+    table += '|'
+    for e in table_heading:
+        if e == "avg_goals_per_challenge":
+            e = "goal avg."
+        line = ''.join("  {}|".format(str(e).ljust(21)))
+        table += '{}'.format(line)
+    table += '\n{}\n'.format('-' * len(table))
+    for player_entry in table_data:
+        table += '|'
+        for stat in player_entry:
+            line = ''.join("  {}|".format(str(stat).ljust(21)))
+            table += '{}'.format(line)
+        table += '\n'
+
+    return table

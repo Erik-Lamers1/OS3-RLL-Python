@@ -92,20 +92,26 @@ def get_player_objects_from_challenge_info(player, should_be_completed=False, se
     return Player(p1), Player(p2)
 
 
-def get_latest_challenge_from_player_id(player):
+def get_latest_challenge_from_player_id(player, should_already_be_completed=False):
     """
     Tries to find the latest challenge belonging to a player
 
     param int player: The player ID to search the challenges for
+    param bool should_be_completed: If the challenge should already be completed or not
     returns os3_rll.models.challenge: if a challenge is found
     raises ChallengeException/PlayerException: on not found / on error
     """
     logger.info('Trying to get latest challenge from player with id {}'.format(player))
     with Player(player) as p:
-        if not p.challenged:
+        if not p.challenged and should_already_be_completed:
             raise PlayerException('Player {} is currently not in an active challenge'.format(p.gamertag))
         # Try to find a challenge
-        p.db.execute('SELECT id FROM challenges WHERE p1={0} OR p2={0} ORDER BY id LIMIT 1'.format(p.id))
+        p.db.execute(
+            'SELECT id FROM challenges WHERE (p1={0} OR p2={0}) AND winner is {1} NULL ORDER BY id LIMIT 1'.format(
+                p.id,
+                'NOT' if should_already_be_completed else ''
+            )
+        )
         p.check_row_count()
         challenge = p.db.fetchone()[0]
     # Return the Challenge model

@@ -16,7 +16,8 @@ logger = getLogger(__name__)
 class RLL(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.match_regex = re.compile('^([0-9]{1,2}-[0-9]{1,2})$|^(([0-9]{1,2}-[0-9]{1,2}) ?)+$')
+        #self.match_regex = re.compile('^([0-9]{1,2}-[0-9]{1,2})$|^(([0-9]{1,2}-[0-9]{1,2}) ?)+$')
+        self.match_regex = re.compile('[0-9]+-[0-9]+\s+')
 
     @commands.command(pass_context=True)
     async def get_ranking(self, ctx):

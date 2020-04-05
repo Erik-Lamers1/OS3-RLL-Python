@@ -79,7 +79,7 @@ def announce_winner(p1, p2, winner_id: int, match_results: str):
         # use this to return it with the players request.
         return message
     except TypeError:
-        logger.error("Found {type(0)} {type(1)} Objects for {0} and {1}".format(player1, player2))
+        logger.error("Found {type(0)} {type(1)} Objects for {0} and {1}".format(p1, p2))
 
 
 def announce_challenge_info(challenge_data: dict):

@@ -129,7 +129,9 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.CheckFailure):
         await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin.")
     else:
-        await ctx.send('Try $help to find out how to use this command.')
+        help_msg = 'Try $help to find out how to use this command.'
+        msg = "{}\n{}\n".format(str(error), help_msg)
+        await ctx.send(msg)
 
 
 async def post():

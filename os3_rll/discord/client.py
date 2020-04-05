@@ -117,7 +117,7 @@ async def on_command_error(ctx, error):
     logger.error('bot.on_command_error: {} - {}'.format(type(error).__name__, error))
     traceback.print_exc()
     if error.__traceback__ is not None:
-        logger.error('Stack Trace: {}'.format(error.__traceback__), exc_info=True)
+        logger.error('Stack Trace: {}'.format(error), exc_info=True)
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
     elif isinstance(error, commands.CommandInvokeError):

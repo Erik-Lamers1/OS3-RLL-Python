@@ -87,9 +87,9 @@ def announce_challenge_info(challenge_data: dict):
             ),
             "description": "{p2_gamertag} is defending their {p2_rank} place on the leaderboard against {p1_gamertag}. "
                            "This match should be player before {deadline} or {p1_gamertag} will win automaticly".format(
-                p1_gamertag=ordinal(challenge_data['p1']['name']),
+                p1_gamertag=challenge_data['p1']['name'],
                 p2_gamertag=challenge_data['p2']['name'],
-                p2_rank=challenge_data['p2']['rank'],
+                p2_rank=ordinal(challenge_data['p2']['rank']),
                 deadline=datetime.strftime(challenge_data['deadline'], '%Y/%m/%d %H:%M')
             ),
             "colour": 0,

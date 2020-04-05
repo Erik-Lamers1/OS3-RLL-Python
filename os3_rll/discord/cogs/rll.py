@@ -72,9 +72,8 @@ class RLL(commands.Cog):
     async def complete_challenge(self, ctx, match_results : str):
         """Completes the challenge you are parcitipating in."""
         requester = str(ctx.author)
-        regex_match = self.match_regex.match(match_results)
-        if not (regex_match and (regex_match.groups % 2) == 1):
-            raise commands.UserInputError('Wrong match results formatting. Format should be: ([0-9]+\-[0-9]+ ){1,3,5,7,9}')
+        if not self.match_regex.match(match_results):
+            raise commands.UserInputError('Wrong match results formatting. Should be e.g.: "4-5 3-1 1-3"')
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_challenge_info(requester)
         winner_id = complete_challenge(challenger.id, defender.id, match_results)

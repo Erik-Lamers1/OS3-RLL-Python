@@ -16,7 +16,7 @@ logger = getLogger(__name__)
 class RLL(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.match_regex = re.compile('^([0-9]+\-[0-9]+ ){1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35}$')
+        self.match_regex = re.compile('([0-9]+-[0-9]+)')
 
     @commands.command(pass_context=True)
     async def get_ranking(self, ctx):
@@ -72,7 +72,8 @@ class RLL(commands.Cog):
     async def complete_challenge(self, ctx, match_results : str):
         """Completes the challenge you are parcitipating in."""
         requester = str(ctx.author)
-        if not self.match_regex.match(match_results):
+        regex_match = self.match_regex.match(match_results)
+        if not (regex_match and (regex_match.groups % 2) == 1):
             raise commands.UserInputError('Wrong match results formatting. Format should be: ([0-9]+\-[0-9]+ ){1,3,5,7,9}')
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_challenge_info(requester)

@@ -6,6 +6,8 @@ from discord.ext import commands
 from logging import getLogger
 from os import listdir
 from os.path import isfile, join
+from discord.ext.commands import ExtensionAlreadyLoaded
+
 from os3_rll.conf import settings
 from os3_rll.discord import utils
 
@@ -40,11 +42,10 @@ async def load(ctx, extension_name: str):
     """
     try:
         bot.load_extension(extension_name)
+        await ctx.send('{} loaded'.format(extension_name))
     except (AttributeError, ImportError, ExtensionAlreadyLoaded) as e:
         logger.error("```py\n{}: {}\n```".format(type(e).__name__, str(e)))
         await ctx.send("Failed to load {} extension.".format(extension_name))
-        return
-    await ctx.send("{} loaded.".format(type(e).__name__, str(e)))
 
 
 @bot.command()

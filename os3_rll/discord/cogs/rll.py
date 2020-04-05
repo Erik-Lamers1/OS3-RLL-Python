@@ -71,7 +71,7 @@ class RLL(commands.Cog):
     @commands.command(pass_context=True)
     async def complete_challenge(self, ctx, *match_results):
         """Completes the challenge you are parcitipating in."""
-        match_res = "".join([m for m in match_results])
+        match_res = " ".join([m for m in match_results])
         requester = str(ctx.author)
         logger.debug('complete_challenge requested by {} with args: {}'.format(requester, match_results))
         challenger, defender = get_player_objects_from_challenge_info(requester)

@@ -188,7 +188,7 @@ def get_challenge(player, search_by_discord_name=True):
     param str/int p1: The id or gamertag of the player
     param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
     returns dict: {
-        str p1: {int id, str name, str discord}, str p2: {int id, str name, str discord},
+        str p1: {int id, int rank, str name, str discord}, str p2: {int id, int rank, str name, str discord},
         str deadline: obj datetime.datetime
     }
     raises: ChallengeException on error
@@ -221,11 +221,13 @@ def get_challenge(player, search_by_discord_name=True):
     return {
         "p1": {
             "id": p1.id,
+            "rank": p1.rank
             "name": p1.gamertag,
             "discord": p1.discord,
         },
         "p2": {
             "id": p2.id,
+            "rank": p2.rank,
             "name": p2.gamertag,
             "discord": p2.discord,
         },

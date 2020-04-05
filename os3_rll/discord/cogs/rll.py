@@ -1,11 +1,11 @@
 import discord
 from discord.ext import commands
 from logging import getLogger
-from os3_rll.actions.challenge import create_challenge, complete_challenge, get_challenge
+from os3_rll.actions.challenge import create_challenge, complete_challenge, get_challenge, reset_challenge
 from os3_rll.actions.player import get_player_ranking, get_player_stats
 from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented
-from os3_rll.discord.announcements.challenge import announce_challenge, announce_challenge_info, announce_winner
+from os3_rll.discord.announcements.challenge import announce_challenge, announce_reset, announce_challenge_info, announce_winner
 from os3_rll.discord.announcements.player import announce_rankings, announce_stats
 from os3_rll.operations.challenge import get_player_objects_from_challenge_info
 
@@ -79,8 +79,12 @@ class RLL(commands.Cog):
     @commands.command(pass_context=True)
     async def reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
-        logger.debug('called with {} arguments - {}'.format(len(args), ', '.join(args)))
-        await ctx.send(not_implemented())
+        logger.debug('reset challenge requested by {}'.format(str(ctx.author)))
+        challenger, defender = get_player_objects_from_challenge_info(str(ctx.author), should_be_completed=True)
+        res = get_challenge(str(ctx.author))
+        reset_challenge(challenger.id, defender.id)
+        announcement = announce_reset(res)
+        await ctx.send(announcement['content'], embed=announcement['embed'])
 
 
 def setup(bot):

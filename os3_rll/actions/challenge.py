@@ -221,7 +221,7 @@ def get_challenge(player, search_by_discord_name=True):
     return {
         "p1": {
             "id": p1.id,
-            "rank": p1.rank
+            "rank": p1.rank,
             "name": p1.gamertag,
             "discord": p1.discord,
         },

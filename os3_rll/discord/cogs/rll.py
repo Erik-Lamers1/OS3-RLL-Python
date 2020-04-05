@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from logging import getLogger
-from os3_rll.actions.challenge import create_challenge, complete_challenge, get_challenge
+from os3_rll.actions.challenge import create_challenge, complete_challenge, get_challenge, reset_challenge
 from os3_rll.actions.player import get_player_ranking, get_player_stats
 from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented
@@ -79,8 +79,12 @@ class RLL(commands.Cog):
     @commands.command(pass_context=True)
     async def reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
-        logger.debug('called with {} arguments - {}'.format(len(args), ', '.join(args)))
-        await ctx.send(not_implemented())
+        logger.debug('reset challenge requested by {}'.format(str(ctx.author)))
+        challenger, defender = get_player_objects_from_challenge_info(requester, should_be_complete=True)
+        res = get_challenge_info(player)
+        reset_challenge(challenger.id, defender.id)
+        announcement = announce_reset(res)
+        await ctx.send(announcement['content'], embed=announcement['embed'])
 
 
 def setup(bot):

@@ -73,9 +73,10 @@ class RLL(commands.Cog):
         """Completes the challenge you are parcitipating in."""
         requester = str(ctx.author)
         match = self.match_regex.match(match_results)
+        groups = match.groups()
         if not match:
             raise commands.UserInputError('Wrong match results formatting. Should be e.g.: "4-5 3-1 1-3"')
-        logger.debug('regex found match for: {0.group()} on {1} with pattern: {0.re}'.format(match, match_results))
+        logger.debug('regex found match for: {0} on {1} with pattern: {2.re}'.format(groups, match_results, match))
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_challenge_info(requester)
         winner_id = complete_challenge(challenger.id, defender.id, match_results)

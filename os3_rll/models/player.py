@@ -82,7 +82,7 @@ class Player:
 
     @property
     def id(self):
-        return self._id
+        return int(self._id)
 
     @property
     def name(self):
@@ -97,7 +97,7 @@ class Player:
         if self._new:
             # When creating a new player we set the rank to the highest value plus 1
             self._rank = get_max_rank() + 1
-        return self._rank
+        return int(self._rank)
 
     @rank.setter
     def rank(self, rank):
@@ -127,7 +127,7 @@ class Player:
 
     @property
     def wins(self):
-        return self._wins
+        return int(self._wins)
 
     @wins.setter
     def wins(self, wins):
@@ -137,7 +137,7 @@ class Player:
 
     @property
     def losses(self):
-        return self._losses
+        return int(self._losses)
 
     @losses.setter
     def losses(self, losses):

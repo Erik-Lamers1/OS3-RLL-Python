@@ -61,7 +61,7 @@ def announce_winner(p1, p2, winner_id: int, match_results: str):
         colour = 48393
     else:
         title = "**{0.gamertag} successfully defended their spot against {1.gamertag} with a score of {2}-{3}".format(p2, p1, p2_games_won, p1_games_won)
-        description = "That means that {} is now on a timeout of 1 week.".format(str(player1['player']))
+        description = "That means that {0.gamertag} is now on a timeout of 1 week.".format(p1)
         footer = "If you don't struggle, you'll never improve!"
         colour = 11540741
 

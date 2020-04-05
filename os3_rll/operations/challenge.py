@@ -47,11 +47,13 @@ def process_completed_challenge_args(args):
         Example "1-2 5-3 2-4" corresponds to 3 matches played with the first match ending in 1-2, the second in 5-3 ect.
     """
     p1_wins, p2_wins, p1_score, p2_score = 0, 0, 0, 0
+    logger.debug('Trying to parse challenge result, got the following user input {}'.format(args))
     matches = args.split()
     for match in matches:
-        scores = match.split('-')
+        scores = list(filter(None, match.split('-')))
         if len(scores) != 2:
             raise ChallengeException('Unable to parse challenge arguments')
+        # Check for dummies who didn't pass the last score
         # Assign the win to the player with the highest score
         scores[0] = int(scores[0])
         scores[1] = int(scores[1])

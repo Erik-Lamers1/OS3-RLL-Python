@@ -72,18 +72,8 @@ class RLL(commands.Cog):
         requester = ctx.author.name + "#" + str(ctx.author.discriminator)
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_uncomplete_challenge_info(requester)
-        winner_id = complete_challenge(challenger, defender, match_results)
-        winner = None
-        loser = None
-        if challenger.id == winner_id:
-            winner = challenger
-            loser = defender
-        elif defender.id == winner_id:
-            winner = defender
-            loser = challenger
-        else:
-            raise ValueError
-        announcement = announce_winner(winner.discord_member, loser.discord_member)
+        winner_id = complete_challenge(challenger.id, defender.id, match_results)
+        announcement = announce_winner(challenger, defender, winner_id, match_results)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)

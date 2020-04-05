@@ -13,7 +13,7 @@ def announce_rankings(ranks : dict):
            Dictionary with content, title, description, footer and colour as keys.
     """
     sorted_ranks = {get_player(k): v for k, v in sorted(ranks.items(), key=lambda item: item[1][0])}
-    champion = next(iter(sorted_ranks.valuess()))[1]
+    champion = next(iter(sorted_ranks.values()))[1]
     description = ""
 
     for k, v in sorted_ranks.items():

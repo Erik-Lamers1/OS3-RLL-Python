@@ -131,7 +131,7 @@ def announce_reset(challenge_data: dict):
                  'colour': 2234352}
 
         message = {'content': "Resetting Challenge!",
-                   'embed': utils.create_embed(embed)}
+                   'embed': create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine
         # client.message_queue.put(message)

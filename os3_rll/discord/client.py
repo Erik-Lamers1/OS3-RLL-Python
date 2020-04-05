@@ -130,7 +130,7 @@ async def on_command_error(ctx, error):
         await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin.")
     else:
         help_msg = 'Try $help to find out how to use this command.'
-        msg = "{0.__name__: str(0)}\n{1}\n".format(error, help_msg)
+        msg = "{type(0)}: str(0)}\n{1}\n".format(error, help_msg)
         await ctx.send(msg)
 
 

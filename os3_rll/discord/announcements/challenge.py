@@ -35,12 +35,12 @@ def announce_challenge(p1, p2):
         logger.error("Found NoneType Object for {} or {}".format(p1, p2))
 
 
-def announce_winner(player1 : dict, player2 : dict):
+def announce_winner(player1 : dict, player2 : dict, winner_id: int):
     """Generates an announcement to be posted by the discord bot as an embed
 
        Params:
-           p1: player1 dict with a discord.Member object and its score.
-           p2: player2 dict with a discord.Member object and its score.
+           p1: player1 dict with a player object and its score.
+           p2: player2 dict with a player object and its score.
 
        return:
            Dictionary with content, title, description, footer and colour as keys.
@@ -50,12 +50,12 @@ def announce_winner(player1 : dict, player2 : dict):
         title = "**{} has defeated {} with a score of {}-{}.**".format(str(player1['player']), str(player2['player']), player1['score'], player2['score'])
         description = "{} takes {}'s spot on the leaderboard!.".format(str(player1['player']), str(player2['player']))
         footer = "No dream is too big. ... "
-        colour = "48393"
+        colour = 48393
     else:
         title = "**{} successfully defended their spot against with a score of {}-{}".format(str(player2['player']), str(player1['player']), player2['score'], player1['score'])
         description = "That means that {} is now on a timeout of 1 week.".format(str(player1['player']))
         footer = "If you don't struggle, you'll never improve!"
-        colour = "11540741"
+        colour = 11540741
 
     try:
         embed = {'title': title,

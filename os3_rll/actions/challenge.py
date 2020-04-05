@@ -205,7 +205,7 @@ def get_challenge(player, should_be_completed=False, search_by_discord_name=True
         if isinstance(player, str):
             player = Player.get_player_id_by_username(player, discord_name=search_by_discord_name)
         # Try to find the challenge
-        challenge = get_latest_challenge_from_player_id(player, should_already_be_completed=should_be_completed)
+        challenge = get_latest_challenge_from_player_id(player, should_be_completed=should_be_completed)
         # Try to get the players
         p1, p2 = get_player_objects_from_challenge_info(player, should_be_completed=should_be_completed)
     except Exception as e:

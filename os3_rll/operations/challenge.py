@@ -92,7 +92,7 @@ def get_player_objects_from_challenge_info(player, should_be_completed=False, se
     return Player(p1), Player(p2)
 
 
-def get_latest_challenge_from_player_id(player, should_already_be_completed=False):
+def get_latest_challenge_from_player_id(player, should_be_completed=False):
     """
     Tries to find the latest challenge belonging to a player
 
@@ -103,13 +103,13 @@ def get_latest_challenge_from_player_id(player, should_already_be_completed=Fals
     """
     logger.info('Trying to get latest challenge from player with id {}'.format(player))
     with Player(player) as p:
-        if not p.challenged and should_already_be_completed:
+        if not p.challenged and not should_be_completed:
             raise PlayerException('Player {} is currently not in an active challenge'.format(p.gamertag))
         # Try to find a challenge
         p.db.execute(
             'SELECT id FROM challenges WHERE (p1={0} OR p2={0}) AND winner is {1} NULL ORDER BY id LIMIT 1'.format(
                 p.id,
-                'NOT' if should_already_be_completed else ''
+                'NOT' if should_be_completed else ''
             )
         )
         p.check_row_count()

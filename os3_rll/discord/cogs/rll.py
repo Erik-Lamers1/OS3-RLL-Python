@@ -5,7 +5,7 @@ from os3_rll.actions.challenge import create_challenge, complete_challenge, get_
 from os3_rll.actions.player import get_player_ranking, get_player_stats
 from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented
-from os3_rll.discord.announcements.challenge import announce_challenge, announce_challenge_info, announce_winner
+from os3_rll.discord.announcements.challenge import announce_challenge, announce_reset, announce_challenge_info, announce_winner
 from os3_rll.discord.announcements.player import announce_rankings, announce_stats
 from os3_rll.operations.challenge import get_player_objects_from_challenge_info
 

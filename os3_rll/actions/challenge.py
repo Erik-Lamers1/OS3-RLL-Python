@@ -142,6 +142,11 @@ def reset_challenge(p1, p2, search_by_discord_name=True):
 
     logger.debug('Getting Player and Challenge objects to be reset')
     with Player(p1) as p1, Player(p2) as p2:
+        # Players can also reset a challenge if they are not challenged atm. To ensure consistency
+        if p1.challenged or p2.challenged:
+            raise ChallengeException(
+                'One of the players is currently in an active challenge, previous challenge cannot be reset'
+            )
         c = Challenge.get_latest_challenge_from_player(p1.id, p2.id, should_be_completed=True)
         # Get the challenge
         with Challenge(c) as c:

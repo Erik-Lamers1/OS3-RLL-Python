@@ -1,4 +1,5 @@
 import discord
+import typing
 import re
 from discord.ext import commands
 from logging import getLogger

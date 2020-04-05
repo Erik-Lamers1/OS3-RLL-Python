@@ -40,7 +40,7 @@ async def load(ctx, extension_name: str):
     """
     try:
         bot.load_extension(extension_name)
-    except (AttributeError, ImportError) as e:
+    except (AttributeError, ImportError, ExtensionAlreadyLoaded) as e:
         logger.error("```py\n{}: {}\n```".format(type(e).__name__, str(e)))
         await ctx.send("Failed to load {} extension.".format(extension_name))
         return
@@ -96,7 +96,8 @@ async def on_ready():
             bot.load_extension(module)
         except Exception as e:
             logger.error('{} - {}'.format(type(e).__name__, e))
-            logger.error('Stack Trace', exc_info=True)
+            if not isinstance(e, commands.ExtensionAlreadyLoaded):
+                logger.error('Stack Trace', exc_info=True)
 
     logger.info('completed loading modules')
 

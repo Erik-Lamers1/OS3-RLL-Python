@@ -72,7 +72,7 @@ class RLL(commands.Cog):
     async def complete_challenge(self, ctx, match_results : str):
         """Completes the challenge you are parcitipating in."""
         requester = str(ctx.author)
-        if not match_regex.match(match_results):
+        if not self.match_regex.match(match_results):
             raise commands.UserInputError('Wrong match results formatting. Format should be: ([0-9]+\-[0-9]+ ){1,3,5,7,9}')
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_challenge_info(requester)

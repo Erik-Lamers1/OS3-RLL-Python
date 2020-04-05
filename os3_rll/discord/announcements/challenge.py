@@ -33,21 +33,33 @@ def announce_challenge(p1, p2):
         logger.error("Found NoneType Object for {} or {}".format(p1, p2))
 
 
-def announce_winner(winner, loser):
+def announce_winner(player1 : dict, player2 : dict):
     """Generates an announcement to be posted by the discord bot as an embed
 
        Params:
-           p1: player1 (the winner) as a discord.Member object.
-           p2: player2 (the loser) as a discord.Member object.
+           p1: player1 dict with a discord.Member object and its score.
+           p2: player2 dict with a discord.Member object and its score.
 
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
+    title = ""
+    if player1['score'] > player2['score']:
+        title = "**{} has defeated {} with a score of {}-{}.**".format(str(player1['player']), str(player2['player']), player1['score'], player2['score'])
+        description = "{} takes {}'s spot on the leaderboard!.".format(str(player1['player']), str(player2['player']))
+        footer = "No dream is too big. ... "
+        colour = "48393"
+    else:
+        title = "**{} successfully defended their spot against with a score of {}-{}".format(str(player2['player']), str(player1['player']), player2['score'], player1['score'])
+        description = "That means that {} is now on a timeout of 1 week.".format(str(player1['player']))
+        footer = "If you don't struggle, you'll never improve!"
+        colour = "11540741"
+
     try:
-        embed = {'title': "**{} has won a challenge {}.**".format(winner.name, loser.name),
-                 'description': "Mr. Vin is an asshole.",
-                 'footer': "Omg {} you are such a noob.".format(loser.name),
-                 'colour': 2234352}
+        embed = {'title': title,
+                 'description': description,
+                 'footer': footer,
+                 'colour': colour}
 
         message = {'content': "Challenge Completed!",
                    'embed': create_embed(embed)}

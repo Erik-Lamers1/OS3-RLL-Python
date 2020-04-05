@@ -121,7 +121,7 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
         p1.save()
         p2.save()
         logger.info('Challenge between {} and {} successfully completed'.format(p1.gamertag, p2.gamertag))
-    return winner.id
+    return winner
 
 
 def reset_challenge(p1, p2, search_by_discord_name=True):

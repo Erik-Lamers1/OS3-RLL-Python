@@ -1,13 +1,11 @@
 import discord
-import random
 from discord.ext import commands
 from logging import getLogger
-from os3_rll.conf import settings
 from os3_rll.actions.challenge import create_challenge, complete_challenge, get_challenge
 from os3_rll.actions.player import get_player_ranking, get_player_stats
 from os3_rll.actions import stub
-from os3_rll.discord.utils import not_implemented, get_player
-from os3_rll.discord.announcements.challenge import announce_challenge
+from os3_rll.discord.utils import not_implemented
+from os3_rll.discord.announcements.challenge import announce_challenge, announce_challenge_info
 from os3_rll.discord.announcements.player import announce_rankings, announce_stats
 from os3_rll.operations.challenge import get_player_objects_from_uncomplete_challenge_info
 
@@ -51,8 +49,9 @@ class RLL(commands.Cog):
         """Gives your current challenge deadline."""
         player = ctx.message.author.name + "#" + str(ctx.message.author.discriminator)
         logger.debug('get_challenge: called for player {}'.format(player))
-        res = get_challenge(player) #TODO should return a list of strings
-        await ctx.send(not_implemented())
+        res = get_challenge(player)
+        announcement = announce_challenge_info(res)
+        await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)
     async def create_challenge(self, ctx, p: discord.Member):

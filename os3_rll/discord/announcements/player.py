@@ -39,7 +39,6 @@ def announce_rankings(ranks : dict):
         logger.error("Found NoneType Object for {}".format(ranks))
 
 
-
 def announce_stats(stats : dict):
     """Generates an announcement for the current player statistics.
        Params:

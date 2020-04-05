@@ -194,10 +194,10 @@ def get_challenge(player, search_by_discord_name=True):
     raises: ChallengeException on error
     """
     logger.debug('Getting challenge info for player with id {}'.format(player))
-    # First check if gamertags were passed and convert them to player IDs
-    if isinstance(player, str):
-        player = Player.get_player_id_by_username(player, discord_name=search_by_discord_name)
     try:
+        # First check if gamertags were passed and convert them to player IDs
+        if isinstance(player, str):
+            player = Player.get_player_id_by_username(player, discord_name=search_by_discord_name)
         # Try to find the challenge
         challenge = get_latest_challenge_from_player_id(player)
         # Try to get the players
@@ -208,12 +208,13 @@ def get_challenge(player, search_by_discord_name=True):
         raise ChallengeException(e)
     finally:
         # Cleanup
-        if challenge in locals():
+        try:
             challenge.db.close()
-        if p1 in locals():
             p1.db.close()
-        if p2 in locals():
             p2.db.close()
+        except UnboundLocalError:
+            # Variable didn't exist
+            pass
     # Get the deadline
     deadline = challenge.date + timedelta(weeks=1)
     # Return relevant data

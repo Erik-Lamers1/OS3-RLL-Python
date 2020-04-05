@@ -69,7 +69,7 @@ def announce_winner(player1 : dict, player2 : dict):
         # use this to return it with the players request.
         return message
     except TypeError:
-        logger.error("Found NoneType Object for {} or {}".format(winner, loser))
+        logger.error("Found {type(0)} {type(1)} Objects for {0} and {1}".format(player1, player2))
 
 #def announce_reset(p1, p2):
 #    """Generates an announcement for the current rankings.

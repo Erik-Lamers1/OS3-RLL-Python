@@ -55,7 +55,7 @@ def announce_stats(stats : dict):
             if len(str(v)) > longest_value:
                 longest_value = len(str(v))
 
-    padding = longest_key + longest_value + 2
+    padding = longest_key + longest_value + 3
     for player_id, player_stats in stats.items():
         description += '{}\n'.format('='*padding)
 

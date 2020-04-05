@@ -1,4 +1,5 @@
 import discord
+import re
 from discord.ext import commands
 from logging import getLogger
 from os3_rll.actions.challenge import create_challenge, complete_challenge, get_challenge, reset_challenge
@@ -21,7 +22,7 @@ class RLL(commands.Cog):
         """
         Returns the current player ranking leaderboard.
         """
-        logger.debug('get_ranking: called by'.format(ctx.message.author))
+        logger.debug('get_ranking: called by'.format(ctx.author))
         rankings = get_player_ranking() # returns dict with {'gamertag':'rank'}
         announcement = announce_rankings(rankings)
         await ctx.send(announcement['content'], embed=announcement['embed'])
@@ -31,7 +32,7 @@ class RLL(commands.Cog):
         """
         Returns the current player stats.
         """
-        logger.debug('get_stats: called by'.format(ctx.message.author))
+        logger.debug('get_stats: called by'.format(ctx.author))
         stats = get_player_stats()
         announcement = announce_stats(stats)
         await ctx.send(announcement['content'], embed=announcement['embed'])
@@ -47,7 +48,7 @@ class RLL(commands.Cog):
     @commands.command(pass_context=True)
     async def get_my_challenges(self, ctx):
         """Gives your current challenge deadline."""
-        player = ctx.message.author.name + "#" + str(ctx.message.author.discriminator)
+        player = str(ctx.author)
         logger.debug('get_challenge: called for player {}'.format(player))
         res = get_challenge(player)
         announcement = announce_challenge_info(res)
@@ -59,8 +60,8 @@ class RLL(commands.Cog):
         Creates a challenge between you and who you mention.
         param discord.Member
         """
-        p1 = str(ctx.author.name + "#" + str(ctx.author.discriminator))
-        p2 = str(p.name + "#" + str(p.discriminator))
+        p1 = str(ctx.author)
+        p2 = str(p)
         logger.debug('creating challenge between {} and {}'.format(p1, p2))
         create_challenge(p1, p2)
         announcement = announce_challenge(ctx.author, p)
@@ -69,7 +70,7 @@ class RLL(commands.Cog):
     @commands.command(pass_context=True)
     async def complete_challenge(self, ctx, match_results : str):
         """Completes the challenge you are parcitipating in."""
-        requester = ctx.author.name + "#" + str(ctx.author.discriminator)
+        requester = str(ctx.author)
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_challenge_info(requester)
         winner_id = complete_challenge(challenger.id, defender.id, match_results)

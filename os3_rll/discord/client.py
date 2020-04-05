@@ -117,18 +117,21 @@ async def on_command_error(ctx, error):
     logger.error('bot.on_command_error: {} - {}'.format(type(error).__name__, error))
     traceback.print_exc()
     if error.__traceback__ is not None:
-        logger.error('Stack Trace: {}'.format(error.__traceback__), exc_info=True)
+        logger.error('Stack Trace: {}'.format(error), exc_info=True)
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
     elif isinstance(error, commands.CommandInvokeError):
-        if 'Command raised an exception' in error:
-            await ctx.send(error)
+        error_msg = str(error)
+        if 'Command raised an exception' in error_msg:
+            await ctx.send(": ".join(error_msg.split(':')[1:]))
         else:
             await ctx.send("OUCH! that hurts. Better tell the devs to check the logs, something broke!")
     elif isinstance(error, commands.CheckFailure):
         await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin.")
     else:
-        await ctx.send('Try $help to find out how to use this command.')
+        help_msg = 'Try $help to find out how to use this command.'
+        msg = "{0.__name__}: {1}\n{2}\n".format(type(error), error, help_msg)
+        await ctx.send(msg)
 
 
 async def post():

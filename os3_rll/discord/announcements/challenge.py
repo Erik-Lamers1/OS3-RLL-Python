@@ -18,9 +18,9 @@ def announce_challenge(p1, p2):
            Dictionary with content, title, description, footer and colour as keys.
     """
     try:
-        embed = {'title': "**{} challenges {}.**".format(p1.name, p2.name),
-                 'description': "This match should be played within one week or {} loses automatically.".format(
-                     p2.mention),
+        embed = {'title': "**{0.name} challenges {1.name}.**".format(p1, p2),
+                 'description': "This match should be played within one week or {0.mention} loses automatically.".format(
+                     p2),
                  'footer': "Good Luck!",
                  'colour': 2234352}
 
@@ -35,24 +35,32 @@ def announce_challenge(p1, p2):
         logger.error("Found NoneType Object for {} or {}".format(p1, p2))
 
 
-def announce_winner(player1 : dict, player2 : dict, winner_id: int):
+def announce_winner(p1, p2, winner_id: int, match_results: str):
     """Generates an announcement to be posted by the discord bot as an embed
 
        Params:
-           p1: player1 dict with a player object and its score.
-           p2: player2 dict with a player object and its score.
+           p1: Player() object.
+           p2: Player() object.
 
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
+    p1_games_won = 0
+    p2_games_won = 0
+    for game in match_results.split(' '):
+        if int(game.split('-')[0]) > int(game.split('-')[1]):
+            p1_games_won += 1
+        else:
+            p2_games_won += 1
+
     title = ""
-    if player1['score'] > player2['score']:
-        title = "**{} has defeated {} with a score of {}-{}.**".format(str(player1['player']), str(player2['player']), player1['score'], player2['score'])
-        description = "{} takes {}'s spot on the leaderboard!.".format(str(player1['player']), str(player2['player']))
+    if p1.id == winner_id:
+        title = "**{0.gamertag} has defeated {1.gamertag} with {2} games to {3}.**".format(p1, p2, p1_games_won, p2_games_won)
+        description = "{0.gamertag} takes {1.gamertag}'s spot on the leaderboard!.".format(p1, p2)
         footer = "No dream is too big. ... "
         colour = 48393
     else:
-        title = "**{} successfully defended their spot against with a score of {}-{}".format(str(player2['player']), str(player1['player']), player2['score'], player1['score'])
+        title = "**{0.gamertag} successfully defended their spot against {1.gamertag} with a score of {2}-{3}".format(p2, p1, p2_games_won, p1_games_won)
         description = "That means that {} is now on a timeout of 1 week.".format(str(player1['player']))
         footer = "If you don't struggle, you'll never improve!"
         colour = 11540741

@@ -83,7 +83,7 @@ class RLL(commands.Cog):
             loser = challenger
         else:
             raise ValueError
-        announcement = announce_winner(winner.discord_member, loser.discord_member)
+        announcement = announce_winner(p1, p2, winner_id, match_results)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)

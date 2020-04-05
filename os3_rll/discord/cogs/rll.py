@@ -24,7 +24,7 @@ class RLL(commands.Cog):
         Returns the current player ranking leaderboard.
         """
         logger.debug('get_ranking: called by'.format(ctx.message.author))
-        rankings = get_player_ranking() # returns dict with {'discordtag':'rank'}
+        rankings = get_player_ranking() # returns dict with {'gamertag':'rank'}
         announcement = announce_rankings(rankings)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 

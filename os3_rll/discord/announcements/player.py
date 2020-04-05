@@ -12,15 +12,18 @@ def announce_rankings(ranks : dict):
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
-    sorted_ranks = {get_player(k): v for k, v in sorted(ranks.items(), key=lambda item: item[1])}
-    champion = next(iter(sorted_ranks.keys()))
+    sorted_ranks = {get_player(k): v for k, v in sorted(ranks.items(), key=lambda item: item[1][0])}
+    champion = next(iter(sorted_ranks.valuess()))[1]
     description = ""
 
     for k, v in sorted_ranks.items():
-        description += '{0:2}. {1}\n'.format(v, k.name + '#' + str(k.discriminator))
+        if get_player(k.name + '#' + str(k.discriminator)) is None:
+            raise PlayerException('Player returned from database does not have a valid Discord account')
+
+        description += '{0:2}. {1}\n'.format(v[0], v[1])
 
     try:
-        embed = {'title': "**{} is the current champion.**".format(champion.name + "#" + str(champion.discriminator)),
+        embed = {'title': "**{} is the current champion.**".format(champion),
                  'description': "{}".format(description),
                  'footer': "Become the best!",
                  'colour': 2234352}

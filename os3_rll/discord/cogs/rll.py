@@ -69,8 +69,9 @@ class RLL(commands.Cog):
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)
-    async def complete_challenge(self, ctx, match_results : commands.Greedy[str]):
+    async def complete_challenge(self, ctx, *match_results):
         """Completes the challenge you are parcitipating in."""
+        match_res = "".join([m for m in match_results])
         requester = str(ctx.author)
         logger.debug('complete_challenge requested by {}'.format(requester))
         challenger, defender = get_player_objects_from_challenge_info(requester)

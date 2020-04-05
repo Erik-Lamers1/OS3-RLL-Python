@@ -186,7 +186,7 @@ def reset_challenge(p1, p2, search_by_discord_name=True):
         logger.info('Challenge between {} and {} reset'.format(p1.gamertag, p2.gamertag))
 
 
-def get_challenge(player, should_be_completed=True, search_by_discord_name=True):
+def get_challenge(player, should_be_completed=False, search_by_discord_name=True):
     """
     Returns the deadline of the challenge the requesting player is participating in.
 

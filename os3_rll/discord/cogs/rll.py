@@ -80,7 +80,7 @@ class RLL(commands.Cog):
     async def reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
         logger.debug('reset challenge requested by {}'.format(str(ctx.author)))
-        challenger, defender = get_player_objects_from_challenge_info(str(ctx.author), should_be_complete=True)
+        challenger, defender = get_player_objects_from_challenge_info(str(ctx.author), should_be_completed=True)
         res = get_challenge_info(player)
         reset_challenge(challenger.id, defender.id)
         announcement = announce_reset(res)

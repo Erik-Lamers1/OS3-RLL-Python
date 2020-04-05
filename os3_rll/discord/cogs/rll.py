@@ -81,8 +81,8 @@ class RLL(commands.Cog):
         """Resets the challenge you are parcitipating in."""
         logger.debug('reset challenge requested by {}'.format(str(ctx.author)))
         challenger, defender = get_player_objects_from_challenge_info(str(ctx.author), should_be_completed=True)
-        res = get_challenge(str(ctx.author), should_be_completed=True)
         reset_challenge(challenger.id, defender.id)
+        res = get_challenge(str(ctx.author), should_be_completed=True)
         announcement = announce_reset(res)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 

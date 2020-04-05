@@ -1,6 +1,7 @@
 from datetime import datetime
 from logging import getLogger
 
+from os3_rll.utils.math import ordinal
 from os3_rll.discord.utils import create_embed
 
 logger = getLogger(__name__)
@@ -88,7 +89,7 @@ def announce_challenge_info(challenge_data: dict):
                            "This match should be player before {deadline} or {p1_gamertag} will win automaticly".format(
                 p1_gamertag=challenge_data['p1']['name'],
                 p2_gamertag=challenge_data['p2']['name'],
-                p2_rank=challenge_data['p2']['rank'],
+                p2_rank=ordinal(challenge_data['p2']['rank']),
                 deadline=datetime.strftime(challenge_data['deadline'], '%Y/%m/%d %H:%M')
             ),
             "colour": 0,

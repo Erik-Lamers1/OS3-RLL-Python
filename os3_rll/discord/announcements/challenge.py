@@ -82,12 +82,12 @@ def announce_challenge_info(challenge_data: dict):
     try:
         embed = {
             "title": "Awaiting completion of challenge between {} and {}".format(
-                challenge_data['p1']['gamertag'], challenge_data['p2']['gamertag']
+                challenge_data['p1']['name'], challenge_data['p2']['name']
             ),
             "description": "{p2_gamertag} is defending their {p2_rank} place on the leaderboard against {p1_gamertag}. "
                            "This match should be player before {deadline} or {p1_gamertag} will win automaticly".format(
-                p1_gamertag=challenge_data['p1']['gamertag'],
-                p2_gamertag=challenge_data['p2']['gamertag'],
+                p1_gamertag=challenge_data['p1']['name'],
+                p2_gamertag=challenge_data['p2']['name'],
                 p2_rank=challenge_data['p2']['rank'],
                 deadline=datetime.strftime(challenge_data['deadline'], '%Y/%m/%d %H:%M')
             )

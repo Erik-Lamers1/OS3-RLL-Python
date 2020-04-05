@@ -8,6 +8,7 @@ from logging import getLogger
 logger = getLogger(__name__)
 discord_regex = re.compile('^.{2,32}#[0-9]{4}$')
 
+
 def not_implemented():
     developers = ['SyntheticOxygen', 'Mr. Vin', 'Mr. Vin', 'Mr. Vin', 'Mr. Vin', 'Pandabeer']
     developer = get_player(random.choice(developers))

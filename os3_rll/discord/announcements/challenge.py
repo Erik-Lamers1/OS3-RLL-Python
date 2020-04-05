@@ -90,7 +90,9 @@ def announce_challenge_info(challenge_data: dict):
                 p2_gamertag=challenge_data['p2']['name'],
                 p2_rank=challenge_data['p2']['rank'],
                 deadline=datetime.strftime(challenge_data['deadline'], '%Y/%m/%d %H:%M')
-            )
+            ),
+            "colour": 0,
+            "footer": "Let's get it on!"
         }
         message = {
             "content": "You have an outstanding challenge",

@@ -1,6 +1,7 @@
 from logging import getLogger
 
 from os3_rll.discord.utils import create_embed, get_player
+from os3_rll.models.player import PlayerException
 
 logger = getLogger(__name__)
 

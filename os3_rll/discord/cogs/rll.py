@@ -73,10 +73,10 @@ class RLL(commands.Cog):
         """Completes the challenge you are parcitipating in."""
         match_res = "".join([m for m in match_results])
         requester = str(ctx.author)
-        logger.debug('complete_challenge requested by {}'.format(requester))
+        logger.debug('complete_challenge requested by {} with args: {}'.format(requester, match_results))
         challenger, defender = get_player_objects_from_challenge_info(requester)
-        winner_id = complete_challenge(challenger.id, defender.id, match_results)
-        announcement = announce_winner(challenger, defender, winner_id, match_results)
+        winner_id = complete_challenge(challenger.id, defender.id, match_res)
+        announcement = announce_winner(challenger, defender, winner_id, match_res)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
     @commands.command(pass_context=True)

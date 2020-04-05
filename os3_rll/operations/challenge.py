@@ -68,10 +68,11 @@ def process_completed_challenge_args(args):
     return p1_wins, p2_wins, p1_score, p2_score
 
 
-def get_player_objects_from_uncomplete_challenge_info(player, search_by_discord_name=True):
+def get_player_objects_from_challenge_info(player, should_be_completed=False, search_by_discord_name=True):
     """
     Search for a challenge in the DB corresponding to the player
 
+    param bool should_be_completed: If the challenge should already be completed or not
     param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
     param str message_author: The discord_user that send the message (eg. Pandabeer#2202)
     returns tuple os3_rll.models.player.Player: (p1, p2)
@@ -80,7 +81,9 @@ def get_player_objects_from_uncomplete_challenge_info(player, search_by_discord_
         player = Player.get_player_id_by_username(player, discord_name=search_by_discord_name)
     with Database() as db:
         db.execute_prepared_statement(
-            'SELECT p1, p2 FROM challenges WHERE (p1=%s OR p2=%s) AND winner IS NULL ORDER BY id DESC',
+            'SELECT p1, p2 FROM challenges WHERE (p1=%s OR p2=%s) AND winner IS {} NULL ORDER BY id DESC'.format(
+                'NOT' if should_be_completed else ''
+            ),
             (player, player)
         )
         if db.rowcount == 0:

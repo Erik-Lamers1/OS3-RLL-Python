@@ -5,7 +5,7 @@ from copy import deepcopy
 from os3_rll.models.player import Player
 from os3_rll.models.challenge import Challenge, ChallengeException
 from os3_rll.operations.challenge import do_challenge_sanity_check, process_completed_challenge_args, \
-    get_latest_challenge_from_player_id, get_player_objects_from_uncomplete_challenge_info
+    get_latest_challenge_from_player_id, get_player_objects_from_challenge_info
 from os3_rll.operations.utils import check_date_is_older_than_x_days
 from os3_rll.models.db import Database
 
@@ -201,7 +201,7 @@ def get_challenge(player, search_by_discord_name=True):
         # Try to find the challenge
         challenge = get_latest_challenge_from_player_id(player)
         # Try to get the players
-        p1, p2 = get_player_objects_from_uncomplete_challenge_info(player)
+        p1, p2 = get_player_objects_from_challenge_info(player)
     except Exception as e:
         # Raise out own exception
         logger.error('Encountered exception while trying to retrieve challenge info')

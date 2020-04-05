@@ -7,7 +7,7 @@ from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented
 from os3_rll.discord.announcements.challenge import announce_challenge, announce_challenge_info, announce_winner
 from os3_rll.discord.announcements.player import announce_rankings, announce_stats
-from os3_rll.operations.challenge import get_player_objects_from_uncomplete_challenge_info
+from os3_rll.operations.challenge import get_player_objects_from_challenge_info
 
 logger = getLogger(__name__)
 
@@ -71,7 +71,7 @@ class RLL(commands.Cog):
         """Completes the challenge you are parcitipating in."""
         requester = ctx.author.name + "#" + str(ctx.author.discriminator)
         logger.debug('complete_challenge requested by {}'.format(requester))
-        challenger, defender = get_player_objects_from_uncomplete_challenge_info(requester)
+        challenger, defender = get_player_objects_from_challenge_info(requester)
         winner_id = complete_challenge(challenger.id, defender.id, match_results)
         announcement = announce_winner(challenger, defender, winner_id, match_results)
         await ctx.send(announcement['content'], embed=announcement['embed'])

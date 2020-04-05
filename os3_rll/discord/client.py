@@ -120,7 +120,10 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(utils.pebkak())
     elif isinstance(error, commands.CommandInvokeError):
-        await ctx.send("OUCH! that hurts. Better tell the devs to check the logs, something broke!")
+        if 'Command raised an exception' in error:
+            await ctx.send(error)
+        else:
+            await ctx.send("OUCH! that hurts. Better tell the devs to check the logs, something broke!")
     elif isinstance(error, commands.CheckFailure):
         await ctx.send("Whooops, you are not allowed to do this. Ask an RLL Admin.")
     else:

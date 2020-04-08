@@ -87,7 +87,7 @@ async def on_ready():
 
     logger.debug('loading modules from module path - {}'.format(cogs_module_path))
     logger.debug('loading modules from filesystem path - {}'.format(cogs_dir))
-    module_list = [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f)) and f != "__init__.py"]
+    module_list = [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f)) and f != "__init__.py"]
 
     logger.info('start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:

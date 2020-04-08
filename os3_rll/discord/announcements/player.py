@@ -75,25 +75,3 @@ def announce_stats(stats: dict):
                 """.format(table)
     except TypeError:
         logger.error("Found NoneType Object for {}".format(stats))
-
-
-def create_stats_table(stats: dict):
-    table = ""
-    first_stats = next(iter(stats.values()))
-    table_heading = list(first_stats.keys())
-    table_data = [list(v.values()) for v in stats.values()]
-    table += '|'
-    for e in table_heading:
-        if e == "avg_goals_per_challenge":
-            e = "goal avg."
-        line = ''.join("  {}|".format(str(e).ljust(21)))
-        table += '{}'.format(line)
-    table += '\n{}\n'.format('-' * len(table))
-    for player_entry in table_data:
-        table += '|'
-        for stat in player_entry:
-            line = ''.join("  {}|".format(str(stat).ljust(21)))
-            table += '{}'.format(line)
-        table += '\n'
-
-    return table

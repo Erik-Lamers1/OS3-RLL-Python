@@ -68,12 +68,11 @@ def announce_stats(stats: dict):
     table = tabulate(table, headers=header, tablefmt='pretty')
 
     try:
-        return {'content': """Current OS3 Rocket League Ladder Player Statistics:
+        return """Current OS3 Rocket League Ladder Player Statistics:
 ```
 {}
 ```
-                   """.format(table)
-                }
+                """.format(table)
     except TypeError:
         logger.error("Found NoneType Object for {}".format(stats))
 

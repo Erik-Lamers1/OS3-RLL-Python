@@ -1,7 +1,0 @@
-colorama==0.4.3
-six==1.14.0
-unipath==1.1
-discord==1.0.1
-PyMySQL==0.9.3
-tabulate==0.8.7
-pytest==5.4.1

@@ -1,0 +1,4 @@
+-r base.txt
+
+# These requirements are only used for testing and development purposes
+pytest==5.4.1

@@ -6,7 +6,8 @@ from unipath import Path
 
 PYTHON_PACKAGE_NAME = 'os3-rocket-league-ladder'
 PROJECT_DIR = Path(__file__).absolute().ancestor(3)
-COGS_DIR = join(PROJECT_DIR, 'os3_rll/discord/cogs')
+COGS_RELATIVE_DIR = 'os3_rll/discord/cogs'
+COGS_DIR = join(PROJECT_DIR, COGS_RELATIVE_DIR)
 
 # Log settings
 LOGGING = {

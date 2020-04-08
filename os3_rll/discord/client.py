@@ -5,7 +5,7 @@ import traceback
 from discord.ext import commands
 from logging import getLogger
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, basename
 from discord.ext.commands import ExtensionAlreadyLoaded
 
 from os3_rll.conf import settings
@@ -17,7 +17,7 @@ description = '''A competition manager bot. This bot manages the Rocket Leage la
 
 # This directory specifies what extensions (cogs which is a command aggregate) the bot should load at startup.
 cogs_dir = settings.COGS_DIR
-cogs_module_path = settings.COGS_DIR.replace("/", ".")
+cogs_module_path = settings.COGS_RELATIVE_DIR.replace("/", ".")
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('$'), description=description)
 
@@ -87,7 +87,9 @@ async def on_ready():
 
     logger.debug('loading modules from module path - {}'.format(cogs_module_path))
     logger.debug('loading modules from filesystem path - {}'.format(cogs_dir))
-    module_list = [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f)) and f != "__init__.py"]
+    module_list = [
+        basename(f).replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f)) and f != "__init__.py"
+    ]
 
     logger.info('start loading modules {}'.format(', '.join(module_list)))
     for extension in module_list:

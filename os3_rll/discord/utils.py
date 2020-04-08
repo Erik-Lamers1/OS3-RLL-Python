@@ -23,12 +23,13 @@ def pebkak():
     return random.choice(responses)
 
 
-def create_embed(data):
+def create_embed(data, include_thumbnail=True):
     embed = discord.Embed(title=data['title'],
                           description=data['description'],
                           url=settings.WEBSITE,
                           color=data['colour'])
-    embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
+    if include_thumbnail:
+        embed.set_thumbnail(url=settings.DISCORD_EMBED_THUMBNAIL)
     embed.set_footer(text=data['footer'])
     return embed
 

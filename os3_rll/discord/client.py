@@ -151,5 +151,14 @@ def discord_client():
 
     bot.loop.create_task(post())
 
-    while True:
-        bot.run(settings.DISCORD_TOKEN)
+    try:
+        while True:
+            bot.run(settings.DISCORD_TOKEN)
+    except KeyboardInterrupt:
+        logger.warning('Caught KeyBoardInterrupt closing connection')
+        bot.close()
+    except RuntimeError:
+        logger.info("Caught RunTimeError, this is probably the EventLoop closing, as we are shutting down. That's okay")
+    finally:
+        logger.info('Shutting down. Bye!')
+        exit(0)

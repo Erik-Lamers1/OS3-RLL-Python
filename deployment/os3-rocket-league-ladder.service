@@ -1,0 +1,15 @@
+[Unit]
+Description=Rocket League Ladder Python
+After=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+EnvironmentFile=/etc/default/os3-rocket-league-ladder
+Type=simple
+Restart=always
+RestartSec=5
+User=rrl
+ExecStart=/usr/local/bin/os3-rocket-league-ladder
+
+[Install]
+WantedBy=multi-user.target

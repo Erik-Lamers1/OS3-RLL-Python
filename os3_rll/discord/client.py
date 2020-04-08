@@ -86,19 +86,13 @@ async def on_ready():
     logger.info('{}(id: {})'.format(guild.name, guild.id))
 
     logger.debug('loading modules from module path - {}'.format(cogs_module_path))
-    logger.debug('loading modules from filesystem path - {}'.format(cogs_dir))
-    module_list = [f.replace('.py','') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f)) and f != "__init__.py"]
-
-    logger.info('start loading modules {}'.format(', '.join(module_list)))
-    for extension in module_list:
-        try:
-            module = cogs_module_path + '.' + extension
-            logger.debug('loading module: {}'.format(module))
-            bot.load_extension(module)
-        except Exception as e:
-            logger.error('{} - {}'.format(type(e).__name__, e))
-            if not isinstance(e, commands.ExtensionAlreadyLoaded):
-                logger.error('Stack Trace', exc_info=True)
+    try:
+        logger.debug('loading COGS modules from: {}'.format(cogs_module_path))
+        bot.load_extension(cogs_module_path)
+    except Exception as e:
+        logger.error('{} - {}'.format(type(e).__name__, e))
+        if not isinstance(e, commands.ExtensionAlreadyLoaded):
+            logger.error('Stack Trace', exc_info=True)
 
     logger.info('completed loading modules')
 
@@ -151,5 +145,14 @@ def discord_client():
 
     bot.loop.create_task(post())
 
-    while True:
-        bot.run(settings.DISCORD_TOKEN)
+    try:
+        while True:
+            bot.run(settings.DISCORD_TOKEN)
+    except KeyboardInterrupt:
+        logger.warning('Caught KeyBoardInterrupt closing connection')
+        bot.close()
+    except RuntimeError:
+        logger.info("Caught RunTimeError, this is probably the EventLoop closing, as we are shutting down. That's okay")
+    finally:
+        logger.info('Shutting down. Bye!')
+        exit(0)

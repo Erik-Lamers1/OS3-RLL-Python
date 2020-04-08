@@ -55,12 +55,14 @@ def announce_winner(p1, p2, winner_id: int, match_results: str):
 
     title = ""
     if p1.id == winner_id:
-        title = "**{0.gamertag} has defeated {1.gamertag} with {2} games to {3}.**".format(p1, p2, p1_games_won, p2_games_won)
+        title = "**{0.gamertag} has defeated {1.gamertag} with {2} games to {3}.**".format(p1, p2, p1_games_won,
+                                                                                           p2_games_won)
         description = "{0.gamertag} takes {1.gamertag}'s spot on the leaderboard!.".format(p1, p2)
         footer = "No dream is too big. ... "
         colour = 48393
     else:
-        title = "**{0.gamertag} successfully defended their spot against {1.gamertag} with a score of {2}-{3}**".format(p2, p1, p2_games_won, p1_games_won)
+        title = "**{0.gamertag} successfully defended their spot against {1.gamertag} with a score of {2}-{3}**".format(
+            p2, p1, p2_games_won, p1_games_won)
         description = "That means that {0.gamertag} is now on a timeout of 1 week.".format(p1)
         footer = "If you don't struggle, you'll never improve!"
         colour = 11540741
@@ -79,7 +81,7 @@ def announce_winner(p1, p2, winner_id: int, match_results: str):
         # use this to return it with the players request.
         return message
     except TypeError:
-        logger.error("Found {type(0)} {type(1)} Objects for {0} and {1}".format(p1, p2))
+        logger.error("Found {} {} Objects for {} and {}".format(type(p1), type(p2), p1, p2))
 
 
 def announce_challenge_info(challenge_data: dict):
@@ -120,15 +122,19 @@ def announce_reset(challenge_data: dict):
        return dist: message which can be send to discord
     """
     try:
-        embed = {'title': "**Challenge between {0} and {1} has been reset!**".format(challenge_data['p1']['name'], challenge_data['p2']['name']),
-                 "description": "{p2_gamertag} is defending their {p2_rank} place on the leaderboard against {p1_gamertag}. "
-                 "This match should be player before {deadline} or {p1_gamertag} will win automatically".format(
+        embed = {
+            'title': "**Challenge between {0} and {1} has been reset!**".format(challenge_data['p1']['name'],
+                                                                                challenge_data['p2']['name']),
+            "description": "{p2_gamertag} is defending their {p2_rank} place on the leaderboard against {p1_gamertag}. "
+                           "This match should be player before {deadline} or "
+                           "{p1_gamertag} will win automatically".format(
                 p1_gamertag=challenge_data['p1']['name'],
                 p2_gamertag=challenge_data['p2']['name'],
                 p2_rank=ordinal(challenge_data['p2']['rank']),
                 deadline=datetime.strftime(challenge_data['deadline'], '%Y/%m/%d %H:%M')),
-                 'footer': "Everybody deserves a second chance!",
-                 'colour': 2234352}
+            'footer': "Everybody deserves a second chance!",
+            'colour': 2234352
+        }
 
         message = {'content': "Resetting Challenge!",
                    'embed': create_embed(embed)}

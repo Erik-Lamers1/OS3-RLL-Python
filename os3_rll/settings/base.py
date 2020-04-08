@@ -1,6 +1,5 @@
 import sys
 from os import getenv
-from os.path import join
 
 from unipath import Path
 

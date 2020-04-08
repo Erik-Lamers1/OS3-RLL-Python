@@ -17,6 +17,8 @@ function deploy() {
     find . -name '*.pyc' -delete
     echo "deploying..."
     set_env
+    echo "Discarding local changes"
+    git reset --hard HEAD~1
     git pull --no-edit
     python3 setup.py install
 }
@@ -46,6 +48,7 @@ elif [[ $1 == "run_only" ]]; then
     start "debug"
 else
     echo "unknown param $1"
+    echo "This deploy script will clean the working dir, pull the latest version from git and deploy it"
     echo "usage: $0 <prod|debug|run_only>"
 fi
 

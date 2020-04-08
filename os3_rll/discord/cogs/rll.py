@@ -35,8 +35,7 @@ class RLL(commands.Cog):
         """
         logger.debug('get_stats: called by'.format(ctx.author))
         stats = get_player_stats()
-        announcement = announce_stats(stats)
-        await ctx.send(announcement['content'], embed=announcement['embed'])
+        await ctx.send(announce_stats(stats))
 
     @commands.command(pass_context=True)
     async def get_active_challenges(self, ctx):

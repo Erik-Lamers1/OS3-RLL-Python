@@ -1,11 +1,12 @@
 import sys
 from os import getenv
+from os.path import join
 
 from unipath import Path
 
 PYTHON_PACKAGE_NAME = 'os3-rocket-league-ladder'
 PROJECT_DIR = Path(__file__).absolute().ancestor(3)
-COGS_DIR = 'os3_rll/discord/cogs'
+COGS_DIR = join(PROJECT_DIR, 'os3_rll/discord/cogs')
 
 # Log settings
 LOGGING = {

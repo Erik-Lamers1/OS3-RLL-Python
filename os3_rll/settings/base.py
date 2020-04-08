@@ -42,6 +42,7 @@ LOGGING = {
     },
     'root': {
         'handlers': ['console', 'syslog'],
+        'level': 'DEBUG',
     }
 }
 

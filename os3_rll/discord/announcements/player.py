@@ -49,37 +49,31 @@ def announce_stats(stats: dict):
            Dictionary with content, title, description, footer and colour as keys.
     """
     # Frist, sort the dict by rank
-    stats = sorted(stats, key=lambda x: (stats[x]['rank']))
+    order = sorted(stats, key=lambda x: (stats[x]['rank']))
     table = []
     header = ['Name', 'Rank', 'Wins', 'Losses', 'Challenged', 'Avg_goals/pc']
 
     # Fill the table
-    for player in stats:
+    for i in order:
         table.append([
-            player['name'],
-            player['rank'],
-            player['wins'],
-            player['losses'],
-            player['is_challenged'],
-            round(player['avg_goals_per_challenge'], 2)
+            stats[i]['name'],
+            stats[i]['rank'],
+            stats[i]['wins'],
+            stats[i]['losses'],
+            stats[i]['is_challenged'],
+            round(stats[i]['avg_goals_per_challenge'], 2)
         ])
 
     # Call the formatter
     table = tabulate(table, headers=header, tablefmt='pretty')
 
     try:
-        embed = {'title': "** Player statistics **",
-                 'description': "```{}```".format(table),
-                 'footer': "Knowing better is doing better!",
-                 'colour': 2234352}
-
-        message = {'content': "Current OS3 Rocket League Ladder Player Statistics:",
-                   'embed': create_embed(embed, include_thumbnail=False)}
-
-        # use this if you want to post the message via the bot's background routine
-        # client.message_queue.put(message)
-        # use this to return it with the players request.
-        return message
+        return {'content': """Current OS3 Rocket League Ladder Player Statistics:
+```
+{}
+```
+                   """.format(table)
+                }
     except TypeError:
         logger.error("Found NoneType Object for {}".format(stats))
 

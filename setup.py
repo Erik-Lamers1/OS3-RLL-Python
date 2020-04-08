@@ -12,7 +12,7 @@ setup(
     version=VERSION,
     url="https://github.com/Erik-Lamers1/OS3-RRL-Python",
     packages=find_packages(exclude=['tests', 'tests.*']),
-    author="Erik Lamers",
+    author="Erik Lamers, Vincent Breider, Vincent van der Eijk",
     install_requires=['discord', 'unipath', 'colorama', 'six', 'PyMySQL', 'tabulate'],
     entry_points={
         'console_scripts': [

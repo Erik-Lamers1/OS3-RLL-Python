@@ -1,11 +1,12 @@
 import discord
 import random
-import base64
+import re
 from discord.ext import commands
 from logging import getLogger
 from os3_rll.actions import stub
 from os3_rll.discord.utils import not_implemented
 from os3_rll.discord.announcements import challenge
+from os3_rll.discord.pokedex import Pokedex
 
 logger = getLogger(__name__)
 
@@ -13,6 +14,7 @@ logger = getLogger(__name__)
 class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.dex = Pokedex()
 
     @commands.command(pass_context=True)
     async def hi(self, ctx, *args):
@@ -29,7 +31,11 @@ class Debug(commands.Cog):
                      "me "
                      "more human like responses.",
                      "What are you doing here? LOL, your rank is so low you should practice uninstall.\n",
-                     "You know what's so great about COVID-19? I can't get it, I get other bugs though.\n"]
+                     "You know what's so great about COVID-19? I can't get it, I get other bugs though.\n",
+                     "Do you sometimes have those games where you fail to make every pass, every save, every clear, every shot, every assist? Well it's probably because Mr. Vin is in your team. For a straight guy he sure likes to chase balls.\n",
+                     "Did you ever play a rocket league match where you team mate chokes up in front of the opposite goal when he is supposed to score? Well then you must have been playing with toekel.\n",
+                     "Did you hear from SyntheticOxygen? No? Well then he must still be stuck in Silver III.\n",
+                     "Did you see your team mate ever make a save? No? Well then you must have been playing with Pandabeer.\n"]
         res += random.choice(responses)
         await ctx.send(res)
 
@@ -50,10 +56,6 @@ class Debug(commands.Cog):
         announcement = challenge.announce_challenge(ctx.author, p)
         await ctx.send(announcement['content'], embed=announcement['embed'])
 
-    # @commands.command(pass_context=True)
-    # async def announce_rankings(self, ctx)
-    # announcement = announcements.rankings.announce_rankings()
-
     @commands.command(pass_context=True)
     async def debug_reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
@@ -61,49 +63,32 @@ class Debug(commands.Cog):
         await ctx.send(not_implemented())
 
     @commands.command(pass_context=True, hidden=True)
-    async def i_choose_you(self, ctx):
-        """Whut?... It's super effective."""
-        n25 = ('ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLC0u'
-               'CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF8ufCAg'
-               'JwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLicgIHwg'
-               'LwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICwnICAgIHwn'
-               'CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvICAgICAgLwog'
-               'ICAgICAgICAgICAgICAgICAgICAgIF8uLi0tLS0iIi0tLS4nICAgICAgLwogXy4u'
-               'Li4uLS0tLS0tLS0tLi4uLC0iIiAgICAgICAgICAgICAgICAgICwnCiBgLS5fICBc'
-               'ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvCiAgICAgYC0uK18gICAg'
-               'ICAgICAgICBfXyAgICAgICAgICAgLC0tLiAuCiAgICAgICAgICBgLS4uXyAgICAg'
-               'LjogICkuICAgICAgICAoYC0tInwgXAogICAgICAgICAgICAgICA3ICAgIHwgYCIg'
-               'fCAgICAgICAgIGAuLi4nICBcCiAgICAgICAgICAgICAgIHwgICAgIGAtLScgICAg'
-               'ICcrIiAgICAgICAgLCIuICwiIi0KICAgICAgICAgICAgICAgfCAgIF8uLi4gICAg'
-               'ICAgIC5fX19fICAgICB8IHwvICAgICcKICAgICAgICAgIF8uICAgfCAgLiAgICBg'
-               'LiAgJy0tIiAgIC8gICAgICBgLi8gICAgIGoKICAgICAgICAgXCcgYC0ufCAgJyAg'
-               'ICAgfCAgIGAuICAgLyAgICAgICAgLyAgICAgLwogICAgICAgICAnICAgICBgLS4g'
-               'YC0tLSIgICAgICBgLSIgICAgICAgIC8gICAgIC8KICAgICAgICAgIFwgICAgICAg'
-               'YC4gICAgICAgICAgICAgICAgICBfLCcgICAgIC8KICAgICAgICAgICBcICAgICAg'
-               'ICBgICAgICAgICAgICAgICAgICAgICAgICAgLgogICAgICAgICAgICBcICAgICAg'
-               'ICAgICAgICAgICAgICAgICAgICAgICAgICBqCiAgICAgICAgICAgICBcICAgICAg'
-               'ICAgICAgICAgICAgICAgICAgICAgICAgLwogICAgICAgICAgICAgIGAuICAgICAg'
-               'ICAgICAgICAgICAgICAgICAgICAgLgogICAgICAgICAgICAgICAgKyAgICAgICAg'
-               'ICAgICAgICAgICAgICAgICAgXAogICAgICAgICAgICAgICAgfCAgICAgICAgICAg'
-               'ICAgICAgICAgICAgICAgIEwKICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAg'
-               'ICAgICAgICAgICAgICB8CiAgICAgICAgICAgICAgICB8ICBfIC8sICAgICAgICAg'
-               'ICAgICAgICAgICAgfAogICAgICAgICAgICAgICAgfCB8IEwpJy4uICAgICAgICAg'
-               'ICAgICAgICAgIHwKICAgICAgICAgICAgICAgIHwgLiAgICB8IGAgICAgICAgICAg'
-               'ICAgICAgICB8CiAgICAgICAgICAgICAgICAnICBcJyAgIEwgICAgICAgICAgICAg'
-               'ICAgICAgJwogICAgICAgICAgICAgICAgIFwgIFwgICB8ICAgICAgICAgICAgICAg'
-               'ICAgagogICAgICAgICAgICAgICAgICBgLiBgX18nICAgICAgICAgICAgICAgICAv'
-               'CiAgICAgICAgICAgICAgICBfLC4tLS4tLS0uLi4uLi4uLl9fICAgICAgLwogICAg'
-               'ICAgICAgICAgICAtLS0uLCctLS1gICAgICAgICAgfCAgIC1qIgogICAgICAgICAg'
-               'ICAgICAgLi0nICAnLi4uLl9fICAgICAgTCAgICB8CiAgICAgICAgICAgICAgIiIt'
-               'LS4uICAgIF8sLScgICAgICAgXCBsfHwKICAgICAgICAgICAgICAgICAgLC0nICAu'
-               'Li4uLi0tLS0tLS4gYHx8JwogICAgICAgICAgICAgICBfLCcgICAgICAgICAgICAg'
-               'ICAgLwogICAgICAgICAgICAgLCcgICAgICAgICAgICAgICAgICAvCiAgICAgICAg'
-               'ICAgICctLS0tLS0tLS0rLSAgICAgICAgLwogICAgICAgICAgICAgICAgICAgICAv'
-               'ICAgICAgICAgLwogICAgICAgICAgICAgICAgICAgLicgICAgICAgICAvCiAgICAg'
-               'ICAgICAgICAgICAgLicgICAgICAgICAgLwogICAgICAgICAgICAgICAsJyAgICAg'
-               'ICAgICAgLwogICAgICAgICAgICAgXycuLi4uLS0tLSIiIiIiIG1o')
-        pokeball = '```{}```'.format(str(base64.b64decode(n25), "ascii"))
-        await ctx.send(pokeball)
+    async def i_choose_you(self, ctx, pokemon: str=""):
+        """Whut?... It's super effective.
+           params: a string to parse defaults to empty
+                   ""          -> chooses random pokemon and random art
+                   "pikachu"   -> returns pikachu asciiart
+                   "25"        -> returns pikachu
+                   "25 1"      -> returns pikachu with alternative ascii art
+                   "pikachu 1" -> returns pikachu with alternative ascii art
+                   "pikachu rnd" -> returns pikachu with random ascii art
+                   "25 rnd" -> returns pikachu with random ascii art"
+        """
+        pokeball = ""
+
+        if pokemon == "":
+            poke_id = random.choice(dex.list_pokemons())[0]
+            pokeball = dex.choose_by_id(poke_id, rnd=True)
+        else:
+            if int(pokemon) in range(0, 152):
+                logger.debug('bot.i_choose_you: called with id: {}'.format(pokemon))
+                pokeball = dex.choose_by_id(int(pokemon), rnd=True)
+            else:
+                logger.debug('bot.i_choose_you: called with name: {}'.format(pokemon))
+                pokeball = dex.choose_by_name(str(pokemon), rnd=False)
+
+        msg = '```{}```'.format(pokeball)
+        await ctx.send(msg)
 
 
 def setup(bot):

@@ -1,6 +1,0 @@
-colorama
-six
-unipath
-discord
-PyMySQL
-tabulate

@@ -66,13 +66,9 @@ class Debug(commands.Cog):
     async def i_choose_you(self, ctx, pokemon: str=""):
         """Whut?... It's super effective.
            params: a string to parse defaults to empty
-                   ""          -> chooses random pokemon and random art
-                   "pikachu"   -> returns pikachu asciiart
-                   "25"        -> returns pikachu
-                   "25 1"      -> returns pikachu with alternative ascii art
-                   "pikachu 1" -> returns pikachu with alternative ascii art
-                   "pikachu rnd" -> returns pikachu with random ascii art
-                   "25 rnd" -> returns pikachu with random ascii art"
+                   ""          -> chooses random pokemon
+                   "pikachu"   -> returns pikachu ascii art
+                   "25"        -> returns pikachu ascii art
         """
         pokeball = ""
 
@@ -80,14 +76,20 @@ class Debug(commands.Cog):
             poke_id = random.choice(self.dex.list_pokemons())[0]
             pokeball = self.dex.choose_by_id(poke_id, rnd=True)
         else:
-            if int(pokemon) in range(0, 152):
-                logger.debug('bot.i_choose_you: called with id: {}'.format(pokemon))
-                pokeball = self.dex.choose_by_id(int(pokemon), rnd=True)
-            else:
+            try:
+                id_ = int(pokemon)
+                if int(pokemon) in range(0, 152):
+                    logger.debug('bot.i_choose_you: called with id: {}'.format(pokemon))
+                    pokeball = self.dex.choose_by_id(int(pokemon), rnd=True)
+            except ValueError:
                 logger.debug('bot.i_choose_you: called with name: {}'.format(pokemon))
-                pokeball = self.dex.choose_by_name(str(pokemon), rnd=False)
+                pokeball = self.dex.choose_by_name(str(pokemon), rnd=True)
+        msg = ""
+        if len(pokeball) > 1999:
+            msg = "pokemon art is to large to be shown (exceeds 2000 chars)"
+        else:
+            msg = '```{}```'.format(pokeball)
 
-        msg = '```{}```'.format(pokeball)
         await ctx.send(msg)
 
 

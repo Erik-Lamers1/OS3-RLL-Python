@@ -77,15 +77,15 @@ class Debug(commands.Cog):
         pokeball = ""
 
         if pokemon == "":
-            poke_id = random.choice(dex.list_pokemons())[0]
-            pokeball = dex.choose_by_id(poke_id, rnd=True)
+            poke_id = random.choice(self.dex.list_pokemons())[0]
+            pokeball = self.dex.choose_by_id(poke_id, rnd=True)
         else:
             if int(pokemon) in range(0, 152):
                 logger.debug('bot.i_choose_you: called with id: {}'.format(pokemon))
-                pokeball = dex.choose_by_id(int(pokemon), rnd=True)
+                pokeball = self.dex.choose_by_id(int(pokemon), rnd=True)
             else:
                 logger.debug('bot.i_choose_you: called with name: {}'.format(pokemon))
-                pokeball = dex.choose_by_name(str(pokemon), rnd=False)
+                pokeball = self.dex.choose_by_name(str(pokemon), rnd=False)
 
         msg = '```{}```'.format(pokeball)
         await ctx.send(msg)

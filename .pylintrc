@@ -148,7 +148,7 @@ disable=print-statement,
         invalid-name,
         import-error,
         too-many-format-args,
-
+        bad-continuation,   # This one clashes with black. Take black formatting over pylint
 
 
 

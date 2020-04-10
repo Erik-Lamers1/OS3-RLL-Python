@@ -517,7 +517,7 @@ class Pokedex:
 
         try:
             res = str(base64.b64decode(pokemon_b64), "ascii")
-        except UnicodeDecodeError as e: # for some reason pokemon 148; subindex 0 (dragonair) contains a non ascii char
+        except UnicodeDecodeError as e:  # for some reason pokemon 148; subindex 0 (dragonair) contains a non ascii char
             res = str(base64.b64decode(pokemon_b64), "utf-8")
 
         return res
@@ -535,7 +535,7 @@ class Pokedex:
 
         try:
             res = str(base64.b64decode(pokemon_b64), "ascii")
-        except UnicodeDecodeError as e: # for some reason pokemon 148; subindex 0 (dragonair) contains a non ascii char
+        except UnicodeDecodeError as e:  # for some reason pokemon 148; subindex 0 (dragonair) contains a non ascii char
             res = str(base64.b64decode(pokemon_b64), "utf-8")
 
         return res

@@ -19,19 +19,20 @@ def announce_rankings(ranks: dict):
     description = ""
 
     for k, v in sorted_ranks.items():
-        if get_player(k.name + '#' + str(k.discriminator)) is None:
-            raise PlayerException('Player returned from database does not have a valid Discord account')
+        if get_player(k.name + "#" + str(k.discriminator)) is None:
+            raise PlayerException("Player returned from database does not have a valid Discord account")
 
-        description += '{0:2}. {1}\n'.format(v[0], v[1])
+        description += "{0:2}. {1}\n".format(v[0], v[1])
 
     try:
-        embed = {'title': "**{} is the current champion.**".format(champion),
-                 'description': "{}".format(description),
-                 'footer': "Become the best!",
-                 'colour': 2234352}
+        embed = {
+            "title": "**{} is the current champion.**".format(champion),
+            "description": "{}".format(description),
+            "footer": "Become the best!",
+            "colour": 2234352,
+        }
 
-        message = {'content': "Current OS3 Rocket League Ladder leaderboard:",
-                   'embed': create_embed(embed)}
+        message = {"content": "Current OS3 Rocket League Ladder leaderboard:", "embed": create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine
         # client.message_queue.put(message)
@@ -49,29 +50,33 @@ def announce_stats(stats: dict):
            Dictionary with content, title, description, footer and colour as keys.
     """
     # Frist, sort the dict by rank
-    order = sorted(stats, key=lambda x: (stats[x]['rank']))
+    order = sorted(stats, key=lambda x: (stats[x]["rank"]))
     table = []
-    header = ['Name', 'Rank', 'Wins', 'Losses', 'Challenged', 'Avg_goals/pc']
+    header = ["Name", "Rank", "Wins", "Losses", "Challenged", "Avg_goals/pc"]
 
     # Fill the table
     for i in order:
-        table.append([
-            stats[i]['name'],
-            stats[i]['rank'],
-            stats[i]['wins'],
-            stats[i]['losses'],
-            stats[i]['is_challenged'],
-            round(stats[i]['avg_goals_per_challenge'], 2)
-        ])
+        table.append(
+            [
+                stats[i]["name"],
+                stats[i]["rank"],
+                stats[i]["wins"],
+                stats[i]["losses"],
+                stats[i]["is_challenged"],
+                round(stats[i]["avg_goals_per_challenge"], 2),
+            ]
+        )
 
     # Call the formatter
-    table = tabulate(table, headers=header, tablefmt='pretty')
+    table = tabulate(table, headers=header, tablefmt="pretty")
 
     try:
         return """Current OS3 Rocket League Ladder Player Statistics:
 ```
 {}
 ```
-                """.format(table)
+                """.format(
+            table
+        )
     except TypeError:
         logger.error("Found NoneType Object for {}".format(stats))

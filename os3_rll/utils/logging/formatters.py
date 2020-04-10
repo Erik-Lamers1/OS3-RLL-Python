@@ -9,16 +9,14 @@ except ImportError:
 
 if colorama:
     default_palette = {
-        'asctime': {
-            '*': [colorama.Fore.BLACK, colorama.Style.BRIGHT],
-        },
-        'level': {
+        "asctime": {"*": [colorama.Fore.BLACK, colorama.Style.BRIGHT],},
+        "level": {
             DEBUG: [colorama.Fore.WHITE, colorama.Style.DIM],
             WARNING: [colorama.Fore.YELLOW],
             ERROR: [colorama.Fore.RED],
             CRITICAL: [colorama.Fore.RED, colorama.Style.BRIGHT],
         },
-        'msg': {
+        "msg": {
             DEBUG: [colorama.Fore.WHITE, colorama.Style.DIM],
             WARNING: [colorama.Style.BRIGHT],
             ERROR: [colorama.Fore.RED],
@@ -27,8 +25,8 @@ if colorama:
     }
     _RESET = colorama.Style.RESET_ALL
 else:
-    default_palette = {'asctime': {}, 'level': {}, 'msg': {}}
-    _RESET = ''
+    default_palette = {"asctime": {}, "level": {}, "msg": {}}
+    _RESET = ""
 
 
 class ConsoleFormatter(Formatter):
@@ -46,11 +44,9 @@ class ConsoleFormatter(Formatter):
         Formatter.__init__(self, fmt, datefmt)
         self._colored = bool(colored()) if colored and not isinstance(colored, bool) else colored
         if self._colored and not colorama:
-            warnings.warn(
-                "can't format colored log message. dependency package 'colorama' is not installed"
-            )
+            warnings.warn("can't format colored log message. dependency package 'colorama' is not installed")
             self._colored = False
-        self._palette = default_palette if self._colored else {'asctime': {}, 'level': {}, 'msg': {}}
+        self._palette = default_palette if self._colored else {"asctime": {}, "level": {}, "msg": {}}
 
     @property
     def colored(self):
@@ -82,17 +78,17 @@ class ConsoleFormatter(Formatter):
         See format
         """
         record = deepcopy(record)  # avoid mutating the record itself
-        level = getattr(record, 'levelno', INFO)
+        level = getattr(record, "levelno", INFO)
 
-        level_palette = self._palette['level']
-        level_styles = level_palette[level] if level in level_palette else level_palette.get('*', [])
+        level_palette = self._palette["level"]
+        level_styles = level_palette[level] if level in level_palette else level_palette.get("*", [])
         if level_styles:
-            record.levelname = r''.join(level_styles) + str(record.levelname) + _RESET
+            record.levelname = r"".join(level_styles) + str(record.levelname) + _RESET
 
-        msg_palette = self._palette['msg']
-        msg_styles = msg_palette[level] if level in msg_palette else msg_palette.get('*', [])
+        msg_palette = self._palette["msg"]
+        msg_styles = msg_palette[level] if level in msg_palette else msg_palette.get("*", [])
         if msg_styles:
-            record.msg = r''.join(msg_styles) + str(record.msg) + _RESET
+            record.msg = r"".join(msg_styles) + str(record.msg) + _RESET
 
         return Formatter.format(self, record)
 
@@ -106,9 +102,9 @@ class ConsoleFormatter(Formatter):
         """
         formatted_time = Formatter.formatTime(self, record, datefmt)
         if self._colored:
-            level = getattr(record, 'levelno', INFO)
-            asctime_palette = self._palette['asctime']
-            asctime_styles = asctime_palette[level] if level in asctime_palette else asctime_palette.get('*', [])
+            level = getattr(record, "levelno", INFO)
+            asctime_palette = self._palette["asctime"]
+            asctime_styles = asctime_palette[level] if level in asctime_palette else asctime_palette.get("*", [])
             if asctime_styles:
-                return r''.join(asctime_styles) + formatted_time + _RESET
+                return r"".join(asctime_styles) + formatted_time + _RESET
         return formatted_time

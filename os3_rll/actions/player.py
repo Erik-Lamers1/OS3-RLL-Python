@@ -14,11 +14,11 @@ def get_player_ranking():
     returns dict: {str discord: int rank, ...}
     """
     players = {}
-    logger.info('Getting current player ranking from DB')
+    logger.info("Getting current player ranking from DB")
     with Database() as db:
-        db.execute('SELECT discord, rank, gamertag FROM users WHERE rank > 0 ORDER BY rank')
+        db.execute("SELECT discord, rank, gamertag FROM users WHERE rank > 0 ORDER BY rank")
         if db.rowcount == 0:
-            raise DBException('No players found')
+            raise DBException("No players found")
         rows = db.fetchall()
         for row in rows:
             # Fill the dict with discord => rank
@@ -43,7 +43,7 @@ def get_player_stats():
         }
     """
     players = {}
-    logger.info('Retrieving player stats')
+    logger.info("Retrieving player stats")
     ids = get_all_player_ids_ordered()
     for player in ids:
         # Get the basic info
@@ -54,7 +54,7 @@ def get_player_stats():
                 "rank": p.rank,
                 "wins": p.wins,
                 "losses": p.losses,
-                "is_challenged": p.challenged
+                "is_challenged": p.challenged,
             }
         # Now get the average goals per challenge
         players[player]["avg_goals_per_challenge"] = get_average_goals_per_challenge(player)

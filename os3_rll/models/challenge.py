@@ -16,6 +16,7 @@ class Challenge:
     This class will hold a local copy of the Player object
     When self.save() is called the changes are written to the database
     """
+
     def __init__(self, i=0, force=False):
         """
         param int i: The id of the challenge to get, if left to 0 a new challenge will be created
@@ -36,18 +37,17 @@ class Challenge:
         self._winner = 0
         self._new = True if self._id == 0 else False
         if not self._new:
-            self._date, self._p1, self._p2, self._p1_wins, self._p2_wins, self._p1_score, self._p2_score, \
-                self._winner = self.get_challenge_info_from_db()
-        self.original = (
-            self._date,
-            self._p1,
-            self._p2,
-            self._p1_wins,
-            self._p2_wins,
-            self._p1_score,
-            self._p2_score,
-            self._winner
-        )
+            (
+                self._date,
+                self._p1,
+                self._p2,
+                self._p1_wins,
+                self._p2_wins,
+                self._p1_score,
+                self._p2_score,
+                self._winner,
+            ) = self.get_challenge_info_from_db()
+        self.original = (self._date, self._p1, self._p2, self._p1_wins, self._p2_wins, self._p1_score, self._p2_score, self._winner)
         if self._date:
             self._date = datetime.fromtimestamp(self._date)
         else:
@@ -68,14 +68,14 @@ class Challenge:
         """
         with Database() as db:
             db.execute_prepared_statement(
-                'SELECT id FROM challenges WHERE p1=%s AND p2=%s AND winner IS {} NULL ORDER BY id DESC LIMIT 1'.format(
-                    'NOT' if should_be_completed else ''
+                "SELECT id FROM challenges WHERE p1=%s AND p2=%s AND winner IS {} NULL ORDER BY id DESC LIMIT 1".format(
+                    "NOT" if should_be_completed else ""
                 ),
-                (p1, p2)
+                (p1, p2),
             )
             # Check for non existing challenge
             if db.rowcount != 1:
-                raise ChallengeException('Challenge not found')
+                raise ChallengeException("Challenge not found")
             return db.fetchone()[0]
 
     @property
@@ -93,7 +93,7 @@ class Challenge:
         param datetime.datetime() date: The datetime to set the date to
         """
         if not isinstance(date, datetime):
-            raise ChallengeException('Date can only be set to a datetime.datetime() object')
+            raise ChallengeException("Date can only be set to a datetime.datetime() object")
         self._date = date
 
     @property
@@ -182,9 +182,7 @@ class Challenge:
 
     @winner.setter
     def winner(self, winner):
-        raise ChallengeException(
-            'Winner cannot be set, please set p1_wins and p2_wins instead and the winner will be calculated'
-        )
+        raise ChallengeException("Winner cannot be set, please set p1_wins and p2_wins instead and the winner will be calculated")
 
     def save(self):
         if self._new:
@@ -192,40 +190,25 @@ class Challenge:
         else:
             if self.check_if_challenge_info_has_changed():
                 if not self.force:
-                    raise ChallengeException(
-                        'DB info has changed while trying to save, refusing save. Set force=True to overwrite'
-                    )
+                    raise ChallengeException("DB info has changed while trying to save, refusing save. Set force=True to overwrite")
                 else:
-                    logger.warning('DB info has changed! Force enabled, overwriting DB info...')
+                    logger.warning("DB info has changed! Force enabled, overwriting DB info...")
             self._save_existing_challenge_model()
         self.db.commit()
 
     def _save_new_challenge(self):
         # Check if any of the required args are missing
         if any(arg is None for arg in (self._p1, self._p2)):
-            raise ChallengeException('When creating a new challenge the p1, and p2 properties are required')
-        logger.info('Inserting new challenge into DB')
-        self.db.execute_prepared_statement(
-            'INSERT INTO challenges SET date=%s, p1=%s, p2=%s', (self._date, self._p1, self._p2)
-        )
+            raise ChallengeException("When creating a new challenge the p1, and p2 properties are required")
+        logger.info("Inserting new challenge into DB")
+        self.db.execute_prepared_statement("INSERT INTO challenges SET date=%s, p1=%s, p2=%s", (self._date, self._p1, self._p2))
 
     def _save_existing_challenge_model(self):
-        logger.info('Updating DB for challenge with id {}'.format(self._id))
+        logger.info("Updating DB for challenge with id {}".format(self._id))
         # Check the actual winner property so if the user didn't set it we still appoint a winner
         self.db.execute_prepared_statement(
-            'UPDATE challenges SET date=%s, p1=%s, p2=%s, p1_wins=%s, p2_wins=%s, p1_score=%s, p2_score=%s, winner=%s '
-            'WHERE id=%s',
-            (
-                self._date,
-                self._p1,
-                self._p2,
-                self._p1_wins,
-                self._p2_wins,
-                self._p1_score,
-                self._p2_score,
-                self.winner,
-                self._id
-            )
+            "UPDATE challenges SET date=%s, p1=%s, p2=%s, p1_wins=%s, p2_wins=%s, p1_score=%s, p2_score=%s, winner=%s " "WHERE id=%s",
+            (self._date, self._p1, self._p2, self._p1_wins, self._p2_wins, self._p1_score, self._p2_score, self.winner, self._id),
         )
 
     def reset(self):
@@ -235,15 +218,14 @@ class Challenge:
         """
         # First check if force is set
         if not self.force:
-            raise ChallengeException('Resetting a challenge requires the parameter flag to be set')
+            raise ChallengeException("Resetting a challenge requires the parameter flag to be set")
         if self._new:
-            raise ChallengeException('New challenges cannot be reset')
-        logger.info('Resetting the scores of challenge {}'.format(self._id))
+            raise ChallengeException("New challenges cannot be reset")
+        logger.info("Resetting the scores of challenge {}".format(self._id))
         self.db.execute_prepared_statement(
-            'UPDATE challenges SET p1_wins=NULL, p2_wins=NULL, p1_score=NULL, p2_score=NULL, winner=NULL WHERE id=%s',
-            (self._id,)
+            "UPDATE challenges SET p1_wins=NULL, p2_wins=NULL, p1_score=NULL, p2_score=NULL, winner=NULL WHERE id=%s", (self._id,)
         )
-        logger.info('Reloading myself')
+        logger.info("Reloading myself")
         self.db.commit()
         self.__init__(i=self._id, force=self.force)
 
@@ -252,33 +234,29 @@ class Challenge:
         Delete the challenge associated with this instance
         """
         if not self.force:
-            raise ChallengeException('Deleting a challenge requires the force parameter to be set')
+            raise ChallengeException("Deleting a challenge requires the force parameter to be set")
         if self._new:
-            raise ChallengeException('New challenges cannot be deleted')
-        logger.info('Deleting challenge with id {}'.format(self._id))
-        self.db.execute_prepared_statement('DELETE FROM challenges WHERE id=%s', (self._id,))
+            raise ChallengeException("New challenges cannot be deleted")
+        logger.info("Deleting challenge with id {}".format(self._id))
+        self.db.execute_prepared_statement("DELETE FROM challenges WHERE id=%s", (self._id,))
         self.db.commit()
 
     def get_challenge_info_from_db(self):
-        logger.debug('Getting challenge info for challenge with id {} from DB'.format(self._id))
+        logger.debug("Getting challenge info for challenge with id {} from DB".format(self._id))
         self.db.execute_prepared_statement(
-            'SELECT UNIX_TIMESTAMP(date), p1, p2, p1_wins, p2_wins, p1_score, p2_score, winner FROM challenges '
-            'WHERE id=%s',
-            (self._id,)
+            "SELECT UNIX_TIMESTAMP(date), p1, p2, p1_wins, p2_wins, p1_score, p2_score, winner FROM challenges " "WHERE id=%s", (self._id,)
         )
         self._check_row_count()
         return self.db.fetchone()
 
     def check_if_challenge_info_has_changed(self):
-        logger.debug('Checking if challenge info has changed')
+        logger.debug("Checking if challenge info has changed")
         challenge_info = self.get_challenge_info_from_db()
         return True if challenge_info != self.original else False
 
     def _check_row_count(self, rowcount=1):
         if self.db.rowcount != rowcount:
-            raise ChallengeException(
-                'Excepting {} rows to be returned by DB, got {} rows instead'.format(rowcount, self.db.rowcount)
-            )
+            raise ChallengeException("Excepting {} rows to be returned by DB, got {} rows instead".format(rowcount, self.db.rowcount))
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # Auto save on force, don't save if the challenge has been reset (no winner)

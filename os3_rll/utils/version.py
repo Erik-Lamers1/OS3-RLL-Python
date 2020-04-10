@@ -4,6 +4,10 @@ from os3_rll.conf import settings
 
 
 def show_version():
-    print("""
+    print(
+        """
 OS3 Rocket League Ladder version {}
-""".format(require(settings.PYTHON_PACKAGE_NAME)[0].version))
+""".format(
+            require(settings.PYTHON_PACKAGE_NAME)[0].version
+        )
+    )

@@ -10,9 +10,9 @@ class Members(commands.Cog):
         self.bot = bot
 
     @commands.command(pass_context=True)
-    async def joined(self, ctx, member : discord.Member):
+    async def joined(self, ctx, member: discord.Member):
         """Says when a member joined."""
-        await ctx.send('{0.name} joined in {0.joined_at}'.format(member))
+        await ctx.send("{0.name} joined in {0.joined_at}".format(member))
 
     @commands.group(pass_context=True)
     async def cool(self, ctx):
@@ -22,44 +22,44 @@ class Members(commands.Cog):
         In reality this just checks if a subcommand is being invoked.
         """
         if ctx.invoked_subcommand is None:
-            await ctx.send('No, {0.subcommand_passed} is not cool.'.format(ctx))
+            await ctx.send("No, {0.subcommand_passed} is not cool.".format(ctx))
 
-    @cool.command(pass_context=True, name='bot')
+    @cool.command(pass_context=True, name="bot")
     async def _bot(self, ctx):
         """
         Is the bot cool?
         """
-        await ctx.send('Yes, I am cool.')
+        await ctx.send("Yes, I am cool.")
 
-    @cool.command(pass_context=True, name='Mr. Vin')
+    @cool.command(pass_context=True, name="Mr. Vin")
     async def _mr_vin(self, ctx):
         """
         Is Mr. Vin cool?
         """
-        await ctx.send('No, Mr. Vin is not cool, he is a lazy f*ck.')
+        await ctx.send("No, Mr. Vin is not cool, he is a lazy f*ck.")
 
-    @cool.command(pass_context=True, name='SyntheticOxygen')
+    @cool.command(pass_context=True, name="SyntheticOxygen")
     async def _syntheticoxygen(self, ctx):
         """
         Is SyntheticOxygen cool?
         """
-        await ctx.send('Yes, SyntheticOxygen is cool, because he is my developer.')
+        await ctx.send("Yes, SyntheticOxygen is cool, because he is my developer.")
 
-    @cool.command(pass_context=True, name='Pandabeer')
+    @cool.command(pass_context=True, name="Pandabeer")
     async def _pandabeer(self, ctx):
         """
         Is Pandabeer cool?
         """
-        await ctx.send('Yes, Pandabeer is cool, because he is my developer.')
+        await ctx.send("Yes, Pandabeer is cool, because he is my developer.")
 
-    @cool.command(pass_context=True, name='wilmar446')
+    @cool.command(pass_context=True, name="wilmar446")
     async def _wilmar446(self, ctx):
         """
         Is wilmar446 cool?
         """
-        await ctx.send('No, that motherfucker is just a toxic asshole.')
+        await ctx.send("No, that motherfucker is just a toxic asshole.")
 
 
 def setup(bot):
     bot.add_cog(Members(bot))
-    logger.debug('{} added to bot {}'.format(__name__, bot.user))
+    logger.debug("{} added to bot {}".format(__name__, bot.user))

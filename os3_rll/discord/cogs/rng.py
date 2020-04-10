@@ -21,20 +21,20 @@ class RNG(commands.Cog):
         For example 5d6 would throw 5 6-siced dice.
         """
         try:
-            rolls, limit = map(int, dice.split('d'))
+            rolls, limit = map(int, dice.split("d"))
         except ValueError:
-            logger.error('Could not convert to rolls and dice from user input, sending error message to user')
+            logger.error("Could not convert to rolls and dice from user input, sending error message to user")
             await ctx.send("Format has to be in NdN!")
 
-        result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+        result = ", ".join(str(random.randint(1, limit)) for r in range(rolls))
         await ctx.send(result)
 
-    @commands.command(pass_context=True, description='For when you wanna settle the score some other way')
-    async def choose (self, ctx, *choices : str):
+    @commands.command(pass_context=True, description="For when you wanna settle the score some other way")
+    async def choose(self, ctx, *choices: str):
         """Chooses between multiple choices."""
         await ctx.send(random.choice(choices))
 
 
 def setup(bot):
-    logger.debug('{}: added to bot {}'.format(__name__, bot.user))
+    logger.debug("{}: added to bot {}".format(__name__, bot.user))
     bot.add_cog(RNG(bot))

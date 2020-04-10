@@ -18,14 +18,14 @@ def do_challenge_sanity_check(p1, p2, may_already_by_challenged=False):
     raises ChallengeException on sanity check failure
     """
     if p1.challenged and not may_already_by_challenged:
-        raise ChallengeException('{} is already challenged'.format(p1.gamertag))
+        raise ChallengeException("{} is already challenged".format(p1.gamertag))
 
     if p2.challenged and not may_already_by_challenged:
-        raise ChallengeException('{} is already challenged'.format(p2.gamertag))
+        raise ChallengeException("{} is already challenged".format(p2.gamertag))
 
     # Check if the rank of player 1 is lower than the rank of player 2:
     if p1.rank < p2.rank:
-        raise ChallengeException('The rank of {} is lower than of {}'.format(p1.gamertag, p2.gamertag))
+        raise ChallengeException("The rank of {} is lower than of {}".format(p1.gamertag, p2.gamertag))
 
     # Check if the ranks are the same; this should not happen
     if p1.rank == p2.rank:
@@ -47,12 +47,12 @@ def process_completed_challenge_args(args):
         Example "1-2 5-3 2-4" corresponds to 3 matches played with the first match ending in 1-2, the second in 5-3 ect.
     """
     p1_wins, p2_wins, p1_score, p2_score = 0, 0, 0, 0
-    logger.debug('Trying to parse challenge result, got the following user input {}'.format(args))
+    logger.debug("Trying to parse challenge result, got the following user input {}".format(args))
     matches = args.split()
     for match in matches:
-        scores = list(filter(None, match.split('-')))
+        scores = list(filter(None, match.split("-")))
         if len(scores) != 2:
-            raise ChallengeException('Unable to parse challenge arguments')
+            raise ChallengeException("Unable to parse challenge arguments")
         # Check for dummies who didn't pass the last score
         # Assign the win to the player with the highest score
         scores[0] = int(scores[0])
@@ -66,7 +66,7 @@ def process_completed_challenge_args(args):
         p2_score += scores[1]
     # Check for a draw
     if p1_wins == p2_wins:
-        raise ChallengeException('Draws are not allowed')
+        raise ChallengeException("Draws are not allowed")
     return p1_wins, p2_wins, p1_score, p2_score
 
 
@@ -83,13 +83,13 @@ def get_player_objects_from_challenge_info(player, should_be_completed=False, se
         player = Player.get_player_id_by_username(player, discord_name=search_by_discord_name)
     with Database() as db:
         db.execute_prepared_statement(
-            'SELECT p1, p2 FROM challenges WHERE (p1=%s OR p2=%s) AND winner IS {} NULL ORDER BY id DESC'.format(
-                'NOT' if should_be_completed else ''
+            "SELECT p1, p2 FROM challenges WHERE (p1=%s OR p2=%s) AND winner IS {} NULL ORDER BY id DESC".format(
+                "NOT" if should_be_completed else ""
             ),
-            (player, player)
+            (player, player),
         )
         if db.rowcount == 0:
-            raise ChallengeException('No challenges found')
+            raise ChallengeException("No challenges found")
         p1, p2 = db.fetchone()
     return Player(p1), Player(p2)
 
@@ -103,15 +103,14 @@ def get_latest_challenge_from_player_id(player, should_be_completed=False):
     returns os3_rll.models.challenge: if a challenge is found
     raises ChallengeException/PlayerException: on not found / on error
     """
-    logger.info('Trying to get latest challenge from player with id {}'.format(player))
+    logger.info("Trying to get latest challenge from player with id {}".format(player))
     with Player(player) as p:
         if not p.challenged and not should_be_completed:
-            raise PlayerException('Player {} is currently not in an active challenge'.format(p.gamertag))
+            raise PlayerException("Player {} is currently not in an active challenge".format(p.gamertag))
         # Try to find a challenge
         p.db.execute(
-            'SELECT id FROM challenges WHERE (p1={0} OR p2={0}) AND winner is {1} NULL ORDER BY id LIMIT 1'.format(
-                p.id,
-                'NOT' if should_be_completed else ''
+            "SELECT id FROM challenges WHERE (p1={0} OR p2={0}) AND winner is {1} NULL ORDER BY id LIMIT 1".format(
+                p.id, "NOT" if should_be_completed else ""
             )
         )
         p.check_row_count()

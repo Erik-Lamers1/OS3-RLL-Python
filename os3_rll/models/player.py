@@ -34,7 +34,7 @@ class Player:
         self._name = None
         self._rank = 0
         self._gamertag = None
-        self._discord = ''
+        self._discord = ""
         self._discord_member = None
         self._wins = 0
         self._losses = 0
@@ -56,11 +56,11 @@ class Player:
         param str username: The username to search for
         param bool discord_name: Search for discord_name instead of gamertag
         """
-        row_name = 'discord' if discord_name else 'gamertag'
+        row_name = "discord" if discord_name else "gamertag"
         with Database() as db:
-            db.execute_prepared_statement('SELECT id FROM users WHERE {}=%s'.format(row_name), (username,))
+            db.execute_prepared_statement("SELECT id FROM users WHERE {}=%s".format(row_name), (username,))
             if db.rowcount != 1:
-                raise PlayerException('Player not found, or to many players found')
+                raise PlayerException("Player not found, or to many players found")
             return db.fetchone()[0]
 
     def reload_player_info(self):
@@ -68,13 +68,18 @@ class Player:
         Fills the local variables with info from the DB if needed and sets a timeout object
         """
         if not self._new:
-            self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, \
-                self._timeout = self.get_player_info_from_db()
+            (
+                self._name,
+                self._rank,
+                self._gamertag,
+                self._discord,
+                self._wins,
+                self._losses,
+                self._challenged,
+                self._timeout,
+            ) = self.get_player_info_from_db()
             self._discord_member = get_player(self._discord)
-        self.original = (
-            self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged,
-            self._timeout
-        )
+        self.original = (self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, self._timeout)
         if self._timeout:
             self.timeout = datetime.fromtimestamp(self._timeout)
         else:
@@ -156,7 +161,7 @@ class Player:
         param datatime.datetime() timeout: The datetime to set the player timeout to
         """
         if not isinstance(timeout, datetime):
-            raise PlayerException('Timeout can only be set to a datetime.datetime object')
+            raise PlayerException("Timeout can only be set to a datetime.datetime object")
         self._timeout = timeout
 
     @property
@@ -179,8 +184,8 @@ class Player:
         """
         Saves a hash of the passed password in the player model
         """
-        logger.debug('Generating SHA256 hash from player password')
-        self._password = sha256(password.encode('utf-8')).hexdigest()
+        logger.debug("Generating SHA256 hash from player password")
+        self._password = sha256(password.encode("utf-8")).hexdigest()
 
     def save(self):
         if self._new:
@@ -189,14 +194,12 @@ class Player:
             if self.check_if_player_info_has_changed():
                 if not self.force:
                     raise PlayerException(
-                        'Database info has changed between the creation of this instance and now, '
-                        'retry of force instead'
+                        "Database info has changed between the creation of this instance and now, " "retry of force instead"
                     )
                 else:
-                    logger.warning('Database info has changed between the creation of this instance and now, '
-                                   'forcing save')
+                    logger.warning("Database info has changed between the creation of this instance and now, " "forcing save")
             self._save_existing_player_model()
-        logger.debug('Committing player model change to stable storage')
+        logger.debug("Committing player model change to stable storage")
         self.db.commit()
 
     def delete(self):
@@ -204,60 +207,55 @@ class Player:
         Delete the player associated this instance
         """
         if not self.force:
-            raise PlayerException('Deleting a player requires the force parameter to be set')
+            raise PlayerException("Deleting a player requires the force parameter to be set")
         if self._new:
-            raise PlayerException('A new player instance cannot be deleted')
-        logger.info('Deleting player with id {}'.format(self._id))
-        self.db.execute_prepared_statement('DELETE FROM users WHERE id=%s', (self._id,))
+            raise PlayerException("A new player instance cannot be deleted")
+        logger.info("Deleting player with id {}".format(self._id))
+        self.db.execute_prepared_statement("DELETE FROM users WHERE id=%s", (self._id,))
         self.db.commit()
 
     def _save_existing_player_model(self):
-        logger.info('Updating DB for player with id {}'.format(self._id))
+        logger.info("Updating DB for player with id {}".format(self._id))
         self.db.execute_prepared_statement(
-            'UPDATE users SET name=%s, gamertag=%s, discord=%s, rank=%s, wins=%s, losses=%s, '
-            'challenged=%s, timeout=%s WHERE id=%s',
-            (self._name, self._gamertag, self._discord, self._rank, self._wins, self._losses, self._challenged,
-             self._timeout.strftime("%Y-%m-%d %H:%M:%S"), self._id)
+            "UPDATE users SET name=%s, gamertag=%s, discord=%s, rank=%s, wins=%s, losses=%s, " "challenged=%s, timeout=%s WHERE id=%s",
+            (
+                self._name,
+                self._gamertag,
+                self._discord,
+                self._rank,
+                self._wins,
+                self._losses,
+                self._challenged,
+                self._timeout.strftime("%Y-%m-%d %H:%M:%S"),
+                self._id,
+            ),
         )
 
     def _save_new_player(self):
         # Check if any of the required vars is None
         if any(arg is None for arg in (self._name, self._gamertag, self._password)):
-            raise PlayerException(
-                'Unable to save player object without required properties, please provide name, gamertag and password'
-            )
-        if not self._discord: #this will break if gamertag is not same as discord handle.
+            raise PlayerException("Unable to save player object without required properties, please provide name, gamertag and password")
+        if not self._discord:  # this will break if gamertag is not same as discord handle.
             self._discord = self._gamertag
-        logger.info('Inserting new player into DB')
+        logger.info("Inserting new player into DB")
         self.db.execute_prepared_statement(
-            'INSERT INTO users SET name=%s, gamertag=%s, discord=%s, rank=%s, password=%s, timeout=%s',
-            (
-                self._name,
-                self._gamertag,
-                self._discord,
-                self.rank,
-                self._password,
-                self._timeout
-            )
+            "INSERT INTO users SET name=%s, gamertag=%s, discord=%s, rank=%s, password=%s, timeout=%s",
+            (self._name, self._gamertag, self._discord, self.rank, self._password, self._timeout),
         )
 
     def check_row_count(self, rowcount=1):
         if self.db.rowcount != rowcount:
-            raise PlayerException(
-                'Excepting {} rows to be returned by DB, got {} rows instead'.format(rowcount, self.db.rowcount)
-            )
+            raise PlayerException("Excepting {} rows to be returned by DB, got {} rows instead".format(rowcount, self.db.rowcount))
 
     def check_if_player_info_has_changed(self):
-        logger.debug('Checking if player info has changed')
+        logger.debug("Checking if player info has changed")
         player_info = self.get_player_info_from_db()
         return True if player_info != self.original else False
 
     def get_player_info_from_db(self):
-        logger.debug('Getting player info for player with id {} from db'.format(self._id))
+        logger.debug("Getting player info for player with id {} from db".format(self._id))
         self.db.execute_prepared_statement(
-            'SELECT name, rank, gamertag, discord, wins, losses, challenged, UNIX_TIMESTAMP(timeout) '
-            'FROM users WHERE id=%s',
-            (self._id,)
+            "SELECT name, rank, gamertag, discord, wins, losses, challenged, UNIX_TIMESTAMP(timeout) " "FROM users WHERE id=%s", (self._id,)
         )
         self.check_row_count()
         return self.db.fetchone()

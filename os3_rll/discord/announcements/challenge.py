@@ -18,14 +18,14 @@ def announce_challenge(p1, p2):
            Dictionary with content, title, description, footer and colour as keys.
     """
     try:
-        embed = {'title': "**{0.name} challenges {1.name}.**".format(p1, p2),
-                 'description': "This match should be played within one week or {0.mention} loses automatically.".format(
-                     p2),
-                 'footer': "Good Luck!",
-                 'colour': 2234352}
+        embed = {
+            "title": "**{0.name} challenges {1.name}.**".format(p1, p2),
+            "description": "This match should be played within one week or {0.mention} loses automatically.".format(p2),
+            "footer": "Good Luck!",
+            "colour": 2234352,
+        }
 
-        message = {'content': "New Challenge!",
-                   'embed': create_embed(embed)}
+        message = {"content": "New Challenge!", "embed": create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine
         # client.message_queue.put(message)
@@ -47,34 +47,30 @@ def announce_winner(p1, p2, winner_id: int, match_results: str):
     """
     p1_games_won = 0
     p2_games_won = 0
-    for game in match_results.split(' '):
-        if int(game.split('-')[0]) > int(game.split('-')[1]):
+    for game in match_results.split(" "):
+        if int(game.split("-")[0]) > int(game.split("-")[1]):
             p1_games_won += 1
         else:
             p2_games_won += 1
 
     title = ""
     if p1.id == winner_id:
-        title = "**{0.gamertag} has defeated {1.gamertag} with {2} games to {3}.**".format(p1, p2, p1_games_won,
-                                                                                           p2_games_won)
+        title = "**{0.gamertag} has defeated {1.gamertag} with {2} games to {3}.**".format(p1, p2, p1_games_won, p2_games_won)
         description = "{0.gamertag} takes {1.gamertag}'s spot on the leaderboard!.".format(p1, p2)
         footer = "No dream is too big. ... "
         colour = 48393
     else:
         title = "**{0.gamertag} successfully defended their spot against {1.gamertag} with a score of {2}-{3}**".format(
-            p2, p1, p2_games_won, p1_games_won)
+            p2, p1, p2_games_won, p1_games_won
+        )
         description = "That means that {0.gamertag} is now on a timeout of 1 week.".format(p1)
         footer = "If you don't struggle, you'll never improve!"
         colour = 11540741
 
     try:
-        embed = {'title': title,
-                 'description': description,
-                 'footer': footer,
-                 'colour': colour}
+        embed = {"title": title, "description": description, "footer": footer, "colour": colour}
 
-        message = {'content': "Challenge Completed!",
-                   'embed': create_embed(embed)}
+        message = {"content": "Challenge Completed!", "embed": create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine
         # client.message_queue.put(message)
@@ -93,27 +89,22 @@ def announce_challenge_info(challenge_data: dict):
     try:
         embed = {
             "title": "Awaiting completion of challenge between {} and {}".format(
-                challenge_data['p1']['name'], challenge_data['p2']['name']
+                challenge_data["p1"]["name"], challenge_data["p2"]["name"]
             ),
             "description": "{p2_gamertag} is defending their {p2_rank} place on the leaderboard against {p1_gamertag}. "
-                           "This match should be player before {deadline} or {p1_gamertag} will win automatically".format(
-                p1_gamertag=challenge_data['p1']['name'],
-                p2_gamertag=challenge_data['p2']['name'],
-                p2_rank=ordinal(challenge_data['p2']['rank']),
-                deadline=datetime.strftime(challenge_data['deadline'], '%Y/%m/%d %H:%M')
+            "This match should be player before {deadline} or {p1_gamertag} will win automatically".format(
+                p1_gamertag=challenge_data["p1"]["name"],
+                p2_gamertag=challenge_data["p2"]["name"],
+                p2_rank=ordinal(challenge_data["p2"]["rank"]),
+                deadline=datetime.strftime(challenge_data["deadline"], "%Y/%m/%d %H:%M"),
             ),
             "colour": 0,
-            "footer": "Let's get it on!"
+            "footer": "Let's get it on!",
         }
-        message = {
-            "content": "You have an outstanding challenge",
-            'embed': create_embed(embed)
-        }
+        message = {"content": "You have an outstanding challenge", "embed": create_embed(embed)}
         return message
     except KeyError as e:
-        logger.error(
-            'Encountered a non existing key while trying to build challenge_info message, got error: {}'.format(e)
-        )
+        logger.error("Encountered a non existing key while trying to build challenge_info message, got error: {}".format(e))
 
 
 def announce_reset(challenge_data: dict):
@@ -123,27 +114,24 @@ def announce_reset(challenge_data: dict):
     """
     try:
         embed = {
-            'title': "**Challenge between {0} and {1} has been reset!**".format(challenge_data['p1']['name'],
-                                                                                challenge_data['p2']['name']),
+            "title": "**Challenge between {0} and {1} has been reset!**".format(challenge_data["p1"]["name"], challenge_data["p2"]["name"]),
             "description": "{p2_gamertag} is defending their {p2_rank} place on the leaderboard against {p1_gamertag}. "
-                           "This match should be player before {deadline} or "
-                           "{p1_gamertag} will win automatically".format(
-                p1_gamertag=challenge_data['p1']['name'],
-                p2_gamertag=challenge_data['p2']['name'],
-                p2_rank=ordinal(challenge_data['p2']['rank']),
-                deadline=datetime.strftime(challenge_data['deadline'], '%Y/%m/%d %H:%M')),
-            'footer': "Everybody deserves a second chance!",
-            'colour': 2234352
+            "This match should be player before {deadline} or "
+            "{p1_gamertag} will win automatically".format(
+                p1_gamertag=challenge_data["p1"]["name"],
+                p2_gamertag=challenge_data["p2"]["name"],
+                p2_rank=ordinal(challenge_data["p2"]["rank"]),
+                deadline=datetime.strftime(challenge_data["deadline"], "%Y/%m/%d %H:%M"),
+            ),
+            "footer": "Everybody deserves a second chance!",
+            "colour": 2234352,
         }
 
-        message = {'content': "Resetting Challenge!",
-                   'embed': create_embed(embed)}
+        message = {"content": "Resetting Challenge!", "embed": create_embed(embed)}
 
         # use this if you want to post the message via the bot's background routine
         # client.message_queue.put(message)
         # use this to return it with the players request.
         return message
     except KeyError as e:
-        logger.error(
-            'Encountered a non existing key while trying to build challenge reset message, got error: {}'.format(e)
-        )
+        logger.error("Encountered a non existing key while trying to build challenge reset message, got error: {}".format(e))

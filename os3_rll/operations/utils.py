@@ -18,5 +18,5 @@ def get_max_rank():
     Gets the lowest player rank (or highest on decimal scale)
     """
     with Database() as db:
-        db.execute('SELECT MAX(rank) FROM users')
+        db.execute("SELECT MAX(rank) FROM users")
         return int(db.fetchone()[0])

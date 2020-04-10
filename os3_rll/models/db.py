@@ -15,6 +15,7 @@ class Database:
     This class will make a connection to the Database defined in the settings
     You can use this class in a with statement to let it automatically connect and close the connection
     """
+
     def __init__(self):
         self.db_host = settings.DB_HOST
         self.db_user = settings.DB_USER
@@ -27,7 +28,7 @@ class Database:
         return self
 
     def connect(self):
-        logger.debug('Initializing connection to DB')
+        logger.debug("Initializing connection to DB")
         return pymysql.connect(self.db_host, self.db_user, self.db_pass, self.db_database)
 
     def execute(self, query):
@@ -58,7 +59,7 @@ class Database:
         """
         Call this function when you are done with this instance
         """
-        logger.debug('Closing connection to DB')
+        logger.debug("Closing connection to DB")
         self.db.close()
 
     def __exit__(self, exc_type, exc_value, traceback):

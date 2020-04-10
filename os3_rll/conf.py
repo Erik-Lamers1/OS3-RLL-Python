@@ -3,7 +3,7 @@ import collections
 import importlib
 import os
 
-ENV_VAR = 'SETTINGS_MODULE'
+ENV_VAR = "SETTINGS_MODULE"
 
 
 class Settings(collections.abc.Mapping):
@@ -29,7 +29,7 @@ class Settings(collections.abc.Mapping):
         return len(self.__iter__())
 
 
-settings_module = os.environ.get(ENV_VAR, 'os3_rll.settings.base')
+settings_module = os.environ.get(ENV_VAR, "os3_rll.settings.base")
 
 settings = Settings(settings_module)
 
@@ -41,8 +41,8 @@ def import_from_string(val, setting_name):
     """
     try:
         # Nod to tastypie's use of importlib.
-        parts = val.split('.')
-        module_path, class_name = '.'.join(parts[:-1]), parts[-1]
+        parts = val.split(".")
+        module_path, class_name = ".".join(parts[:-1]), parts[-1]
         module = importlib.import_module(module_path)
         return getattr(module, class_name)
     except (ImportError, AttributeError) as e:

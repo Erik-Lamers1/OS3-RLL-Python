@@ -23,17 +23,17 @@ class RLL(commands.Cog):
         """
         Returns the current player ranking leaderboard.
         """
-        logger.debug('get_ranking: called by'.format(ctx.author))
-        rankings = get_player_ranking() # returns dict with {'gamertag':'rank'}
+        logger.debug("get_ranking: called by".format(ctx.author))
+        rankings = get_player_ranking()  # returns dict with {'gamertag':'rank'}
         announcement = announce_rankings(rankings)
-        await ctx.send(announcement['content'], embed=announcement['embed'])
+        await ctx.send(announcement["content"], embed=announcement["embed"])
 
     @commands.command(pass_context=True)
     async def get_stats(self, ctx):
         """
         Returns the current player stats.
         """
-        logger.debug('get_stats: called by'.format(ctx.author))
+        logger.debug("get_stats: called by".format(ctx.author))
         stats = get_player_stats()
         await ctx.send(announce_stats(stats))
 
@@ -42,17 +42,17 @@ class RLL(commands.Cog):
         """
         Returns the number of active challenges.
         """
-        logger.debug('get_active_challenges: called')
+        logger.debug("get_active_challenges: called")
         await ctx.send(stub.test_call_int(""))
 
     @commands.command(pass_context=True)
     async def get_my_challenges(self, ctx):
         """Gives your current challenge deadline."""
         player = str(ctx.author)
-        logger.debug('get_challenge: called for player {}'.format(player))
+        logger.debug("get_challenge: called for player {}".format(player))
         res = get_challenge(player)
         announcement = announce_challenge_info(res)
-        await ctx.send(announcement['content'], embed=announcement['embed'])
+        await ctx.send(announcement["content"], embed=announcement["embed"])
 
     @commands.command(pass_context=True)
     async def create_challenge(self, ctx, p: discord.Member):
@@ -62,33 +62,33 @@ class RLL(commands.Cog):
         """
         p1 = str(ctx.author)
         p2 = str(p)
-        logger.debug('creating challenge between {} and {}'.format(p1, p2))
+        logger.debug("creating challenge between {} and {}".format(p1, p2))
         create_challenge(p1, p2)
         announcement = announce_challenge(ctx.author, p)
-        await ctx.send(announcement['content'], embed=announcement['embed'])
+        await ctx.send(announcement["content"], embed=announcement["embed"])
 
     @commands.command(pass_context=True)
     async def complete_challenge(self, ctx, *match_results):
         """Completes the challenge you are parcitipating in."""
         match_res = " ".join([m for m in match_results])
         requester = str(ctx.author)
-        logger.debug('complete_challenge requested by {} with args: {}'.format(requester, match_results))
+        logger.debug("complete_challenge requested by {} with args: {}".format(requester, match_results))
         challenger, defender = get_player_objects_from_challenge_info(requester)
         winner_id = complete_challenge(challenger.id, defender.id, match_res)
         announcement = announce_winner(challenger, defender, winner_id, match_res)
-        await ctx.send(announcement['content'], embed=announcement['embed'])
+        await ctx.send(announcement["content"], embed=announcement["embed"])
 
     @commands.command(pass_context=True)
     async def reset_challenge(self, ctx, *args):
         """Resets the challenge you are parcitipating in."""
-        logger.debug('reset challenge requested by {}'.format(str(ctx.author)))
+        logger.debug("reset challenge requested by {}".format(str(ctx.author)))
         challenger, defender = get_player_objects_from_challenge_info(str(ctx.author), should_be_completed=True)
         reset_challenge(challenger.id, defender.id)
         res = get_challenge(str(ctx.author))
         announcement = announce_reset(res)
-        await ctx.send(announcement['content'], embed=announcement['embed'])
+        await ctx.send(announcement["content"], embed=announcement["embed"])
 
 
 def setup(bot):
     bot.add_cog(RLL(bot))
-    logger.debug('{} added to bot {}'.format(__name__, bot.user))
+    logger.debug("{} added to bot {}".format(__name__, bot.user))

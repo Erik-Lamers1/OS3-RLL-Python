@@ -1,4 +1,7 @@
 # OS3 Rocket League Ladder
+[![Build Status](https://travis-ci.org/Erik-Lamers1/OS3-RLL-Python.svg?branch=master)](https://travis-ci.org/Erik-Lamers1/OS3-RLL-Python) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+
+
 This repo is a Python(3) implementation of the original [OS3 Rocket League Ladder](https://github.com/Erik-Lamers1/OS3-Rocket-League-Ladder) written in PHP.
 
 This implementation makes heavy use of the [Python discord bot](https://discordpy.readthedocs.io/en/latest/).  

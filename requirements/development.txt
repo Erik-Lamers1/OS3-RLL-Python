@@ -2,3 +2,5 @@
 
 # These requirements are only used for testing and development purposes
 pytest==5.4.1
+black==19.10b0
+pre-commit==2.2.0

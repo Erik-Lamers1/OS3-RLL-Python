@@ -109,7 +109,7 @@ Here is how to setup your env
 git clone git@github.com:Erik-Lamers1/OS3-RLL-Python.git
 cd OS3-RLL-Python
 apt-get install virtualenvwrapper tox
-mkvirtualenv -p $(which python3.6) -a $(pwd) OS3-RLL-Python
+mkvirtualenv -p $(which python3.8) -a $(pwd) OS3-RLL-Python
 pip install -r requirements/development.txt
 pre-commit install
 # And you are good to go

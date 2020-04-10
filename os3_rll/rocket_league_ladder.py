@@ -1,3 +1,4 @@
+import sys
 from argparse import ArgumentParser
 from logging import INFO, DEBUG
 
@@ -17,7 +18,7 @@ def main(args=None):
     args = parse_args(args)
     if args.version:
         show_version()
-        exit(0)
+        sys.exit(0)
     setup_console_logging(verbosity=DEBUG if args.verbose else INFO)
     discord_client()
 

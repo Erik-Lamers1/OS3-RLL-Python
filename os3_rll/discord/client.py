@@ -2,6 +2,7 @@ import discord
 import asyncio
 import queue
 import traceback
+import sys
 from discord.ext import commands
 from logging import getLogger
 from os import listdir
@@ -80,27 +81,25 @@ async def listavailable(ctx):
 async def on_ready():
     for guild in bot.guilds:
         if guild.name == settings.DISCORD_GUILD:
-            break
-
-    logger.info("{} is connected to the following guild:".format(bot.user))
-    logger.info("{}(id: {})".format(guild.name, guild.id))
-
-    logger.debug("loading modules from module path - {}".format(cogs_module_path))
-    logger.debug("loading modules from filesystem path - {}".format(cogs_dir))
-    module_list = [basename(f).replace(".py", "") for f in listdir(cogs_dir) if isfile(join(cogs_dir, f)) and f != "__init__.py"]
-
-    logger.info("start loading modules {}".format(", ".join(module_list)))
-    for extension in module_list:
-        try:
-            module = cogs_module_path + "." + extension
-            logger.debug("loading module: {}".format(module))
-            bot.load_extension(module)
-        except Exception as e:
-            logger.error("{} - {}".format(type(e).__name__, e))
-            if not isinstance(e, commands.ExtensionAlreadyLoaded):
-                logger.error("Stack Trace", exc_info=True)
-
-    logger.info("completed loading modules")
+            logger.info("{} is connected to the following guild:".format(bot.user))
+            logger.info("{}(id: {})".format(guild.name, guild.id))
+            logger.debug("loading modules from module path - {}".format(cogs_module_path))
+            logger.debug("loading modules from filesystem path - {}".format(cogs_dir))
+            module_list = [basename(f).replace(".py", "") for f in listdir(cogs_dir) if isfile(join(cogs_dir, f)) and f != "__init__.py"]
+            logger.info("start loading modules {}".format(", ".join(module_list)))
+            for extension in module_list:
+                try:
+                    module = cogs_module_path + "." + extension
+                    logger.debug("loading module: {}".format(module))
+                    bot.load_extension(module)
+                except commands.ExtensionError as e:
+                    logger.error("{} - {}".format(type(e).__name__, e))
+                    if not isinstance(e, commands.ExtensionAlreadyLoaded):
+                        logger.error("Stack Trace", exc_info=True)
+                except discord.DiscordException as e:
+                    logger.error("Caught general discord Exception: {}, with message: {}".format(type(e).__name__, e))
+                    logger.error("Stack Trace", exc_info=True)
+            logger.info("completed loading modules")
 
 
 @bot.command()
@@ -161,4 +160,4 @@ def discord_client():
         logger.info("Caught RunTimeError, this is probably the EventLoop closing, as we are shutting down. That's okay")
     finally:
         logger.info("Shutting down. Bye!")
-        exit(0)
+        sys.exit(0)

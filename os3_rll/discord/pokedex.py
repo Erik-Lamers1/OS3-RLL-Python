@@ -8,7 +8,7 @@
 # Copyright of code by Pikachu under MIT Licence
 # Pokemon figures and names are trademarked by Nintendo and Rare, and follow their copyright.
 # THIS FILE IS NOT AN INHERENT PART OF OS3-RLL-Python
-# Please do not redistibute
+# Please do not redistribute
 import random
 import base64
 import copy

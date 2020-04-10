@@ -1,4 +1,4 @@
-import pymysql
+from pymysql import connect, MySQLError
 from logging import getLogger
 
 from os3_rll.conf import settings
@@ -6,7 +6,7 @@ from os3_rll.conf import settings
 logger = getLogger(__name__)
 
 
-class DBException(pymysql.MySQLError):
+class DBException(MySQLError):
     pass
 
 
@@ -29,7 +29,7 @@ class Database:
 
     def connect(self):
         logger.debug("Initializing connection to DB")
-        return pymysql.connect(self.db_host, self.db_user, self.db_pass, self.db_database)
+        return connect(self.db_host, self.db_user, self.db_pass, self.db_database)
 
     def execute(self, query):
         self.cursor.execute(query)

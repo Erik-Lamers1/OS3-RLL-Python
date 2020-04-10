@@ -116,4 +116,8 @@ pre-commit install
 ```
 
 ## Running the tests
-Either run `tox` or run `pytest` from within your venv.
+Set the correct settings module first
+```shell script
+export SETTINGS_MODULE=os3_rll.settings.test
+```
+Then either run `tox` or run `pytest` from within your venv.

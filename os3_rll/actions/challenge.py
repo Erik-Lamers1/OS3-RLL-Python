@@ -137,7 +137,7 @@ def reset_challenge(player1, player2, search_by_discord_name=True):
     if isinstance(player1, str):
         player1 = Player.get_player_id_by_username(player1, discord_name=search_by_discord_name)
     if isinstance(player2, str):
-        p2 = Player.get_player_id_by_username(player2, discord_name=search_by_discord_name)
+        player2 = Player.get_player_id_by_username(player2, discord_name=search_by_discord_name)
 
     logger.debug("Getting Player and Challenge objects to be reset")
     with Player(player1) as p1, Player(player2) as p2:

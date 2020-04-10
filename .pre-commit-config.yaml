@@ -9,4 +9,10 @@ repos:
   - repo: https://github.com/PyCQA/pylint
     rev: pylint-2.4.4
     hooks:
-      - id: pylint
+    -   id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        # Always run ovr the whole os3_rll module
+        pass_filenames: false
+        args: [os3_rll]

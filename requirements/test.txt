@@ -2,3 +2,4 @@
 
 # These requirements are only needed when running the tests (Pytest atm)
 pytest==5.4.1
+pylint==2.4.4

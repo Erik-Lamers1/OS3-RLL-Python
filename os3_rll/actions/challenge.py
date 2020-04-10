@@ -58,28 +58,28 @@ def create_challenge(p1, p2, search_by_discord_name=True):
     logger.info("Challenge between player {} and {} successfully created".format(p1.gamertag, p2.gamertag))
 
 
-def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
+def complete_challenge(player1, player2, match_results, search_by_discord_name=True):
     """
     Complete a challenge between two players
 
-    param str/int p1: The id or gamertag of p1
-    param str/int p2: The id or gamertag of p2
+    param str/int player1: The id or gamertag of p1
+    param str/int player2: The id or gamertag of p2
     param str match_results: The results of the games played between the two players, example "2-1 5-2"
     param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
     raises: ChallengeException/PlayerException on error
     return: int: ID from the winner
     """
-    logger.debug("Getting challenge info for challenge between player {} and {}".format(p1, p2))
+    logger.debug("Getting challenge info for challenge between player {} and {}".format(player1, player2))
     # First check if gamertags were passed and convert them to player IDs
-    if isinstance(p1, str):
-        p1 = Player.get_player_id_by_username(p1, discord_name=search_by_discord_name)
-    if isinstance(p2, str):
-        p2 = Player.get_player_id_by_username(p2, discord_name=search_by_discord_name)
+    if isinstance(player1, str):
+        player1 = Player.get_player_id_by_username(player1, discord_name=search_by_discord_name)
+    if isinstance(player2, str):
+        player2 = Player.get_player_id_by_username(player2, discord_name=search_by_discord_name)
 
     logger.debug("Parsing challenge scores")
     p1_wins, p2_wins, p1_score, p2_score = process_completed_challenge_args(match_results)
 
-    with Player(p1) as p1, Player(p2) as p2:
+    with Player(player1) as p1, Player(player2) as p2:
         c = Challenge.get_latest_challenge_from_player(p1.id, p2.id)
         # Check the challenge first any weirdness
         do_challenge_sanity_check(p1, p2, may_already_by_challenged=True)
@@ -123,24 +123,24 @@ def complete_challenge(p1, p2, match_results, search_by_discord_name=True):
     return winner
 
 
-def reset_challenge(p1, p2, search_by_discord_name=True):
+def reset_challenge(player1, player2, search_by_discord_name=True):
     """
     Resets the last challenge between two players
 
-    param str/int p1: The id or gamertag of p1
-    param str/int p2: The id or gamertag of p2
+    param str/int player1: The id or gamertag of p1
+    param str/int player2: The id or gamertag of p2
     param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
     raises: ChallengeException/PlayerException on error
     """
-    logger.debug("Getting challenge info for challenge between player {} and {}".format(p1, p2))
+    logger.debug("Getting challenge info for challenge between player {} and {}".format(player1, player2))
     # First check if gamertags were passed and convert them to player IDs
-    if isinstance(p1, str):
-        p1 = Player.get_player_id_by_username(p1, discord_name=search_by_discord_name)
-    if isinstance(p2, str):
-        p2 = Player.get_player_id_by_username(p2, discord_name=search_by_discord_name)
+    if isinstance(player1, str):
+        player1 = Player.get_player_id_by_username(player1, discord_name=search_by_discord_name)
+    if isinstance(player2, str):
+        p2 = Player.get_player_id_by_username(player2, discord_name=search_by_discord_name)
 
     logger.debug("Getting Player and Challenge objects to be reset")
-    with Player(p1) as p1, Player(p2) as p2:
+    with Player(player1) as p1, Player(player2) as p2:
         # Players can also reset a challenge if they are not challenged atm. To ensure consistency
         if p1.challenged or p2.challenged:
             raise ChallengeException("One of the players is currently in an active challenge, previous challenge cannot be reset")

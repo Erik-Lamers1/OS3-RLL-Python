@@ -42,7 +42,7 @@ class Player:
         self._timeout = 0
         self._password = None
         self.force = force  # Force save when closing
-        self._new = True if self._id == 0 else False
+        self._new = self._id == 0
         self.original = ()
         self.reload_player_info()
 
@@ -192,12 +192,12 @@ class Player:
             self._save_new_player()
         else:
             if self.check_if_player_info_has_changed():
-                if not self.force:
+                if self.force:
+                    logger.warning("Database info has changed between the creation of this instance and now, " "forcing save")
+                else:
                     raise PlayerException(
                         "Database info has changed between the creation of this instance and now, " "retry of force instead"
                     )
-                else:
-                    logger.warning("Database info has changed between the creation of this instance and now, " "forcing save")
             self._save_existing_player_model()
         logger.debug("Committing player model change to stable storage")
         self.db.commit()
@@ -250,7 +250,7 @@ class Player:
     def check_if_player_info_has_changed(self):
         logger.debug("Checking if player info has changed")
         player_info = self.get_player_info_from_db()
-        return True if player_info != self.original else False
+        return player_info != self.original
 
     def get_player_info_from_db(self):
         logger.debug("Getting player info for player with id {} from db".format(self._id))

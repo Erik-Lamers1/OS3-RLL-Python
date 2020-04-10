@@ -1,12 +1,9 @@
 import discord
-import typing
-import re
 from discord.ext import commands
 from logging import getLogger
 from os3_rll.actions.challenge import create_challenge, complete_challenge, get_challenge, reset_challenge
 from os3_rll.actions.player import get_player_ranking, get_player_stats
 from os3_rll.actions import stub
-from os3_rll.discord.utils import not_implemented
 from os3_rll.discord.announcements.challenge import announce_challenge, announce_reset, announce_challenge_info, announce_winner
 from os3_rll.discord.announcements.player import announce_rankings, announce_stats
 from os3_rll.operations.challenge import get_player_objects_from_challenge_info
@@ -69,8 +66,8 @@ class RLL(commands.Cog):
 
     @commands.command(pass_context=True)
     async def complete_challenge(self, ctx, *match_results):
-        """Completes the challenge you are parcitipating in."""
-        match_res = " ".join([m for m in match_results])
+        """Completes the challenge you are participating in."""
+        match_res = " ".join(match_results)
         requester = str(ctx.author)
         logger.debug("complete_challenge requested by {} with args: {}".format(requester, match_results))
         challenger, defender = get_player_objects_from_challenge_info(requester)
@@ -79,7 +76,7 @@ class RLL(commands.Cog):
         await ctx.send(announcement["content"], embed=announcement["embed"])
 
     @commands.command(pass_context=True)
-    async def reset_challenge(self, ctx, *args):
+    async def reset_challenge(self, ctx):
         """Resets the challenge you are parcitipating in."""
         logger.debug("reset challenge requested by {}".format(str(ctx.author)))
         challenger, defender = get_player_objects_from_challenge_info(str(ctx.author), should_be_completed=True)

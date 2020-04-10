@@ -35,7 +35,7 @@ class Challenge:
         self._p1_score = 0
         self._p2_score = 0
         self._winner = 0
-        self._new = True if self._id == 0 else False
+        self._new = self._id == 0
         if not self._new:
             (
                 self._date,
@@ -177,11 +177,11 @@ class Challenge:
             else:
                 self._winner = self._p2
             return int(self._winner)
-        else:
-            return None
+        return 0
 
     @winner.setter
     def winner(self, winner):
+        # pylint: disable=no-self-use
         raise ChallengeException("Winner cannot be set, please set p1_wins and p2_wins instead and the winner will be calculated")
 
     def save(self):
@@ -189,10 +189,11 @@ class Challenge:
             self._save_new_challenge()
         else:
             if self.check_if_challenge_info_has_changed():
-                if not self.force:
-                    raise ChallengeException("DB info has changed while trying to save, refusing save. Set force=True to overwrite")
-                else:
+                if self.force:
                     logger.warning("DB info has changed! Force enabled, overwriting DB info...")
+                else:
+                    raise ChallengeException("DB info has changed while trying to save, refusing save. Set force=True to overwrite")
+
             self._save_existing_challenge_model()
         self.db.commit()
 
@@ -252,7 +253,7 @@ class Challenge:
     def check_if_challenge_info_has_changed(self):
         logger.debug("Checking if challenge info has changed")
         challenge_info = self.get_challenge_info_from_db()
-        return True if challenge_info != self.original else False
+        return challenge_info != self.original
 
     def _check_row_count(self, rowcount=1):
         if self.db.rowcount != rowcount:

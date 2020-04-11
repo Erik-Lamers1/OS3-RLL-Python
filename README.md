@@ -69,8 +69,8 @@ os3-rocket-league-ladder
 # Create the env and service files
 cat <<EOF > /etc/default/os3-rocket-league-ladder
 DISCORD_TOKEN="<token>"
-export DISCORD_GUILD="<guild name>"
-export DISCORD_CHANNEL="<channel name>"
+DISCORD_GUILD="<guild name>"
+DISCORD_CHANNEL="<channel name>"
 DB_USER="<database_username>"
 DB_PASS="<database_password>"
 EOF

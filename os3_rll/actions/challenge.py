@@ -12,7 +12,7 @@ from os3_rll.operations.challenge import (
 )
 from os3_rll.operations.utils import check_date_is_older_than_x_days
 from os3_rll.models.db import Database
-from os3_rll.discord.client import message_queue
+from os3_rll.discord.queue import discord_message_queue
 from os3_rll.discord.announcements.challenge import announce_expired_challenge
 
 logger = getLogger(__name__)
@@ -247,5 +247,5 @@ def check_uncompleted_challenges():
                 # Announce the expired challenge to discord
                 info = get_challenge(int(challenge[2]), should_be_completed=True)
                 message = announce_expired_challenge(info)
-                message_queue.put(message)
+                discord_message_queue.put(message)
                 logger.info("Challenge {} has been completed".format(challenge[0]))

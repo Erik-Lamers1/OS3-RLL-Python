@@ -1,6 +1,5 @@
 owd=$PWD
 project_dir='/root/OS3-RLL-Python'
-python_bin=$(which python3.8 || which python3)
 
 function set_env() {
     if [[ -z $RLL_ENV ]]; then
@@ -13,6 +12,7 @@ function set_env() {
 }
 
 function deploy() {
+    python_bin=$(which python3.8 || which python3)
     cd $project_dir
     echo "cleaning pyc files..."
     find . -name '*.pyc' -delete
@@ -21,7 +21,7 @@ function deploy() {
     echo "Discarding local changes"
     git reset --hard HEAD~1
     git pull --no-edit
-    python_bin setup.py install
+    $python_bin setup.py install
 }
 
 function start() {

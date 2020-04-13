@@ -149,12 +149,7 @@ def announce_expired_challenge(challenge_data: dict):
         player2 = get_player(challenge_data["p2"]["discord"])
 
         embed = {
-            "title": "Challenge between {}{} and {}{} expired!".format(
-                challenge_data["p1"]["name"],
-                "({})".format(player1.mention) if player1 else "",
-                challenge_data["p2"]["name"],
-                "({})".format(player2.mention) if player2 else "",
-            ),
+            "title": "Challenge between {} and {} expired!".format(challenge_data["p1"]["name"], challenge_data["p2"]["name"],),
             "description": "The challenge should have been played before {date}, but {p2} is slacker and didn't respond in time."
             "This means that {p1} wins automatically. The ranks have been adjusted if need be.".format(
                 date=datetime.strftime(challenge_data["deadline"], "%Y/%m/%d %H:%M"),
@@ -164,7 +159,10 @@ def announce_expired_challenge(challenge_data: dict):
             "footer": "Better luck next time",
             "colour": 11540741,
         }
-        message = {"content": "Challenge expired!", "embed": create_embed(embed)}
-        return message
+        content = "Challenge between {} and {} expired!".format(
+            challenge_data["p1"]["name"] if not player1 else player1.mention,
+            challenge_data["p2"]["name"] if not player2 else player2.mention,
+        )
+        return {"content": content, "embed": create_embed(embed)}
     except KeyError as e:
         logger.error("Encountered a non existing key while trying to build expire message dict, got error: {}".format(e))

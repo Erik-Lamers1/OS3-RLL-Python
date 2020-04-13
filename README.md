@@ -69,8 +69,8 @@ os3-rocket-league-ladder
 # Create the env and service files
 cat <<EOF > /etc/default/os3-rocket-league-ladder
 DISCORD_TOKEN="<token>"
-export DISCORD_GUILD="<guild name>"
-export DISCORD_CHANNEL="<channel name>"
+DISCORD_GUILD="<guild name>"
+DISCORD_CHANNEL="<channel name>"
 DB_USER="<database_username>"
 DB_PASS="<database_password>"
 EOF
@@ -116,4 +116,8 @@ pre-commit install
 ```
 
 ## Running the tests
-Either run `tox` or run `pytest` from within your venv.
+Set the correct settings module first
+```shell script
+export SETTINGS_MODULE=os3_rll.settings.test
+```
+Then either run `tox` or run `pytest` from within your venv.

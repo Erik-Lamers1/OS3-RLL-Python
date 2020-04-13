@@ -11,7 +11,7 @@ ignore=CVS, .tox, .pytest_cache, tests, deployment, venv
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.
-ignore-patterns=pokedex.py
+ignore-patterns=pokedex.py, test.py
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
@@ -145,6 +145,7 @@ disable=print-statement,
         missing-function-docstring,
         missing-module-docstring,
         missing-class-docstring,
+        missing-docstring,
         invalid-name,
         import-error,
         too-many-format-args,

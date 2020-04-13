@@ -35,6 +35,3 @@ class OS3RLLTestCase(TestCase):
         patcher.return_value.__exit__ = lambda a, b, c, d: None
         patcher.return_value.__enter__ = lambda x: None
         return patcher
-
-
-TestCase = OS3RLLTestCase

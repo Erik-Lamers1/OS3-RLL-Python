@@ -12,6 +12,8 @@ from os3_rll.operations.challenge import (
 )
 from os3_rll.operations.utils import check_date_is_older_than_x_days
 from os3_rll.models.db import Database
+from os3_rll.discord.queue import discord_message_queue
+from os3_rll.discord.announcements.challenge import announce_expired_challenge
 
 logger = getLogger(__name__)
 
@@ -58,7 +60,7 @@ def create_challenge(p1, p2, search_by_discord_name=True):
     logger.info("Challenge between player {} and {} successfully created".format(p1.gamertag, p2.gamertag))
 
 
-def complete_challenge(player1, player2, match_results, search_by_discord_name=True):
+def complete_challenge(player1, player2, match_results, search_by_discord_name=True, may_be_expired=False):
     """
     Complete a challenge between two players
 
@@ -66,6 +68,7 @@ def complete_challenge(player1, player2, match_results, search_by_discord_name=T
     param str/int player2: The id or gamertag of p2
     param str match_results: The results of the games played between the two players, example "2-1 5-2"
     param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
+    param bool may_be_expired: Skips the challenge to old sanity check if set
     raises: ChallengeException/PlayerException on error
     return: int: ID from the winner
     """
@@ -82,11 +85,11 @@ def complete_challenge(player1, player2, match_results, search_by_discord_name=T
     with Player(player1) as p1, Player(player2) as p2:
         c = Challenge.get_latest_challenge_from_player(p1.id, p2.id)
         # Check the challenge first any weirdness
-        do_challenge_sanity_check(p1, p2, may_already_by_challenged=True)
+        do_challenge_sanity_check(p1, p2, may_already_by_challenged=True, may_be_expired=may_be_expired)
         with Challenge(c) as c:
             logger.info("Trying to complete challenge {} between {} and {}".format(c.id, p1.gamertag, p2.gamertag))
             # Check if the challenge is not older then 1 week
-            if check_date_is_older_than_x_days(c.date, 7):
+            if check_date_is_older_than_x_days(c.date, 7) and not may_be_expired:
                 raise ChallengeException("Challenge is older then 1 week")
             c.p1_wins = p1_wins
             c.p2_wins = p2_wins
@@ -205,7 +208,7 @@ def get_challenge(player, should_be_completed=False, search_by_discord_name=True
         # Try to get the players
         p1, p2 = get_player_objects_from_challenge_info(player, should_be_completed=should_be_completed)
     except Exception as e:
-        # Raise out own exception
+        # Raise our own exception
         logger.error("Encountered exception while trying to retrieve challenge info")
         raise ChallengeException(e)
     finally:
@@ -229,11 +232,20 @@ def get_challenge(player, should_be_completed=False, search_by_discord_name=True
 
 def check_uncompleted_challenges():
     """
-    :return:
+    Checks for expired uncompleted challenges and completes them
     """
     with Database() as db:
+        logger.info("Checking for expired challenges")
         db.execute("SELECT id, date, p1, p2 FROM challenges WHERE winner is NULL")
         challenges = db.fetchall()
         for challenge in challenges:
+            logger.info("Challenge {} is passed the deadline, completing it".format(challenge[0]))
             if check_date_is_older_than_x_days(challenge[1], 7):
-                complete_challenge(challenge[2], challenge[3], "1-0")
+                # Challenge expired
+                # Complete the challenge
+                complete_challenge(int(challenge[2]), int(challenge[3]), "1-0", may_be_expired=True)
+                # Announce the expired challenge to discord
+                info = get_challenge(int(challenge[2]), should_be_completed=True)
+                message = announce_expired_challenge(info)
+                discord_message_queue.put(message)
+                logger.info("Challenge {} has been completed".format(challenge[0]))

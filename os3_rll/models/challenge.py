@@ -182,6 +182,7 @@ class Challenge:
     @winner.setter
     def winner(self, winner):
         # pylint: disable=no-self-use
+        # pylint: disable=unused-argument
         raise ChallengeException("Winner cannot be set, please set p1_wins and p2_wins instead and the winner will be calculated")
 
     def save(self):

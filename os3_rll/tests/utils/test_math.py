@@ -1,8 +1,8 @@
-from os3_rll.tests import TestCase
+from os3_rll.tests import OS3RLLTestCase
 from os3_rll.utils.math import ordinal
 
 
-class TestMath(TestCase):
+class TestMath(OS3RLLTestCase):
     def test_ordinal_returns_first(self):
         self.assertEqual(ordinal(1), "1st")
 

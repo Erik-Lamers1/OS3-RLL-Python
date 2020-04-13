@@ -1,6 +1,5 @@
 import discord
 import asyncio
-import queue
 import traceback
 import sys
 from discord.ext import commands
@@ -9,11 +8,13 @@ from os import listdir
 from os.path import isfile, join, basename
 from discord.ext.commands import ExtensionAlreadyLoaded
 
+from os3_rll.discord.queue import discord_message_queue as message_queue
 from os3_rll.conf import settings
 from os3_rll.discord import utils
+from os3_rll.actions.challenge import check_uncompleted_challenges
+
 
 logger = getLogger(__name__)
-message_queue = queue.Queue()
 description = """A competition manager bot. This bot manages the Rocket Leage ladder."""
 
 # This directory specifies what extensions (cogs which is a command aggregate) the bot should load at startup.
@@ -145,10 +146,21 @@ async def post():
         await asyncio.sleep(5)
 
 
+async def check_expired_challenges():
+    logger.debug("Checking for expired challenges")
+    await bot.wait_until_ready()
+    while not bot.is_closed():
+        check_uncompleted_challenges()
+        logger.debug("Done with checking for expired challenges, sleeping for {} seconds".format(settings.EXPIRED_CHALLENGES_WAIT_TIMER))
+        await asyncio.sleep(settings.EXPIRED_CHALLENGES_WAIT_TIMER)
+
+
 def discord_client():
     logger.info("Initializing Discord client")
 
-    bot.loop.create_task(post())
+    # We don't need Crons, we have background tasks
+    for task in settings.DISCORD_BOT_BACKGROUND_TASKS:
+        bot.loop.create_task(getattr(sys.modules[__name__], task)())
 
     try:
         while True:

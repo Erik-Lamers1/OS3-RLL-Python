@@ -8,13 +8,14 @@ from os3_rll.models.db import Database
 logger = getLogger(__name__)
 
 
-def do_challenge_sanity_check(p1, p2, may_already_by_challenged=False):
+def do_challenge_sanity_check(p1, p2, may_already_by_challenged=False, may_be_expired=False):
     """
     Preform checks for a new challenge to be created
 
     param os3_rll.models.player.Player() p1: The player model for player 1
     param os3_rll.models.player.Player() p2: The player model for player 2
     param bool may_already_by_challenged: If True skips the player.challenged check
+    param bool may_be_expired: Skips the date check if set
     raises ChallengeException on sanity check failure
     """
     if p1.challenged and not may_already_by_challenged:
@@ -36,7 +37,7 @@ def do_challenge_sanity_check(p1, p2, may_already_by_challenged=False):
         )
 
     # Check if the timeout of player 1 has expired
-    if p1.timeout > datetime.now():
+    if p1.timeout > datetime.now() and not may_be_expired:
         raise ChallengeException("The timeout counter of {} is still active".format(p1.gamertag))
 
 

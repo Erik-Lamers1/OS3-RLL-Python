@@ -3,6 +3,7 @@ from logging import getLogger
 from os3_rll.models.db import Database, DBException
 from os3_rll.models.player import Player
 from os3_rll.operations.player import get_all_player_ids_ordered, get_average_goals_per_challenge
+from os3_rll.utils.password import generate_password
 
 logger = getLogger(__name__)
 
@@ -72,5 +73,5 @@ def add_player(name, gamertag, discord):
     returns 2-tuple: (p: os3_rll.models.Player, password: str)
     """
     logger.debug("Adding player with properties: {}, {}, {}".format(name, gamertag, discord))
-    password = "change_this_for_the_love_of_fuck!"
+    password = generate_password()
     return ((name, gamertag, discord), password)

@@ -59,3 +59,18 @@ def get_player_stats():
         # Now get the average goals per challenge
         players[player]["avg_goals_per_challenge"] = get_average_goals_per_challenge(player)
     return players
+
+
+def add_player(name, gamertag, discord):
+    """
+    Creates a new player in the database.
+    Params:
+        str name -> the natural name of the player (e.g. klootviool)
+        str gamertag -> the gamertag of the player (e.g. Klootviool NL)
+        str discord -> the discord of the player (e.g. klootviool#1337)
+
+    returns 2-tuple: (p: os3_rll.models.Player, password: str)
+    """
+    logger.debug("Adding player with properties: {}, {}, {}".format(name, gamertag, discord))
+    password = "change_this_for_the_love_of_fuck!"
+    return ((name, gamertag, discord), password)

@@ -80,3 +80,29 @@ def announce_stats(stats: dict):
         )
     except TypeError:
         logger.error("Found NoneType Object for {}".format(stats))
+
+
+def announce_new_player(player):
+    """Generates an announcement that a new player is added.
+       Params:
+           player_info: os3_rll.models.Player
+       return:
+           Dictionary with content, title, description, footer and colour as keys.
+    """
+    description = (
+        "{0.discord} has entered the rocket league competition, "
+        + "be sure to add their gamertag ({0.gamertag}) to your friend list!".format(player)
+    )
+    try:
+        embed = {
+            "title": "**New player: {} has entered the rocket league ladder!**".format(player.name),
+            "description": "{}".format(description),
+            "footer": "Try hard, win hard!",
+            "colour": 2234352,
+        }
+
+        message = {"content": "There is a new player in town! Do you have what it takes?:", "embed": create_embed(embed)}
+
+        return message
+    except TypeError:
+        logger.error("Found NoneType Object for {}".format(player))

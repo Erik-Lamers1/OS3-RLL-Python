@@ -2,7 +2,7 @@ import discord
 import re
 from discord.ext import commands
 from logging import getLogger
-from os3_rll.actions.player import add_player
+from os3_rll.actions.player import add_player, reset_player_password
 
 # from os3_rll.discord.announcements.challenge import announce_new_season
 from os3_rll.discord.announcements.player import announce_new_player
@@ -58,6 +58,31 @@ class Admin(commands.Cog):
         await player_channel.send(player_msg)
         announcement = announce_new_player(player_info)
         await ctx.send(announcement["content"], embed=announcement["embed"])
+
+    @commands.command(pass_context=True)
+    @is_rll_admin
+    async def reset_password(self, ctx, player: discord.Member):
+        """
+        Allows RLL Admins to reset a players password.
+        The bot will send the password via DM to the player.
+        Params:
+            discord.Member -> a discord member, can be a username string or a mention or an id etc, discord.py api handles this.
+            Returns DM with password to player, and a success message to the channel.
+        """
+        logger.debug("reset_password: called by {} for {}".format(ctx.author, str(player)))
+        if get_player(str(player)) is None:
+            raise commands.BadArgument("{} is not a member of this guild.".format(str(player)))
+
+        password = reset_player_password(str(player))
+        player_channel = await player.create_dm()
+        msg = "Reset password for player for {}".format(str(player))
+        player_msg = (
+            "{} has reset your password, "
+            + "your password is {}, "
+            + "please change this password at {} ASAP.".format(str(ctx.author), password, settings.website)
+        )
+        await player_channel.send(player_msg)
+        await ctx.send(msg)
 
 
 def setup(bot):

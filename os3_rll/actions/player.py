@@ -74,4 +74,28 @@ def add_player(name, gamertag, discord):
     """
     logger.debug("Adding player with properties: {}, {}, {}".format(name, gamertag, discord))
     password = generate_password()
-    return ((name, gamertag, discord), password)
+    p = Player()
+    p.name = name
+    p.gamertag = gamertag
+    p.discord = discord
+    p.password = password
+    p.save()
+    return (p, password)
+
+
+def reset_player_password(player):
+    """
+    Resets the password for a player
+    Params:
+       player -> the discord player that requested a password reset
+
+    return str: new password
+    """
+    logger.info("Resetting password for {}".format(player))
+    pid = Player.get_player_id_by_username(player)
+    p = Player(pid)
+    p.reload_player_info()
+    password = generate_password()
+    p.password = password
+    p.save()
+    return password

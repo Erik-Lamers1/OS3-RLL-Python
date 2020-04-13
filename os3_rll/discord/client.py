@@ -103,15 +103,6 @@ async def on_ready():
             logger.info("completed loading modules")
 
 
-@bot.command()
-@is_rll_admin()
-async def add_player(ctx, player: discord.Member):
-    """Allows RRL Admins to add players to the Rocket-League-Ladder."""
-    logger.debug("bot.command.add_player: called with {} - {}".format(player.name, player))
-    res = "Yes master {}! Adding player {}".format(ctx.author.mention, player.name)
-    await ctx.send(res)
-
-
 @bot.event
 async def on_command_error(ctx, error):
     logger.error("bot.on_command_error: {} - {}".format(type(error).__name__, error))

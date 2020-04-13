@@ -156,7 +156,7 @@ def announce_expired_challenge(challenge_data: dict):
             "footer": "Better luck next time",
             "colour": 11540741,
         }
-        message = {"content": "Challenge expired!", "embed": embed}
+        message = {"content": "Challenge expired!", "embed": create_embed(embed)}
         return message
     except KeyError as e:
         logger.error("Encountered a non existing key while trying to build expire message dict, got error: {}".format(e))

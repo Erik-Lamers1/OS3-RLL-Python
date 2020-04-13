@@ -234,9 +234,11 @@ def check_uncompleted_challenges():
     Checks for expired uncompleted challenges and completes them
     """
     with Database() as db:
+        logger.info("Checking for expired challenges")
         db.execute("SELECT id, date, p1, p2 FROM challenges WHERE winner is NULL")
         challenges = db.fetchall()
         for challenge in challenges:
+            logger.info("Challenge {} is passed the deadline, completing it".format(challenge[0]))
             if check_date_is_older_than_x_days(challenge[1], 7):
                 # Challenge expired
                 # Complete the challenge
@@ -245,3 +247,4 @@ def check_uncompleted_challenges():
                 info = get_challenge(challenge[2], should_be_completed=True)
                 message = announce_expired_challenge(info)
                 message_queue.put(message)
+                logger.info("Challenge {} has been completed".format(challenge[0]))

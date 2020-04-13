@@ -12,6 +12,8 @@ from os3_rll.operations.challenge import (
 )
 from os3_rll.operations.utils import check_date_is_older_than_x_days
 from os3_rll.models.db import Database
+from os3_rll.discord.client import message_queue
+from os3_rll.discord.announcements.challenge import announce_expired_challenge
 
 logger = getLogger(__name__)
 
@@ -229,11 +231,17 @@ def get_challenge(player, should_be_completed=False, search_by_discord_name=True
 
 def check_uncompleted_challenges():
     """
-    :return:
+    Checks for expired uncompleted challenges and completes them
     """
     with Database() as db:
         db.execute("SELECT id, date, p1, p2 FROM challenges WHERE winner is NULL")
         challenges = db.fetchall()
         for challenge in challenges:
             if check_date_is_older_than_x_days(challenge[1], 7):
+                # Challenge expired
+                # Complete the challenge
                 complete_challenge(challenge[2], challenge[3], "1-0")
+                # Announce the expired challenge to discord
+                info = get_challenge(challenge[2], should_be_completed=True)
+                message = announce_expired_challenge(info)
+                message_queue.put(message)

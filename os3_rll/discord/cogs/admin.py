@@ -19,7 +19,7 @@ class Admin(commands.Cog):
         self.ps_regex = re.compile("^(<@[0-9]+>), (.+), (.+)$")
 
     @commands.command(pass_context=True)
-    @is_rll_admin
+    @is_rll_admin()
     async def start_new_season(self, ctx):
         """Resets the player ranking, scrambles a new leader bord, but keeps player statistics."""
         logger.debug("start_new_seasion requested by {}".format(str(ctx.author)))
@@ -28,7 +28,7 @@ class Admin(commands.Cog):
         await ctx.send(not_implemented())
 
     @commands.command(pass_context=True)
-    @is_rll_admin
+    @is_rll_admin()
     async def add_player(self, ctx, player: discord.Member, player_settings: str):
         """Allows RLL Admins to add players to the Rocket League Ladder.
            Players need a gamertag, discord handle and a name
@@ -60,7 +60,7 @@ class Admin(commands.Cog):
         await ctx.send(announcement["content"], embed=announcement["embed"])
 
     @commands.command(pass_context=True)
-    @is_rll_admin
+    @is_rll_admin()
     async def reset_password(self, ctx, player: discord.Member):
         """
         Allows RLL Admins to reset a players password.

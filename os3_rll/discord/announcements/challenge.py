@@ -2,7 +2,7 @@ from datetime import datetime
 from logging import getLogger
 
 from os3_rll.utils.math import ordinal
-from os3_rll.discord.utils import create_embed
+from os3_rll.discord.utils import create_embed, get_player
 
 logger = getLogger(__name__)
 
@@ -145,8 +145,16 @@ def announce_expired_challenge(challenge_data: dict):
     return dict: the message that can be send to discord
     """
     try:
+        player1 = get_player(challenge_data["p1"]["discord"])
+        player2 = get_player(challenge_data["p2"]["discord"])
+
         embed = {
-            "title": "Challenge between {0} and {1} has been expired!".format(challenge_data["p1"]["name"], challenge_data["p2"]["name"]),
+            "title": "Challenge between {}{} and {}{} expired!".format(
+                challenge_data["p1"]["name"],
+                "({})".format(player1.mention) if player1 else "",
+                challenge_data["p2"]["name"],
+                "({})".format(player2.mention) if player2 else "",
+            ),
             "description": "The challenge should have been played before {date}, but {p2} is slacker and didn't respond in time."
             "This means that {p1} wins automatically. The ranks have been adjusted if need be.".format(
                 date=datetime.strftime(challenge_data["deadline"], "%Y/%m/%d %H:%M"),

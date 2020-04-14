@@ -50,9 +50,10 @@ class Admin(commands.Cog):
         admin_channel = await ctx.author.create_dm()
         admin_msg = "Created player for {0[0][0]} with gamertag: {0[0][1]} and discord {0[0][2]}".format(player_info)
         player_msg = (
-            "{} has created an account for you, "
-            + "your login is {}, your password is {}, "
-            + "please change this password at {} ASAP.".format(str(ctx.author), player_info.gamertag, password, settings.website)
+            "{} has created an account for you your login username is {}, "
+            "your password is {} please change this password at {} ASAP.".format(
+                str(ctx.author), player_info.gamertag, password, settings.WEBSITE
+            )
         )
         await admin_channel.send(admin_msg)
         await player_channel.send(player_msg)
@@ -76,10 +77,8 @@ class Admin(commands.Cog):
         password = reset_player_password(str(player), discord_name=True)
         player_channel = await player.create_dm()
         msg = "Reset password for player for {}".format(str(player))
-        player_msg = (
-            "{} has reset your password, "
-            + "your password is {}, "
-            + "please change this password at {} ASAP.".format(str(ctx.author), password, settings.website)
+        player_msg = "{} has reset your password your new password is {} please change this password at {} ASAP.".format(
+            str(ctx.author), password, settings.WEBSITE
         )
         await player_channel.send(player_msg)
         await ctx.send(msg)

@@ -230,6 +230,10 @@ class Player:
                 self._id,
             ),
         )
+        # Check if password is updated
+        if self._password:
+            logger.info("Updating player password")
+            self.db.execute_prepared_statement("UPDATE users SET password=%s WHERE id=%s", (self._password, self._id))
 
     def _save_new_player(self):
         # Check if any of the required vars is None

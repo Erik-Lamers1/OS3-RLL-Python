@@ -73,7 +73,7 @@ class Admin(commands.Cog):
         if get_player(str(player)) is None:
             raise commands.BadArgument("{} is not a member of this guild.".format(str(player)))
 
-        password = reset_player_password(str(player))
+        password = reset_player_password(str(player), discord_name=True)
         player_channel = await player.create_dm()
         msg = "Reset password for player for {}".format(str(player))
         player_msg = (

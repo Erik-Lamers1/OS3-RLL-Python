@@ -80,21 +80,20 @@ def add_player(name, gamertag, discord):
     p.discord = discord
     p.password = password
     p.save()
-    return (p, password)
+    return Player(Player.get_player_id_by_username(gamertag)), password
 
 
-def reset_player_password(player):
+def reset_player_password(player, discord_name=False):
     """
     Resets the password for a player
     Params:
-       player -> the discord player that requested a password reset
+       str player: The gamertag or discord name of the player to reset the password for
+       bool discord_name: Search for discord_name rather then gamertag if True
 
     return str: new password
     """
     logger.info("Resetting password for {}".format(player))
-    pid = Player.get_player_id_by_username(player)
-    p = Player(pid)
-    p.reload_player_info()
+    p = Player(Player.get_player_id_by_username(player, discord_name=discord_name))
     password = generate_password()
     p.password = password
     p.save()

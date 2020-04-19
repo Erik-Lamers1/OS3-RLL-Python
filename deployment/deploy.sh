@@ -29,7 +29,9 @@ function start() {
     if [[ $1 == "prod" ]]; then
         systemctl restart os3-rocket-league-ladder.service
     elif [[ $1 == "debug" ]]; then
-	systemctl stop os3-rocket-league-ladder.service
+        echo "Setting DB to os3rl_dev"
+        export DB_DATABASE="os3rl_dev"
+	      systemctl stop os3-rocket-league-ladder.service
         os3-rocket-league-ladder -v
     else
 	systemctl stop os3-rocket-league-ladder.service

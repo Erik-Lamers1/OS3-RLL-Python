@@ -53,7 +53,7 @@ class Admin(commands.Cog):
         # fixed in line 63 and 64
         # player_channel = await player.create_dm()
         # admin_channel = await ctx.author.create_dm()
-        admin_msg = "Created player for {0[0][0]} with gamertag: {0[0][1]} and discord {0[0][2]}".format(player_info)
+        admin_msg = "Created player for {0.name} with gamertag: {0.gamertag} and discord {0[0][2]}".format(player_info)
         player_msg = (
             "{} has created an account for you your login username is {}, "
             "your password is {} please change this password at {} ASAP.".format(

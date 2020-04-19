@@ -16,7 +16,7 @@ logger = getLogger(__name__)
 class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.ps_regex = re.compile("^(<@[0-9]+>), (.+), (.+)$")
+        self.ps_regex = re.compile(r"^(<@[0-9]+>)\s+(.+)\s+(.+)$")
 
     @commands.command(pass_context=True)
     @is_rll_admin()
@@ -37,7 +37,7 @@ class Admin(commands.Cog):
         input_match = self.ps_regex.fullmatch(player_settings)
         if not input_match:
             input_err_msg = (
-                "Wrong arguments given.\n" + "Expected: <@DiscordMention>, <name>, <gamertag>\n" + "Got: {}\n".format(player_settings)
+                "Wrong arguments given.\n" + "Expected: <@DiscordMention> <name> <gamertag>\n" + "Got: {}\n".format(player_settings)
             )
             raise commands.UserInputError(input_err_msg)
         if get_player(str(player)) is None:

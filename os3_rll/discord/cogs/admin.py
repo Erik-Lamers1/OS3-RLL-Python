@@ -60,7 +60,7 @@ class Admin(commands.Cog):
                 str(ctx.author), player_info.gamertag, password, settings.WEBSITE
             )
         )
-        await ctx.author.message.send(admin_msg)
+        await ctx.author.send(admin_msg)
         await player.send(player_msg)
         logger.debug("Announcing new player info to channel")
         announcement = announce_new_player(player_info)

@@ -49,8 +49,10 @@ class Admin(commands.Cog):
         logger.info("Player successfully created")
         # TODO: Bug below this line
         # TypeError:  'Player' object is not subscriptable
-        player_channel = await player.create_dm()
-        admin_channel = await ctx.author.create_dm()
+        # Using below method is buggy and not recommended, stupid documentation
+        # fixed in line 63 and 64
+        # player_channel = await player.create_dm()
+        # admin_channel = await ctx.author.create_dm()
         admin_msg = "Created player for {0[0][0]} with gamertag: {0[0][1]} and discord {0[0][2]}".format(player_info)
         player_msg = (
             "{} has created an account for you your login username is {}, "
@@ -58,8 +60,8 @@ class Admin(commands.Cog):
                 str(ctx.author), player_info.gamertag, password, settings.WEBSITE
             )
         )
-        await admin_channel.send(admin_msg)
-        await player_channel.send(player_msg)
+        await ctx.author.message.send(admin_msg)
+        await player.send(player_msg)
         logger.debug("Announcing new player info to channel")
         announcement = announce_new_player(player_info)
         await ctx.send(announcement["content"], embed=announcement["embed"])

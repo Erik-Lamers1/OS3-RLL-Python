@@ -72,7 +72,7 @@ def add_player(name, gamertag, discord):
 
     returns 2-tuple: (p: os3_rll.models.Player, password: str)
     """
-    logger.debug("Adding player with properties: {}, {}, {}".format(name, gamertag, discord))
+    logger.info("Adding player with properties: {}, {}, {}".format(name, gamertag, discord))
     password = generate_password()
     p = Player()
     p.name = name

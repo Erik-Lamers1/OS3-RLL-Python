@@ -44,9 +44,9 @@ class Admin(commands.Cog):
         if get_player(str(player)) is None:
             raise commands.BadArgument("{} is not a member of this guild.".format(str(player)))
 
-        # TODO check if player is alread in the database
         name, gamertag = input_match.group(2, 3)
         player_info, password = add_player(name, gamertag, str(player))
+        logger.info("Player successfully created")
         player_channel = await player.create_dm()
         admin_channel = await ctx.author.create_dm()
         admin_msg = "Created player for {0[0][0]} with gamertag: {0[0][1]} and discord {0[0][2]}".format(player_info)
@@ -58,6 +58,7 @@ class Admin(commands.Cog):
         )
         await admin_channel.send(admin_msg)
         await player_channel.send(player_msg)
+        logger.debug("Announcing new player info to channel")
         announcement = announce_new_player(player_info)
         await ctx.send(announcement["content"], embed=announcement["embed"])
 

@@ -16,7 +16,7 @@ logger = getLogger(__name__)
 class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.ps_regex = re.compile(r"^(<@[0-9]+>)\s+(.+)\s+(.+)$")
+        self.ps_regex = re.compile(r"^(.{1,32}#\d{4})\s+(.+)\s+(.+)$")
 
     @commands.command(pass_context=True)
     @is_rll_admin()
@@ -34,7 +34,8 @@ class Admin(commands.Cog):
            Players need a gamertag, discord handle and a name
         """
         logger.info("add_player: called by {} for {}".format(ctx.author, str(player)))
-        input_match = self.ps_regex.fullmatch(player.mention + " ".join(player_settings))
+        argument_string = "{} {}".format(str(player), " ".join(player_settings))
+        input_match = self.ps_regex.fullmatch(argument_string)
         if not input_match:
             input_err_msg = (
                 "Wrong arguments given.\n" + "Expected: <@DiscordMention> <name> <gamertag>\n" + "Got: {}\n".format(player_settings)

@@ -90,8 +90,8 @@ def announce_new_player(player):
            Dictionary with content, title, description, footer and colour as keys.
     """
     description = (
-        "{0.discord} has entered the rocket league competition, "
-        + "be sure to add their gamertag ({0.gamertag}) to your friend list!".format(player)
+        "{p.discord} has entered the rocket league competition, "
+        + "be sure to add their gamertag ({p.gamertag}) to your friend list!".format(p=player)
     )
     try:
         embed = {

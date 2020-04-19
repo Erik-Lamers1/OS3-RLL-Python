@@ -29,12 +29,12 @@ class Admin(commands.Cog):
 
     @commands.command(pass_context=True)
     @is_rll_admin()
-    async def add_player(self, ctx, player: discord.Member, player_settings: str):
+    async def add_player(self, ctx, player: discord.Member, *player_settings):
         """Allows RLL Admins to add players to the Rocket League Ladder.
            Players need a gamertag, discord handle and a name
         """
         logger.info("add_player: called by {} for {}".format(ctx.author, str(player)))
-        input_match = self.ps_regex.fullmatch(player_settings)
+        input_match = self.ps_regex.fullmatch(str(player) + " ".join(player_settings))
         if not input_match:
             input_err_msg = (
                 "Wrong arguments given.\n" + "Expected: <@DiscordMention> <name> <gamertag>\n" + "Got: {}\n".format(player_settings)

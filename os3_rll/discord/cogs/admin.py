@@ -47,6 +47,8 @@ class Admin(commands.Cog):
         name, gamertag = input_match.group(2, 3)
         player_info, password = add_player(name, gamertag, str(player))
         logger.info("Player successfully created")
+        # TODO: Bug below this line
+        # TypeError:  'Player' object is not subscriptable
         player_channel = await player.create_dm()
         admin_channel = await ctx.author.create_dm()
         admin_msg = "Created player for {0[0][0]} with gamertag: {0[0][1]} and discord {0[0][2]}".format(player_info)

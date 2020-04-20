@@ -24,17 +24,17 @@ DROP TABLE IF EXISTS `challenges`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `challenges` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` datetime(6) NOT NULL COMMENT 'The challenge creation date',
-  `p1` varchar(255) NOT NULL COMMENT 'The player id of the challenger',
-  `p2` varchar(255) NOT NULL COMMENT 'The player id of the challenged',
+  `date` datetime(6) NOT NULL COMMENT 'Challenge creation date',
+  `p1` varchar(255) NOT NULL COMMENT 'ID of player 1 (challenger)',
+  `p2` varchar(255) NOT NULL COMMENT 'ID of player 2 (challenged)',
   `p1_wins` int(11) DEFAULT NULL COMMENT 'How many games were won by p1',
   `p2_wins` int(11) DEFAULT NULL COMMENT 'How many games were won by p2',
-  `p1_score` int(11) DEFAULT NULL COMMENT 'The total score achieved by p1',
-  `p2_score` int(11) DEFAULT NULL COMMENT 'The total score achieved by p1',
-  `winner` int(11) DEFAULT NULL COMMENT 'The id of the winner',
+  `p1_score` int(11) DEFAULT NULL COMMENT 'The total amount of goals by p1',
+  `p2_score` int(11) DEFAULT NULL COMMENT 'The total amount of goals by p2',
+  `winner` int(11) DEFAULT NULL COMMENT 'ID of the winner',
   PRIMARY KEY (`id`),
   KEY `p1_score` (`p1_score`,`p2_score`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,17 +46,18 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL COMMENT 'The real name',
-  `gamertag` varchar(255) NOT NULL COMMENT 'The RL name',
-  `discord` varchar(255) NOT NULL COMMENT 'The discord name plus #id',
-  `rank` int(11) NOT NULL DEFAULT '0' COMMENT 'Current rank',
-  `wins` int(11) NOT NULL DEFAULT '0' COMMENT 'Total number of wins',
-  `losses` int(11) NOT NULL DEFAULT '0' COMMENT 'Total number of losses',
-  `challenged` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Currently challenged?',
-  `timeout` datetime NOT NULL COMMENT 'Date at which the player can challenge again',
+  `name` varchar(255) NOT NULL COMMENT 'Real name of the user',
+  `gamertag` varchar(255) NOT NULL COMMENT 'RL gamertag of the user',
+  `discord` varchar(255) NOT NULL COMMENT 'Discord handle of the user (username#1234)',
+  `rank` int(11) NOT NULL DEFAULT '0' COMMENT 'Current rank of the user',
+  `wins` int(11) NOT NULL DEFAULT '0' COMMENT 'Total amount of wins',
+  `losses` int(11) NOT NULL DEFAULT '0' COMMENT 'Total amount of losses',
+  `challenged` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'User is currently challenged',
+  `timeout` datetime NOT NULL COMMENT 'Current challenger timeout of the user',
   `password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `discord` (`discord`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -68,4 +69,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-05 17:28:35
+-- Dump completed on 2020-04-20 21:32:55

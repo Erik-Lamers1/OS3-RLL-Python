@@ -5,7 +5,7 @@ from os3_rll.conf import perform_import
 
 
 class TestPerformImport(OS3RLLTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.mock_import_from_string = self.set_up_patch("os3_rll.conf.import_from_string", return_value="imported")
 
     def test_perform_import_return_none_if_value_is_none(self):

@@ -5,7 +5,7 @@ from os3_rll.tests import OS3RLLTestCase
 
 
 class TestImportFromString(OS3RLLTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.mock_import_module = self.set_up_patch("importlib.import_module", return_value="module")
 
         self.mock_getattr = self.set_up_patch("os3_rll.conf.getattr", return_value="attr")

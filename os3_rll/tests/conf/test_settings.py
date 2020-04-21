@@ -5,7 +5,7 @@ from os3_rll.tests import OS3RLLTestCase
 
 
 class TestSettings(OS3RLLTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.mod = Mock(lower=123, UPPER=456, MiXeD=789)
         self.mock_importlib = self.set_up_patch("importlib.import_module", return_value=self.mod)
         self.mock_settings = Settings("module.class.sub")

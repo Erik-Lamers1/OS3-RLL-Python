@@ -4,7 +4,7 @@ from os3_rll.conf import settings
 
 
 class TestDBModel(OS3RLLTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.connect = self.set_up_patch("os3_rll.models.db.connect")
 
     def test_db_connect_calls_connect_method(self):

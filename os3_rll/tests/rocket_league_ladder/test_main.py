@@ -5,7 +5,7 @@ from os3_rll.rocket_league_ladder import main
 
 
 class TestRLLMain(OS3RLLTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.client = self.set_up_patch("os3_rll.rocket_league_ladder.discord_client")
         self.logging = self.set_up_patch("os3_rll.rocket_league_ladder.setup_console_logging")
         self.show_version = self.set_up_patch("os3_rll.rocket_league_ladder.show_version")

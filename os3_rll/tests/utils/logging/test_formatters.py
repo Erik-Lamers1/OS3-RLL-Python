@@ -5,7 +5,7 @@ from os3_rll.utils.logging.formatters import ConsoleFormatter
 
 
 class TestConsoleFormatter(OS3RLLTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.record = makeLogRecord({"name": "salty.sub", "levelno": WARNING, "levelname": "WARNING", "msg": "mocked log",})
         self.formatter = ConsoleFormatter()
         self.fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

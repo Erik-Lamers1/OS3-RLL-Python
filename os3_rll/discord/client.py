@@ -11,7 +11,7 @@ from discord.ext.commands import ExtensionAlreadyLoaded
 from os3_rll.discord.queue import discord_message_queue as message_queue
 from os3_rll.conf import settings
 from os3_rll.discord import utils
-from os3_rll.actions.challenge import check_uncompleted_challenges
+from os3_rll.actions.challenge_tasks.check_uncompleted_challenges import check_uncompleted_challenges
 
 
 logger = getLogger(__name__)

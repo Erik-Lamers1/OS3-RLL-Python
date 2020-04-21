@@ -1,4 +1,4 @@
-from unittest.mock import call, MagicMock, PropertyMock, Mock
+from unittest.mock import call, MagicMock
 
 from os3_rll.actions.challenge import create_challenge
 from os3_rll.tests import OS3RLLTestCase

@@ -2,7 +2,6 @@ from datetime import datetime
 from logging import getLogger
 from hashlib import sha256
 
-from os3_rll.discord.utils import get_player
 from os3_rll.models.db import Database
 from os3_rll.operations.utils import get_max_rank
 
@@ -35,7 +34,6 @@ class Player:
         self._rank = 0
         self._gamertag = None
         self._discord = ""
-        self._discord_member = None
         self._wins = 0
         self._losses = 0
         self._challenged = 0
@@ -78,7 +76,6 @@ class Player:
                 self._challenged,
                 self._timeout,
             ) = self.get_player_info_from_db()
-            self._discord_member = get_player(self._discord)
         self.original = (self._name, self._rank, self._gamertag, self._discord, self._wins, self._losses, self._challenged, self._timeout)
         if self._timeout:
             self.timeout = datetime.fromtimestamp(self._timeout)
@@ -125,10 +122,6 @@ class Player:
     @discord.setter
     def discord(self, discord):
         self._discord = discord
-
-    @property
-    def discord_member(self):
-        return self._discord_member
 
     @property
     def wins(self):
@@ -237,10 +230,10 @@ class Player:
 
     def _save_new_player(self):
         # Check if any of the required vars is None
-        if any(arg is None for arg in (self._name, self._gamertag, self._password)):
-            raise PlayerException("Unable to save player object without required properties, please provide name, gamertag and password")
-        if not self._discord:  # this will break if gamertag is not same as discord handle.
-            self._discord = self._gamertag
+        if any(arg is None for arg in (self._name, self._gamertag, self._password, self._discord)):
+            raise PlayerException(
+                "Unable to save player object without required properties, please provide name, gamertag, discord and password"
+            )
         logger.info("Inserting new player into DB")
         self.db.execute_prepared_statement(
             "INSERT INTO users SET name=%s, gamertag=%s, discord=%s, rank=%s, password=%s, timeout=%s",

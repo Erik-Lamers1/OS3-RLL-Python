@@ -1,9 +1,10 @@
 import discord
 import re
 import random
+from logging import getLogger
+
 from os3_rll.conf import settings
 from os3_rll.discord import client
-from logging import getLogger
 
 logger = getLogger(__name__)
 discord_regex = re.compile("^.{2,32}#[0-9]{4}$")

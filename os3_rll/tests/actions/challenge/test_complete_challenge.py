@@ -55,7 +55,7 @@ class TestCompleteChallenge(OS3RLLTestCase):
         complete_challenge(self.p1, self.p2, "blaap")
         self.check_date_older_then.assert_called_once_with(self.challenge().__enter__().date, 7)
 
-    def test_complete_challenge_raises_challenge_exception(self):
+    def test_complete_challenge_raises_challenge_exception_when_challenge_expired(self):
         self.check_date_older_then.return_value = True
         with self.assertRaises(ChallengeException):
             complete_challenge(self.p1, self.p2, "blaap")
@@ -84,3 +84,8 @@ class TestCompleteChallenge(OS3RLLTestCase):
 
     def test_complete_challenge_returns_the_id_set_according_to_the_challenge_model_winner(self):
         self.assertEqual(complete_challenge(self.p1, self.p2, "blaap"), self.p1)
+
+    def test_complete_challenge_returns_the_correct_winner_id_if_p2_wins(self):
+        self.challenge.return_value.__enter__.return_value.winner = self.p2
+        self.player.return_value.__enter__.return_value.id = self.p2
+        self.assertEqual(complete_challenge(self.p1, self.p2, "blaap"), self.p2)

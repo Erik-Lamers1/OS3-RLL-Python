@@ -5,9 +5,6 @@ from os3_rll.conf import settings
 
 
 class OS3RLLTestCase(TestCase):
-    destpath = None
-    tempfile = None
-
     def __init__(self, *args, **kwargs):
         self.expected_git_path = Path(settings.PROJECT_DIR, ".git")
         self.assertTrue(self.expected_git_path.is_dir(), "project_path is not correct? (no .git found)")
@@ -33,5 +30,5 @@ class OS3RLLTestCase(TestCase):
     def set_up_context_manager_patch(self, topatch, themock=None, **kwargs):
         patcher = self.set_up_patch(topatch, themock=themock, **kwargs)
         patcher.return_value.__exit__ = lambda a, b, c, d: None
-        patcher.return_value.__enter__ = lambda x: None
+        patcher.return_value.__enter__ = lambda x: patcher
         return patcher

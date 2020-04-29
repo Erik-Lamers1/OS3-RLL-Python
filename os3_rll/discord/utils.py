@@ -45,6 +45,7 @@ def get_player(p):
     # Iterates over all the members the bot can see. (have to be members of guilds that it is connected too)
     # We import the bot here, because our design is stupid and can cause circular imports
     # TODO: Think of a more logical / better file structure
+    # pylint: disable=import-outside-toplevel
     from os3_rll.discord.client import bot
 
     members = bot.get_all_members()

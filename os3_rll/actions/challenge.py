@@ -220,6 +220,7 @@ def get_challenge(player, should_be_completed=False, search_by_discord_name=True
     # Get the deadline
     deadline = challenge.date + timedelta(weeks=1)
     # Return relevant data
+    # TODO: We shouldn't mix up name and gamertag here, needs a refactor
     return {
         "p1": {"id": p1.id, "rank": p1.rank, "name": p1.gamertag, "discord": p1.discord,},
         "p2": {"id": p2.id, "rank": p2.rank, "name": p2.gamertag, "discord": p2.discord,},

@@ -1,5 +1,5 @@
 from datetime import datetime
-from unittest.mock import MagicMock
+from unittest.mock import Mock
 
 from os3_rll.models.player import Player
 from os3_rll.models.challenge import Challenge
@@ -13,7 +13,7 @@ def player_model_fixture(**kwargs):
     p = Player(offline=True)
     p._id = 1
     p._new = False
-    p.db = MagicMock()
+    p.db = Mock()
     p.name = "Henk"
     p.gamertag = "testGamertag"
     p.discord = "testDiscord"
@@ -36,7 +36,7 @@ def challenge_model_fixture(**kwargs):
     c = Challenge(offline=True)
     c._id = 1
     c._new = False
-    c.db = MagicMock()
+    c.db = Mock()
     c.p1 = 1
     c.p2 = 2
     c.p1_score = 10

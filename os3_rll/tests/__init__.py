@@ -28,6 +28,9 @@ class OS3RLLTestCase(TestCase):
         return patcher.start()
 
     def set_up_context_manager_patch(self, topatch, themock=None, **kwargs):
+        """
+        Provides a mock object which can be used with context managers (like with statements)
+        """
         patcher = self.set_up_patch(topatch, themock=themock, **kwargs)
         patcher.return_value.__exit__ = lambda a, b, c, d: None
         patcher.return_value.__enter__ = patcher

@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from os3_rll.tests import OS3RLLTestCase
 from os3_rll.tests.fixture import player_model_fixture, challenge_model_fixture
@@ -61,9 +61,20 @@ class TestGetChallenge(OS3RLLTestCase):
         with self.assertRaises(ChallengeException):
             get_challenge(1)
 
+    def test_get_challenge_returns_a_dict(self):
+        self.assertIsInstance(get_challenge(1), dict)
+
+    def test_get_challenge_returns_a_dict_of_p1_info(self):
+        self.assertIsInstance(get_challenge(1)["p1"], dict)
+
+    def test_get_challenge_returns_a_dict_of_p2_info(self):
+        self.assertIsInstance(get_challenge(1)["p2"], dict)
+
+    def test_get_challenge_returns_a_deadtime_object_for_deadline(self):
+        self.assertIsInstance(get_challenge(1)["deadline"], datetime)
+
     def test_get_challenge_gives_back_deadline_one_week_from_challenge_date(self):
-        c = get_challenge(1)
-        self.assertEqual(c["deadline"], self.challenge.return_value.date + timedelta(weeks=1))
+        self.assertEqual(get_challenge(1)["deadline"], self.challenge.return_value.date + timedelta(weeks=1))
 
     def test_get_challenge_returns_p1_from_challenge_info(self):
         c = get_challenge(1)

@@ -250,6 +250,9 @@ class Player:
 
     def check_if_player_info_has_changed(self):
         logger.debug("Checking if player info has changed")
+        if self.offline:
+            logger.info("Can't check for changed player info when offline, skipping")
+            return False
         player_info = self.get_player_info_from_db()
         return player_info != self.original
 

@@ -30,5 +30,5 @@ class OS3RLLTestCase(TestCase):
     def set_up_context_manager_patch(self, topatch, themock=None, **kwargs):
         patcher = self.set_up_patch(topatch, themock=themock, **kwargs)
         patcher.return_value.__exit__ = lambda a, b, c, d: None
-        patcher.return_value.__enter__ = lambda x: patcher
+        patcher.return_value.__enter__ = patcher
         return patcher

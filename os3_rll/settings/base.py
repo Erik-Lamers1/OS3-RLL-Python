@@ -43,6 +43,7 @@ DISCORD_EMBED_THUMBNAIL = (
 )
 DISCORD_BOT_BACKGROUND_TASKS = ["post", "check_expired_challenges"]
 EXPIRED_CHALLENGES_WAIT_TIMER = 1800  # 30 minutes
+DEVELOPERS = ["SyntheticOxygen", "Mr. Vin", "Mr. Vin", "Mr. Vin", "Mr. Vin", "Pandabeer"]
 
 # Database settings
 DB_HOST = "127.0.0.1"

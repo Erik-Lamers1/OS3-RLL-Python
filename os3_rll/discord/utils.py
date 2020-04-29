@@ -4,15 +4,13 @@ import random
 from logging import getLogger
 
 from os3_rll.conf import settings
-from os3_rll.discord import client
 
 logger = getLogger(__name__)
 discord_regex = re.compile("^.{2,32}#[0-9]{4}$")
 
 
 def not_implemented():
-    developers = ["SyntheticOxygen", "Mr. Vin", "Mr. Vin", "Mr. Vin", "Mr. Vin", "Pandabeer"]
-    developer = get_player(random.choice(developers))
+    developer = get_player(random.choice(settings.DEVELOPERS))
     return "This command is not finished because {} is lazy as f*ck".format(developer.mention)
 
 
@@ -45,7 +43,11 @@ def get_player(p):
     """
 
     # Iterates over all the members the bot can see. (have to be members of guilds that it is connected too)
-    members = client.bot.get_all_members()
+    # We import the bot here, because our design is stupid and can cause circular imports
+    # TODO: Think of a more logical / better file structure
+    from os3_rll.discord.client import bot
+
+    members = bot.get_all_members()
     player = None
 
     if p.startswith("<@!"):

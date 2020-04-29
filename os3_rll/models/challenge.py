@@ -17,16 +17,17 @@ class Challenge:
     When self.save() is called the changes are written to the database
     """
 
-    def __init__(self, i=0, force=False):
+    def __init__(self, i=0, force=False, offline=False):
         """
         param int i: The id of the challenge to get, if left to 0 a new challenge will be created
         param bool force: Set the force parameter to True to enable certain (dangerous) operations,
             Like auto-saving on __exit__, overwriting changed DB values and resetting or deleting a challenge
+        param bool offline: Do not make a connection to the Database (can be used for fixtures)
         """
         # Set force to true to force a model save on __exit__ and disregard DB changes
         self.force = force
         self._id = i
-        self.db = Database()
+        self.db = None if offline else Database()
         self._date = 0
         self._p1 = None
         self._p2 = None
@@ -36,7 +37,7 @@ class Challenge:
         self._p2_score = 0
         self._winner = 0
         self._new = self._id == 0
-        if not self._new:
+        if not self._new and not offline:
             (
                 self._date,
                 self._p1,

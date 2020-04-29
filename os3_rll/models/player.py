@@ -22,13 +22,15 @@ class Player:
     If this class is called in a with block it will save the object automatically if force is set to True
     """
 
-    def __init__(self, i=0, force=False):
+    def __init__(self, i=0, force=False, offline=False):
         """
         param int id: The id of the player to assign this instance to. 0 means a new player.
         param bool force: Set the force parameter to True to enable certain (dangerous) operations,
             Like auto-saving on __exit__, overwriting changed DB values or deleting a player
+        param bool offline: Do not make a connection to the Database (can be used for fixtures)
         """
-        self.db = Database()
+        self.offline = offline
+        self.db = None if offline else Database()
         self._id = i
         self._name = None
         self._rank = 0
@@ -65,7 +67,7 @@ class Player:
         """
         Fills the local variables with info from the DB if needed and sets a timeout object
         """
-        if not self._new:
+        if not self.offline and not self._new:
             (
                 self._name,
                 self._rank,
@@ -81,6 +83,8 @@ class Player:
             self.timeout = datetime.fromtimestamp(self._timeout)
         else:
             self.timeout = datetime.now()
+        if self.offline:
+            logger.debug("Offline mode, skipping database calls")
 
     @property
     def id(self):

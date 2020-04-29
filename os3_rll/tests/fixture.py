@@ -45,6 +45,7 @@ def challenge_model_fixture(**kwargs):
     c.p2_score = 20
     c.p1_wins = 1
     c.p2_wins = 2
+    c.date = datetime.now()
     for key, value in kwargs.items():
         if not hasattr(c, key):
             raise KeyError("Unknown challenge model attribute: {}".format(key))

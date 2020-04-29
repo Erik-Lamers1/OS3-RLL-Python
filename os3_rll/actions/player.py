@@ -48,6 +48,7 @@ def get_player_stats():
     ids = get_all_player_ids_ordered()
     for player in ids:
         # Get the basic info
+        # TODO: We shouldn't mix up name and gamertag here, needs a refactor
         with Player(player) as p:
             players[p.id] = {
                 "name": p.gamertag,

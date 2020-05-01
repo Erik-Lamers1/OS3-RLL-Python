@@ -10,18 +10,24 @@ This implementation makes heavy use of the [Python discord bot](https://discordp
 The idea is that players participating in the ladder can control the challenges and result entirely from discord.
 
 ## Current bot commands
-_Last updated 10-04-2020_
+_Last updated 01-05-2020_
 ```shell script
 A competition manager bot. This bot manages the Rocket Leage ladder.
 
+Admin:
+  add_player            Allows RLL Admins to add players to the Rocket League...
+  reset_password        Allows RLL Admins to reset a players password.
+  start_new_season      Resets the player ranking, scrambles a new leader bor...
 Debug:
+  announce_challenge    Test call to announce a challenge. This does nothing ...
+  debug_reset_challenge Resets the challenge you are parcitipating in.
   hi                    Say hi to the bot, maybe it'll greet you nicely.
   what                  Allows you to ask a random question to the bot.
 Members:
   cool                  Says if a user is cool.
   joined                Says when a member joined.
 RLL:
-  complete_challenge    Completes the challenge you are parcitipating in.
+  complete_challenge    Completes the challenge you are participating in.
   create_challenge      Creates a challenge between you and who you mention.
   get_active_challenges Returns the number of active challenges.
   get_my_challenges     Gives your current challenge deadline.
@@ -32,7 +38,6 @@ RNG:
   choose                Chooses between multiple choices.
   roll                  Rolls a dice in NdN format.
 ​No Category:
-  add_player            Allows RRL Admins to add players to the Rocket-League...
   help                  Shows this message
   listavailable         Lists extensions available
   listloaded            Lists extensions currently loaded
@@ -42,6 +47,7 @@ RNG:
 Type $help command for more info on a command.
 You can also type $help category for more info on a category.
 ```
+The bot will listen to commands in the Discord channel specified in the settings.  
 For the most recent version type `$help` in the Discord channel the bot is connected to.
 
 ## Running the bot

@@ -44,7 +44,7 @@ def do_challenge_sanity_check(p1, p2, may_already_by_challenged=False, may_be_ex
 def process_completed_challenge_args(args):
     """
     Processes the completed challenge arguments
-    args str: of the played matches sperated by spaces and scores by dashes.
+    args str: of the played matches separated by spaces and scores by dashes.
         Example "1-2 5-3 2-4" corresponds to 3 matches played with the first match ending in 1-2, the second in 5-3 ect.
     """
     p1_wins, p2_wins, p1_score, p2_score = 0, 0, 0, 0

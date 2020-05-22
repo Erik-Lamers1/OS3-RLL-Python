@@ -75,6 +75,7 @@ def get_player_objects_from_challenge_info(player, should_be_completed=False, se
     """
     Search for a challenge in the DB corresponding to the player
 
+    param str/int player: The gamertag or id of the player to search for
     param bool should_be_completed: If the challenge should already be completed or not
     param bool search_by_discord_name: Searches for player by full discord_name instead of gamertag
     param str message_author: The discord_user that send the message (eg. Pandabeer#2202)

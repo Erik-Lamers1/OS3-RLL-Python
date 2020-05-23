@@ -5,15 +5,17 @@ from os3_rll.models.player import Player
 from os3_rll.models.challenge import Challenge
 
 
-def player_model_fixture(**kwargs):
+def player_model_fixture(db_mock=Mock(), **kwargs):
     """
     Get a player model fixture which can be manipulated at will
     All values passed will be set to the player fixture
+
+    param unittest.mock db_mock: The mock object to use for the database object inside the player model
     """
     p = Player(offline=True)
     p._id = 1
     p._new = False
-    p.db = Mock()
+    p.db = db_mock
     p.name = "Henk"
     p.gamertag = "testGamertag"
     p.discord = "testDiscord"
@@ -30,15 +32,17 @@ def player_model_fixture(**kwargs):
     return p
 
 
-def challenge_model_fixture(**kwargs):
+def challenge_model_fixture(db_mock=Mock(), **kwargs):
     """
     Get a challenge model fixture which can be manipulated at will
     All values passed will be set to the challenge fixture
+
+    param unittest.mock db_mock: The mock object to use for the database object inside the challenge model
     """
     c = Challenge(offline=True)
     c._id = 1
     c._new = False
-    c.db = Mock()
+    c.db = db_mock
     c.p1 = 1
     c.p2 = 2
     c.p1_score = 10

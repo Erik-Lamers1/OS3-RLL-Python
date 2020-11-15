@@ -58,7 +58,7 @@ class Player:
         """
         row_name = "discord" if discord_name else "gamertag"
         with Database() as db:
-            db.execute_prepared_statement("SELECT id FROM users WHERE {}=%s".format(row_name), (username,))
+            db.execute_prepared_statement("SELECT `id` FROM `users` WHERE {}=%s".format(row_name), (username,))
             if db.rowcount != 1:
                 raise PlayerException("Player not found, or to many players found")
             return db.fetchone()[0]
@@ -208,13 +208,14 @@ class Player:
         if self._new:
             raise PlayerException("A new player instance cannot be deleted")
         logger.info("Deleting player with id {}".format(self._id))
-        self.db.execute_prepared_statement("DELETE FROM users WHERE id=%s", (self._id,))
+        self.db.execute_prepared_statement("DELETE FROM `users` WHERE `id`=%s", (self._id,))
         self.db.commit()
 
     def _save_existing_player_model(self):
         logger.info("Updating DB for player with id {}".format(self._id))
         self.db.execute_prepared_statement(
-            "UPDATE users SET name=%s, gamertag=%s, discord=%s, rank=%s, wins=%s, losses=%s, " "challenged=%s, timeout=%s WHERE id=%s",
+            "UPDATE `users` SET `name`=%s, `gamertag`=%s, `discord`=%s, `rank`=%s, `wins`=%s, `losses`=%s, "
+            "`challenged`=%s, `timeout`=%s WHERE `id`=%s",
             (
                 self._name,
                 self._gamertag,
@@ -230,7 +231,7 @@ class Player:
         # Check if password is updated
         if self._password:
             logger.info("Updating player password")
-            self.db.execute_prepared_statement("UPDATE users SET password=%s WHERE id=%s", (self._password, self._id))
+            self.db.execute_prepared_statement("UPDATE `users` SET `password`=%s WHERE `id`=%s", (self._password, self._id))
 
     def _save_new_player(self):
         # Check if any of the required vars is None
@@ -240,7 +241,7 @@ class Player:
             )
         logger.info("Inserting new player into DB")
         self.db.execute_prepared_statement(
-            "INSERT INTO users SET name=%s, gamertag=%s, discord=%s, rank=%s, password=%s, timeout=%s",
+            "INSERT INTO `users` SET `name`=%s, `gamertag`=%s, `discord`=%s, `rank`=%s, `password`=%s, `timeout`=%s",
             (self._name, self._gamertag, self._discord, self.rank, self._password, self._timeout),
         )
 
@@ -259,7 +260,9 @@ class Player:
     def get_player_info_from_db(self):
         logger.debug("Getting player info for player with id {} from db".format(self._id))
         self.db.execute_prepared_statement(
-            "SELECT name, rank, gamertag, discord, wins, losses, challenged, UNIX_TIMESTAMP(timeout) " "FROM users WHERE id=%s", (self._id,)
+            "SELECT `name`, `rank`, `gamertag`, `discord`, `wins`, `losses`, `challenged`, UNIX_TIMESTAMP(`timeout`) "
+            "FROM `users` WHERE `id`=%s",
+            (self._id,),
         )
         self.check_row_count()
         return self.db.fetchone()

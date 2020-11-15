@@ -15,7 +15,7 @@ def check_uncompleted_challenges():
     """
     with Database() as db:
         logger.info("Checking for expired challenges")
-        db.execute("SELECT id, date, p1, p2 FROM challenges WHERE winner is NULL")
+        db.execute("SELECT `id`, `date`, `p1`, `p2` FROM `challenges` WHERE `winner` is NULL")
         challenges = db.fetchall()
         for challenge in challenges:
             logger.info("Challenge {} is passed the deadline, completing it".format(challenge[0]))

@@ -14,7 +14,7 @@ def get_all_player_ids_ordered(order_by="rank"):
     """
     ids = []
     with Database() as db:
-        db.execute_prepared_statement("SELECT id FROM users ORDER BY %s", (order_by,))
+        db.execute_prepared_statement("SELECT `id` FROM `users` ORDER BY %s", (order_by,))
         if db.rowcount == 0:
             raise DBException("No users returned")
         rows = db.fetchall()
@@ -33,7 +33,7 @@ def get_average_goals_per_challenge(player):
     logger.debug("Calculating average goals per challenge for player with id {}".format(player))
     with Database() as db:
         # Average goals as p1
-        db.execute_prepared_statement("SELECT AVG(p1_score) FROM challenges WHERE p1=%s AND WINNER IS NOT NULL", (player,))
+        db.execute_prepared_statement("SELECT AVG(`p1_score`) FROM `challenges` WHERE `p1`=%s AND `winner` IS NOT NULL", (player,))
         if db.rowcount != 1:
             logger.warning("Player with id {} has never challenged someone, setting average challenger score to 0")
             avg_challenger_score = 0
@@ -43,7 +43,7 @@ def get_average_goals_per_challenge(player):
             if avg_challenger_score is None:
                 avg_challenger_score = 0
         # Average goals as p2
-        db.execute_prepared_statement("SELECT AVG(p2_score) FROM challenges WHERE p2=%s AND WINNER IS NOT NULL", (player,))
+        db.execute_prepared_statement("SELECT AVG(`p2_score`) FROM `challenges` WHERE `p2`=%s AND `winner` IS NOT NULL", (player,))
         if db.rowcount != 1:
             logger.warning("Player with id {} has never been challenged, setting average challenged score to 0")
             avg_challenged_score = 0

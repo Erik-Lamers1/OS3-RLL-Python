@@ -16,7 +16,11 @@ class TestGetPlayerRanking(OS3RLLTestCase):
 
     def test_get_player_ranking_makes_correct_db_calls(self):
         get_player_ranking()
-        calls = [call(), call().execute("SELECT discord, rank, gamertag FROM users WHERE rank > 0 ORDER BY rank"), call().fetchall()]
+        calls = [
+            call(),
+            call().execute("SELECT `discord`, `rank`, `gamertag` FROM `users` WHERE `rank` > 0 ORDER BY `rank`"),
+            call().fetchall(),
+        ]
         self.db.assert_has_calls(calls)
 
     def test_get_player_ranking_returns_dict(self):

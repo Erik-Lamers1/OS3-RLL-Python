@@ -15,7 +15,7 @@ class TestGetAllPlayerIdsOrdered(OS3RLLTestCase):
         get_all_player_ids_ordered()
         calls = [
             call(),
-            call().execute_prepared_statement("SELECT id FROM users ORDER BY %s", ("rank",)),
+            call().execute_prepared_statement("SELECT `id` FROM `users` ORDER BY %s", ("rank",)),
             call().fetchall(),
         ]
         self.db.assert_has_calls(calls)
@@ -24,7 +24,7 @@ class TestGetAllPlayerIdsOrdered(OS3RLLTestCase):
         get_all_player_ids_ordered(order_by="banaan")
         calls = [
             call(),
-            call().execute_prepared_statement("SELECT id FROM users ORDER BY %s", ("banaan",)),
+            call().execute_prepared_statement("SELECT `id` FROM `users` ORDER BY %s", ("banaan",)),
             call().fetchall(),
         ]
         self.db.assert_has_calls(calls)

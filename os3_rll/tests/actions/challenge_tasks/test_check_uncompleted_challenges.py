@@ -18,7 +18,7 @@ class TestCheckUncompletedChallenges(OS3RLLTestCase):
     def test_check_uncompleted_challenges_makes_correct_db_calls(self):
         calls = [
             call(),
-            call().execute("SELECT id, date, p1, p2 FROM challenges WHERE winner is NULL"),
+            call().execute("SELECT `id`, `date`, `p1`, `p2` FROM `challenges` WHERE `winner` is NULL"),
             call().fetchall(),
         ]
         check_uncompleted()

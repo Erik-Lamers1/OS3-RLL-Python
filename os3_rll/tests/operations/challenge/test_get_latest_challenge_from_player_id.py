@@ -24,13 +24,17 @@ class TestGetLatestChallengeFromPlayerId(OS3RLLTestCase):
     def test_get_latest_challenge_from_player_id_calls_database_execute(self):
         get_latest_challenge_from_player_id(1)
         self.db.execute.assert_called_once_with(
-            "SELECT id FROM challenges WHERE (p1={0} OR p2={0}) AND winner is  NULL ORDER BY id LIMIT 1".format(self.player_model.id)
+            "SELECT `id` FROM `challenges` WHERE (`p1`={0} OR `p2`={0}) AND `winner` is  NULL ORDER BY `id` LIMIT 1".format(
+                self.player_model.id
+            )
         )
 
     def test_get_latest_challenge_from_player_id_makes_correct_db_call_when_should_be_completed_passed(self):
         get_latest_challenge_from_player_id(1, should_be_completed=True)
         self.db.execute.assert_called_once_with(
-            "SELECT id FROM challenges WHERE (p1={0} OR p2={0}) AND winner is NOT NULL ORDER BY id LIMIT 1".format(self.player_model.id)
+            "SELECT `id` FROM `challenges` WHERE (`p1`={0} OR `p2`={0}) AND `winner` is NOT NULL ORDER BY `id` LIMIT 1".format(
+                self.player_model.id
+            )
         )
 
     def test_get_latest_challenge_from_player_id_calls_database_fetchone(self):

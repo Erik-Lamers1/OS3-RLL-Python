@@ -25,7 +25,7 @@ class TestGetPlayerObjectsFromChallengeInfo(OS3RLLTestCase):
         calls = [
             call(),
             call().execute_prepared_statement(
-                "SELECT p1, p2 FROM challenges WHERE (p1=%s OR p2=%s) AND winner IS  NULL ORDER BY id DESC", (1, 1)
+                "SELECT `p1`, `p2` FROM `challenges` WHERE (`p1`=%s OR `p2`=%s) AND `winner` IS  NULL ORDER BY `id` DESC", (1, 1)
             ),
             call().fetchone(),
         ]
@@ -35,7 +35,7 @@ class TestGetPlayerObjectsFromChallengeInfo(OS3RLLTestCase):
     def test_get_player_objects_from_challenge_info_makes_correct_database_call_when_should_be_completed_passed(self):
         get_player_objects_from_challenge_info(1, should_be_completed=True)
         self.db().execute_prepared_statement.assert_called_once_with(
-            "SELECT p1, p2 FROM challenges WHERE (p1=%s OR p2=%s) " "AND winner IS NOT NULL ORDER BY id DESC", (1, 1)
+            "SELECT `p1`, `p2` FROM `challenges` WHERE (`p1`=%s OR `p2`=%s) " "AND `winner` IS NOT NULL ORDER BY `id` DESC", (1, 1)
         )
 
     def test_get_player_objects_from_challenge_info_raises_challenge_exception_if_rowcount_is_0(self):

@@ -85,7 +85,7 @@ def get_player_objects_from_challenge_info(player, should_be_completed=False, se
         player = Player.get_player_id_by_username(player, discord_name=search_by_discord_name)
     with Database() as db:
         db.execute_prepared_statement(
-            "SELECT p1, p2 FROM challenges WHERE (p1=%s OR p2=%s) AND winner IS {} NULL ORDER BY id DESC".format(
+            "SELECT `p1`, `p2` FROM `challenges` WHERE (`p1`=%s OR `p2`=%s) AND `winner` IS {} NULL ORDER BY `id` DESC".format(
                 "NOT" if should_be_completed else ""
             ),
             (player, player),
@@ -111,7 +111,7 @@ def get_latest_challenge_from_player_id(player, should_be_completed=False):
             raise PlayerException("Player {} is currently not in an active challenge".format(p.gamertag))
         # Try to find a challenge
         p.db.execute(
-            "SELECT id FROM challenges WHERE (p1={0} OR p2={0}) AND winner is {1} NULL ORDER BY id LIMIT 1".format(
+            "SELECT `id` FROM `challenges` WHERE (`p1`={0} OR `p2`={0}) AND `winner` is {1} NULL ORDER BY `id` LIMIT 1".format(
                 p.id, "NOT" if should_be_completed else ""
             )
         )

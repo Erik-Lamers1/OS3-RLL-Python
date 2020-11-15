@@ -17,7 +17,7 @@ def get_player_ranking():
     players = {}
     logger.info("Getting current player ranking from DB")
     with Database() as db:
-        db.execute("SELECT discord, rank, gamertag FROM users WHERE rank > 0 ORDER BY rank")
+        db.execute("SELECT `discord`, `rank`, `gamertag` FROM `users` WHERE `rank` > 0 ORDER BY `rank`")
         if db.rowcount == 0:
             raise DBException("No players found")
         rows = db.fetchall()

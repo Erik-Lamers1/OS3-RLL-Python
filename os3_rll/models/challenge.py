@@ -69,7 +69,7 @@ class Challenge:
         """
         with Database() as db:
             db.execute_prepared_statement(
-                "SELECT id FROM challenges WHERE p1=%s AND p2=%s AND winner IS {} NULL ORDER BY id DESC LIMIT 1".format(
+                "SELECT `id` FROM `challenges` WHERE `p1`=%s AND `p2`=%s AND `winner` IS {} NULL ORDER BY `id` DESC LIMIT 1".format(
                     "NOT" if should_be_completed else ""
                 ),
                 (p1, p2),
@@ -204,13 +204,15 @@ class Challenge:
         if any(arg is None for arg in (self._p1, self._p2)):
             raise ChallengeException("When creating a new challenge the p1, and p2 properties are required")
         logger.info("Inserting new challenge into DB")
-        self.db.execute_prepared_statement("INSERT INTO challenges SET date=%s, p1=%s, p2=%s", (self._date, self._p1, self._p2))
+        self.db.execute_prepared_statement("INSERT INTO `challenges` SET `date`=%s, `p1`=%s, `p2`=%s", (self._date, self._p1, self._p2))
 
     def _save_existing_challenge_model(self):
         logger.info("Updating DB for challenge with id {}".format(self._id))
         # Check the actual winner property so if the user didn't set it we still appoint a winner
         self.db.execute_prepared_statement(
-            "UPDATE challenges SET date=%s, p1=%s, p2=%s, p1_wins=%s, p2_wins=%s, p1_score=%s, p2_score=%s, winner=%s " "WHERE id=%s",
+            "UPDATE `challenges` SET "
+            "`date`=%s, `p1`=%s, `p2`=%s, `p1_wins`=%s, `p2_wins`=%s, `p1_score`=%s, `p2_score`=%s, `winner`=%s "
+            "WHERE `id`=%s",
             (self._date, self._p1, self._p2, self._p1_wins, self._p2_wins, self._p1_score, self._p2_score, self.winner, self._id),
         )
 
@@ -226,7 +228,8 @@ class Challenge:
             raise ChallengeException("New challenges cannot be reset")
         logger.info("Resetting the scores of challenge {}".format(self._id))
         self.db.execute_prepared_statement(
-            "UPDATE challenges SET p1_wins=NULL, p2_wins=NULL, p1_score=NULL, p2_score=NULL, winner=NULL WHERE id=%s", (self._id,)
+            "UPDATE `challenges` SET `p1_wins`=NULL, `p2_wins`=NULL, `p1_score`=NULL, " "`p2_score`=NULL, `winner`=NULL WHERE `id`=%s",
+            (self._id,),
         )
         logger.info("Reloading myself")
         self.db.commit()
@@ -241,13 +244,15 @@ class Challenge:
         if self._new:
             raise ChallengeException("New challenges cannot be deleted")
         logger.info("Deleting challenge with id {}".format(self._id))
-        self.db.execute_prepared_statement("DELETE FROM challenges WHERE id=%s", (self._id,))
+        self.db.execute_prepared_statement("DELETE FROM `challenges` WHERE `id`=%s", (self._id,))
         self.db.commit()
 
     def get_challenge_info_from_db(self):
         logger.debug("Getting challenge info for challenge with id {} from DB".format(self._id))
         self.db.execute_prepared_statement(
-            "SELECT UNIX_TIMESTAMP(date), p1, p2, p1_wins, p2_wins, p1_score, p2_score, winner FROM challenges " "WHERE id=%s", (self._id,)
+            "SELECT UNIX_TIMESTAMP(`date`), `p1`, `p2`, `p1_wins`, `p2_wins`, `p1_score`, `p2_score`, `winner` FROM `challenges` "
+            "WHERE `id`=%s",
+            (self._id,),
         )
         self._check_row_count()
         return self.db.fetchone()

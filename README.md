@@ -55,7 +55,7 @@ For the most recent version type `$help` in the Discord channel the bot is conne
 ```shell script
 cd OS3-RLL-Python
 mysql -e "CREATE DATABASE IF NOT EXISTS os3rl"
-cat deployment/database_schema.sql | mysql
+cat deployment/database_schema.sql | mysql os3rl
 ```
 
 ### Running on CLI

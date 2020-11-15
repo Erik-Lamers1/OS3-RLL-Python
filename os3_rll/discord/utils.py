@@ -9,6 +9,16 @@ logger = getLogger(__name__)
 discord_regex = re.compile("^.{2,32}#[0-9]{4}$")
 
 
+def get_intents():
+    # Fix the Intents the Bot needs access to
+    # https://discordpy.readthedocs.io/en/latest/intents.html
+    intents = discord.Intents.default()
+    intents.typing = False
+    intents.members = True
+    intents.guilds = True
+    return intents
+
+
 def not_implemented():
     developer = get_player(random.choice(settings.DEVELOPERS))
     return "This command is not finished because {} is lazy as f*ck".format(developer.mention)

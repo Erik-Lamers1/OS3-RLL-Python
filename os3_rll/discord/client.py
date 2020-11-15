@@ -21,7 +21,7 @@ description = """A competition manager bot. This bot manages the Rocket Leage la
 cogs_dir = settings.COGS_DIR
 cogs_module_path = settings.COGS_RELATIVE_DIR.replace("/", ".")
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or("$"), description=description)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("$"), description=description, intents=utils.get_intents())
 
 
 def is_rll_admin():

@@ -2,7 +2,6 @@ from logging import getLogger
 from tabulate import tabulate
 
 from os3_rll.discord.utils import create_embed, get_player
-from os3_rll.models.player import PlayerException
 
 logger = getLogger(__name__)
 
@@ -18,16 +17,13 @@ def announce_rankings(ranks: dict):
     champion = next(iter(sorted_ranks.values()))[1]
     description = ""
 
-    for k, v in sorted_ranks.items():
-        if get_player(k.name + "#" + str(k.discriminator)) is None:
-            raise PlayerException("Player returned from database does not have a valid Discord account")
-
+    for v in sorted_ranks.values():
         description += "{0:2}. {1}\n".format(v[0], v[1])
 
     try:
         embed = {
             "title": "**{} is the current champion.**".format(champion),
-            "description": "{}".format(description),
+            "description": description,
             "footer": "Become the best!",
             "colour": 2234352,
         }
@@ -49,7 +45,7 @@ def announce_stats(stats: dict):
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
-    # Frist, sort the dict by rank
+    # First, sort the dict by rank
     order = sorted(stats, key=lambda x: (stats[x]["rank"]))
     table = []
     header = ["Name", "Rank", "Wins", "Losses", "Challenged", "Avg_goals/pc"]
@@ -89,9 +85,8 @@ def announce_new_player(player):
        return:
            Dictionary with content, title, description, footer and colour as keys.
     """
-    description = (
-        "{p.discord} has entered the rocket league competition, "
-        + "be sure to add their gamertag ({p.gamertag}) to your friend list!".format(p=player)
+    description = "{} has entered the rocket league competition, be sure to add their gamertag ({}) to your friend list!".format(
+        player.discord, player.gamertag
     )
     try:
         embed = {
